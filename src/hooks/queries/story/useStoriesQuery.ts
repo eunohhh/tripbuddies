@@ -4,8 +4,8 @@ import { StoryWithBuddiesAndLikes } from '@/types/Story.types';
 import { useQuery } from '@tanstack/react-query';
 
 export function useStoriesQuery() {
-    return useQuery<StoryWithBuddiesAndLikes[] | null, Error>({
-        queryKey: [QUERY_KEY_STORY],
-        queryFn: getStories,
-    });
+  return useQuery<StoryWithBuddiesAndLikes[] | null, Error>({
+    queryKey: [QUERY_KEY_STORY],
+    queryFn: getStories,
+  });
 }

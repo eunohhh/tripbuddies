@@ -4,9 +4,9 @@ import { StoryWithBuddies } from '@/types/Story.types';
 import { useQuery } from '@tanstack/react-query';
 
 export function useSpecificStoryQuery(id: string) {
-    return useQuery<StoryWithBuddies[], Error>({
-        queryKey: [QUERY_KEY_STORY, id],
-        queryFn: () => getSpecificStory(id),
-        enabled: !!id,
-    });
+  return useQuery<StoryWithBuddies[], Error>({
+    queryKey: [QUERY_KEY_STORY, id],
+    queryFn: () => getSpecificStory(id),
+    enabled: !!id,
+  });
 }

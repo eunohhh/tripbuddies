@@ -7,17 +7,17 @@ import { useQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 
 export function useMyBookMarksQuery(clickedBuddyId: string) {
-    const [enabled, setEnabled] = useState<boolean>(false);
+  const [enabled, setEnabled] = useState<boolean>(false);
 
-    useEffect(() => {
-        if (clickedBuddyId) {
-            setEnabled(true);
-        }
-    }, [clickedBuddyId]);
+  useEffect(() => {
+    if (clickedBuddyId) {
+      setEnabled(true);
+    }
+  }, [clickedBuddyId]);
 
-    return useQuery<TripWithContract[] | null, Error>({
-        queryKey: [QUERY_KEY_MY_BOOKMARKS, clickedBuddyId],
-        queryFn: () => getAllBookmarks(clickedBuddyId) as Promise<null>,
-        enabled,
-    });
+  return useQuery<TripWithContract[] | null, Error>({
+    queryKey: [QUERY_KEY_MY_BOOKMARKS, clickedBuddyId],
+    queryFn: () => getAllBookmarks(clickedBuddyId) as Promise<null>,
+    enabled,
+  });
 }

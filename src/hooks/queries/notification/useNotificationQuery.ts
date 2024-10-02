@@ -4,8 +4,8 @@ import { Notification } from '@/types/Notification.types';
 import { useQuery } from '@tanstack/react-query';
 
 export function useNotificationQuery() {
-    return useQuery<Notification[], Error>({
-        queryKey: [QUERY_KEY_NOTIFICATION],
-        queryFn: getNotifications,
-    });
+  return useQuery<Notification[], Error>({
+    queryKey: [QUERY_KEY_NOTIFICATION],
+    queryFn: getNotifications,
+  });
 }

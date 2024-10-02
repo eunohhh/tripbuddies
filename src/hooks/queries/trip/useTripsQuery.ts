@@ -4,8 +4,8 @@ import { TripInfiniteQueryResponse } from '@/types/Trips.types';
 import { useQuery } from '@tanstack/react-query';
 
 export function useTripsQuery() {
-    return useQuery<TripInfiniteQueryResponse | null, Error>({
-        queryKey: [QUERY_KEY_TRIPS],
-        queryFn: getTrips,
-    });
+  return useQuery<TripInfiniteQueryResponse | null, Error>({
+    queryKey: [QUERY_KEY_TRIPS],
+    queryFn: getTrips,
+  });
 }

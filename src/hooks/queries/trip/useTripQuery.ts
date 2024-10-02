@@ -4,9 +4,9 @@ import { TripWithContract } from '@/types/Trips.types';
 import { useQuery } from '@tanstack/react-query';
 
 export function useTripQuery(id: string | null) {
-    return useQuery<TripWithContract, Error>({
-        queryKey: [QUERY_KEY_TRIP, id],
-        queryFn: () => getTrip(id),
-        enabled: !!id,
-    });
+  return useQuery<TripWithContract, Error>({
+    queryKey: [QUERY_KEY_TRIP, id],
+    queryFn: () => getTrip(id),
+    enabled: !!id,
+  });
 }
