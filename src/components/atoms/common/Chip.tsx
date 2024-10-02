@@ -10,137 +10,121 @@ import { VariantProps, cva } from 'class-variance-authority';
 import React from 'react';
 
 const chipVariants = cva(
-    [
-        'text-[12px]',
-        'text-center',
-        'border',
-        'rounded-full',
-        'px-2.5',
-        'py-2.5',
-        'transition-opacity',
-        'whitespace-nowrap',
-        'cursor-pointer',
-        // 'leading-none',
-    ],
-    {
-        variants: {
-            intent: {
-                natural: 'bg-gray-400 border-gray-400 text-gray-500',
-                square: 'rounded-md px-1 py-[1px] text-[12px]',
-                square_white: 'rounded-md px-1 py-[1px] text-[12px]',
-                rounded: 'px-[6px] py-[1px] rounded-xl',
-                rounded_blue: 'px-[6px] py-[1px] rounded-xl',
-                rounded_yellow: 'px-[6px] py-[1px] rounded-xl',
-                onBoarding:
-                    'bg-gray-200 text-gray-500 border-gray-200 py-1 xl:py-2.5',
-            },
-            variant: {
-                selected: 'bg-main-color border-main-color',
-                unselected: 'bg-gray-400 border-gray-400',
-            },
-        },
-        defaultVariants: {
-            intent: 'natural',
-            variant: 'unselected',
-        },
-        compoundVariants: [
-            {
-                intent: 'natural',
-                variant: 'selected',
-                className:
-                    'bg-main-color text-white opacity-100 cursor-pointer',
-            },
-            {
-                intent: 'natural',
-                variant: 'unselected',
-                className:
-                    'bg-gray-200 text-gray-500 border-gray-200 opacity-100 cursor-pointer',
-            },
-            {
-                intent: 'square',
-                variant: 'unselected',
-                className:
-                    'text-white opacity-100 bg-gray-500 border-gray-500 cursor-auto',
-            },
-            {
-                intent: 'square_white',
-                variant: 'unselected',
-                className:
-                    'text-gray-500 opacity-100 bg-white border-gray-500 cursor-auto',
-            },
-            {
-                intent: 'rounded',
-                variant: 'unselected',
-                className:
-                    'text-[#516FE6] opacity-100 bg-white border-[#516FE6] cursor-auto',
-            },
-            {
-                intent: 'rounded_yellow',
-                variant: 'unselected',
-                className:
-                    'text-primary-color-400 opacity-100 bg-white border-primary-color-400 cursor-auto',
-            },
-            {
-                intent: 'rounded_blue',
-                variant: 'unselected',
-                className:
-                    'text-white opacity-100 bg-[#516FE6] border-[#516FE6] cursor-auto',
-            },
-            {
-                intent: 'onBoarding',
-                variant: 'unselected',
-                className:
-                    'text-gray-500 bg-gray-200 border-gray-200 cursor-pointer',
-            },
-            {
-                intent: 'onBoarding',
-                variant: 'selected',
-                className:
-                    'text-white bg-main-color border-main-color cursor-pointer',
-            },
-        ],
+  [
+    'text-[12px]',
+    'text-center',
+    'border',
+    'rounded-full',
+    'px-2.5',
+    'py-2.5',
+    'transition-opacity',
+    'whitespace-nowrap',
+    'cursor-pointer',
+    // 'leading-none',
+  ],
+  {
+    variants: {
+      intent: {
+        natural: 'bg-gray-400 border-gray-400 text-gray-500',
+        square: 'rounded-md px-1 py-[1px] text-[12px]',
+        square_white: 'rounded-md px-1 py-[1px] text-[12px]',
+        rounded: 'px-[6px] py-[1px] rounded-xl',
+        rounded_blue: 'px-[6px] py-[1px] rounded-xl',
+        rounded_yellow: 'px-[6px] py-[1px] rounded-xl',
+        onBoarding: 'bg-gray-200 text-gray-500 border-gray-200 py-1 xl:py-2.5',
+      },
+      variant: {
+        selected: 'bg-main-color border-main-color',
+        unselected: 'bg-gray-400 border-gray-400',
+      },
     },
+    defaultVariants: {
+      intent: 'natural',
+      variant: 'unselected',
+    },
+    compoundVariants: [
+      {
+        intent: 'natural',
+        variant: 'selected',
+        className: 'bg-main-color text-white opacity-100 cursor-pointer',
+      },
+      {
+        intent: 'natural',
+        variant: 'unselected',
+        className: 'bg-gray-200 text-gray-500 border-gray-200 opacity-100 cursor-pointer',
+      },
+      {
+        intent: 'square',
+        variant: 'unselected',
+        className: 'text-white opacity-100 bg-gray-500 border-gray-500 cursor-auto',
+      },
+      {
+        intent: 'square_white',
+        variant: 'unselected',
+        className: 'text-gray-500 opacity-100 bg-white border-gray-500 cursor-auto',
+      },
+      {
+        intent: 'rounded',
+        variant: 'unselected',
+        className: 'text-[#516FE6] opacity-100 bg-white border-[#516FE6] cursor-auto',
+      },
+      {
+        intent: 'rounded_yellow',
+        variant: 'unselected',
+        className:
+          'text-primary-color-400 opacity-100 bg-white border-primary-color-400 cursor-auto',
+      },
+      {
+        intent: 'rounded_blue',
+        variant: 'unselected',
+        className: 'text-white opacity-100 bg-[#516FE6] border-[#516FE6] cursor-auto',
+      },
+      {
+        intent: 'onBoarding',
+        variant: 'unselected',
+        className: 'text-gray-500 bg-gray-200 border-gray-200 cursor-pointer',
+      },
+      {
+        intent: 'onBoarding',
+        variant: 'selected',
+        className: 'text-white bg-main-color border-main-color cursor-pointer',
+      },
+    ],
+  },
 );
 
 type ChipVariantsType = VariantProps<typeof chipVariants>;
 
 type ChipProps = {
-    children:
-        | SecondLevelNames
-        | MBTI
-        | TripTheme
-        | BuddyTheme
-        | Gender
-        | MeetingPlace
-        | string;
-    selected?: boolean;
-    onClick?: (e: React.MouseEvent<HTMLSpanElement>) => void;
+  children: SecondLevelNames | MBTI | TripTheme | BuddyTheme | Gender | MeetingPlace | string;
+  selected?: boolean;
+  onClick?: (e: React.MouseEvent<HTMLSpanElement>) => void;
 } & ChipVariantsType &
-    React.ComponentProps<'span'>;
+  React.ComponentProps<'span'>;
 
 function Chip({
-    children,
-    intent = 'natural',
-    selected = false,
-    onClick = () => {},
-    className,
-    ...props
+  children,
+  intent = 'natural',
+  selected = false,
+  onClick = () => {},
+  className,
+  ...props
 }: ChipProps) {
-    return (
-        <span
-            className={tailwindMerge(
-                chipVariants({
-                    intent,
-                    variant: selected ? 'selected' : 'unselected',
-                }),
-                className,
-            )}
-            {...props}
-            onClick={onClick}
-        >
-            {children}
-        </span>
-    );
+  return (
+    <span
+      className={tailwindMerge(
+        chipVariants({
+          intent,
+          variant: selected ? 'selected' : 'unselected',
+        }),
+        className,
+      )}
+      {...props}
+      onClick={onClick}
+    >
+      {children}
+    </span>
+  );
 }
 
 export default Chip;
