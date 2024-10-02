@@ -3,13 +3,13 @@ import { Metadata } from 'next';
 import React from 'react';
 
 type ConditionalLayoutProps = {
-    children: React.ReactNode;
+  children: React.ReactNode;
 };
 
 export const metadata: Metadata = defaultMetaData;
 
 const ConditionalLayout: React.FC<ConditionalLayoutProps> = ({ children }) => {
-    return <>{children}</>;
+  return <>{children}</>;
 };
 
 export default ConditionalLayout;

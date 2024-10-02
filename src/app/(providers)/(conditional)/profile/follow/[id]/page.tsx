@@ -1,7 +1,7 @@
 import FollowListPage from '@/components/organisms/profile/FollowListPage';
 
 function FollowPage() {
-    return <FollowListPage />;
+  return <FollowListPage />;
 }
 
 export default FollowPage;
