@@ -6,20 +6,20 @@ export type Contract = Tables<'contract'>;
 export type PartialContract = Partial<Contract>;
 
 export type ContractWithTrips = Contract & {
-    trips: Trip;
+  trips: Trip;
 };
 
 export type ContractWithTripsWithContract = Contract & {
-    trips: TripWithContract;
+  trips: TripWithContract;
 };
 
 export type TripsAndContracts = {
-    trips: Trip[];
-    contracts: Contract[];
+  trips: Trip[];
+  contracts: Contract[];
 };
 
 export type MyTripsAndContracts = {
-    created: TripWithContract[];
-    participated: TripWithContract[];
-    bookmarked: TripWithContract[];
+  created: TripWithContract[];
+  participated: TripWithContract[];
+  bookmarked: TripWithContract[];
 };

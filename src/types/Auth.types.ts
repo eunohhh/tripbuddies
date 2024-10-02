@@ -5,10 +5,10 @@ export type Buddy = Tables<'buddies'>;
 export type PartialBuddy = Partial<Buddy>;
 
 export type LogInData = {
-    email: string;
-    password: string;
+  email: string;
+  password: string;
 };
 
 export type ErrorResponse = {
-    error: string;
+  error: string;
 };

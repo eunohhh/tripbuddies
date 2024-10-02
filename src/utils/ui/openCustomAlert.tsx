@@ -3,26 +3,24 @@ import { AlertProps, ModalContextType } from '@/types/Modal.types';
 let modalContext: ModalContextType;
 
 export function setModalContext(context: ModalContextType) {
-    modalContext = context;
+  modalContext = context;
 }
 
 export const showAlert = (
-    mode: 'success' | 'caution' | 'error',
-    description: string,
-    options: AlertProps = {},
+  mode: 'success' | 'caution' | 'error',
+  description: string,
+  options: AlertProps = {},
 ): void => {
-    if (!modalContext) {
-        console.error(
-            'Modal context is not set. Ensure ModalProvider is initialized.',
-        );
-        return;
-    }
+  if (!modalContext) {
+    console.error('Modal context is not set. Ensure ModalProvider is initialized.');
+    return;
+  }
 
-    modalContext.open({
-        mode,
-        description,
-        options,
-    });
+  modalContext.open({
+    mode,
+    description,
+    options,
+  });
 };
 
 // import CustomAlert from '@/components/organisms/common/CustomAlert';
