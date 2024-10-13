@@ -1,6 +1,7 @@
 import React from 'react';
 // import DefaultLoader from '../common/DefaultLoader';
 import Image from 'next/image';
+import { twMerge } from 'tailwind-merge';
 
 type TutoProps = {
   step: number;
@@ -58,20 +59,6 @@ const content = [
 ];
 
 const Tuto: React.FC<TutoProps> = ({ step }) => {
-  // const [isImageLoaded, setIsImageLoaded] = useState(false);
-
-  // useEffect(() => {
-  //     setIsImageLoaded(false);
-  //     const img = new Image();
-  //     img.src = content[step].src;
-  //     img.onload = () => {
-  //         setIsImageLoaded(true);
-  //     };
-  //     img.onerror = () => {
-  //         setIsImageLoaded(false);
-  //     };
-  // }, [step]);
-
   return (
     <div className="relative h-full bg-white pt-[8px]">
       {/* {!isImageLoaded && <DefaultLoader />} */}
@@ -83,15 +70,20 @@ const Tuto: React.FC<TutoProps> = ({ step }) => {
       </div>
       <div className="relative flex justify-center items-start h-[80%] xl:h-[76%]">
         <div className="relative w-[324px] h-full aspect-auto">
-          <Image
-            src={content[step].src}
-            alt={content[step].alt}
-            fill
-            priority
-            unoptimized
-            sizes="(max-width: 768px) 100%, (max-width: 1200px) 30%, 33%"
-            className="object-contain min-h-[324px] max-h-[426] w-[100%]"
-          />
+          {content.map((item, idx) => (
+            <Image
+              key={idx}
+              src={item.src}
+              alt={content[step].alt}
+              fill
+              priority
+              sizes="(max-width: 768px) 100%, (max-width: 1200px) 30%, 33%"
+              className={twMerge(
+                'object-contain min-h-[324px] max-h-[426] w-[100%] hidden',
+                step === idx ? 'block' : '',
+              )}
+            />
+          ))}
         </div>
       </div>
     </div>
