@@ -57,10 +57,10 @@ const StoryCard: React.FC<StoryCardProps> = ({
 
         <Image
           src={story.story_media}
-          alt="my-profile-background"
+          alt="story-background"
           fill
           priority
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
           className={twMerge(
             'object-cover rounded-lg',
             overlay[0].filter && overlay[0].filter.className,
@@ -74,6 +74,7 @@ const StoryCard: React.FC<StoryCardProps> = ({
           src={story.buddies.buddy_profile_pic || '/images/test.webp'}
           alt="my-profile"
           fill
+          unoptimized
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           className="rounded-full object-cover"
           onClick={() => router.push(`/profile/${story.buddies.buddy_id}`)}

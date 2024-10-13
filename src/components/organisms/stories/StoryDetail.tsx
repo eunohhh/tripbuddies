@@ -13,7 +13,6 @@ import { twMerge } from 'tailwind-merge';
 import Close from '../../../../public/svg/Close.svg';
 
 type StoryDetailProps = {
-  // nickname: string;
   id: string;
   stories: StoryWithBuddies[];
 };
@@ -160,21 +159,25 @@ const StoryDetail: React.FC<StoryDetailProps> = ({ id, stories }) => {
           ))}
         </div>
 
-        <Image
-          src={selectedStory.story_media}
-          alt="my-story-background"
-          fill
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-          priority
-          className={twMerge(
-            'object-contain',
-            storyOverlay[0].filter && storyOverlay[0].filter.className,
-          )}
-        />
+        {stories.map((story, idx) => (
+          <Image
+            key={story.story_id}
+            src={story.story_media}
+            alt="my-story-background"
+            fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            priority
+            className={twMerge(
+              'object-contain hidden',
+              storyOverlay[idx]?.filter && storyOverlay[idx].filter.className,
+              selectedIndex === idx ? 'block' : '',
+            )}
+          />
+        ))}
         <div className="absolute top-0 left-0 w-full h-full overflow-hidden">
-          {storyOverlay.map((overlay) => (
+          {storyOverlay.map((overlay, idx) => (
             <p
-              key={overlay.text}
+              key={overlay.text + idx}
               className={twMerge('absolute w-auto h-auto font-bold', overlay.textColor)}
               style={{
                 top: `${overlay.position.y}px`,
