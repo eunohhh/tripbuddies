@@ -6,7 +6,7 @@ export async function getBuddyTripStory(mode: string) {
   try {
     const data = await fetchWrapper<BuddyTripStory>(url, {
       method: 'GET',
-      cache: 'no-store',
+      // cache: 'no-store',
     });
     return data;
   } catch (error: any) {
