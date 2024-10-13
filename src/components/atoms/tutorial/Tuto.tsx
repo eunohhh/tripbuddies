@@ -88,9 +88,9 @@ const Tuto: React.FC<TutoProps> = ({ step }) => {
             alt={content[step].alt}
             fill
             priority
-            loading="eager"
+            unoptimized
             sizes="(max-width: 768px) 100%, (max-width: 1200px) 30%, 33%"
-            className="object-contain min-h-[324px] max-h-[426] w-[100%]  "
+            className="object-contain min-h-[324px] max-h-[426] w-[100%]"
           />
         </div>
       </div>

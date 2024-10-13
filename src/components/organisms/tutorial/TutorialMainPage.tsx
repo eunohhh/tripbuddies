@@ -1,4 +1,5 @@
 'use client';
+
 import Tuto from '@/components/atoms/tutorial/Tuto';
 import ProgressIndicator from '@/components/atoms/write/ProgressIndicator';
 import { setCookieAction } from '@/utils/tutorial/setCookieAction';
