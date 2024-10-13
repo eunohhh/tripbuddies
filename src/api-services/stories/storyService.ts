@@ -63,7 +63,7 @@ export async function getSpecificStory(id: string): Promise<StoryWithBuddies[]> 
   try {
     const data = await fetchWrapper<StoryWithBuddies[]>(url, {
       method: 'GET',
-      cache: 'no-store',
+      // cache: 'no-store',
     });
     return data;
   } catch (error: any) {

@@ -10,7 +10,7 @@ export async function getContract(
   try {
     const data = await fetchWrapper<TripsAndContracts>(url, {
       method: 'GET',
-      cache: 'no-store',
+      // cache: 'no-store',
     });
     return data;
   } catch (error: any) {
@@ -23,7 +23,7 @@ export async function postContract(payload: PartialContract) {
   try {
     const data = await fetchWrapper<Contract>(url, {
       method: 'POST',
-      cache: 'no-store',
+      // cache: 'no-store',
       body: JSON.stringify(payload),
     });
     return data;
