@@ -2,7 +2,6 @@
 
 import {
   deleteLogOut,
-  getLogInWithProvider,
   patchResetPassword,
   postSendingResetEmail,
 } from '@/api-services/auth/client';
@@ -70,9 +69,6 @@ export function AuthProvider({ children }: PropsWithChildren) {
       try {
         const payload = { email, password };
         const buddy = await logInMutation(payload);
-        // queryClient.invalidateQueries({
-        //     queryKey: [QUERY_KEY_BUDDY],
-        // });
 
         if (!buddy) return showAlert('caution', '알 수 없는 오류가 발생했어요');
 
@@ -136,16 +132,10 @@ export function AuthProvider({ children }: PropsWithChildren) {
   const loginWithProvider: AuthContextValue['loginWithProvider'] = useCallback(
     async (provider) => {
       try {
-        const data = await getLogInWithProvider(provider);
-        // queryClient.invalidateQueries({
-        //     queryKey: [QUERY_KEY_BUDDY],
-        // });
-
-        if (!data.url) {
-          return showAlert('caution', '알 수 없는 오류가 발생했어요');
-        }
         showAlert('success', '소셜 로그인을 진행합니다', {
-          onConfirm: () => router.replace(data.url),
+          onConfirm: () => {
+            window.location.href = `${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/provider?provider=${provider}`;
+          },
         });
       } catch (error) {
         const errorMessage = error instanceof Error ? error.message : 'Unknown error';
@@ -224,9 +214,9 @@ export function AuthProvider({ children }: PropsWithChildren) {
     setIsPending(isBuddyPending || isLogInPending || isSignUpPending || isNaverLogInPending);
   }, [isBuddyPending, isLogInPending, isSignUpPending, isNaverLogInPending]);
 
-  // useEffect(() => {
-  //     console.log('buddy ====>', buddy);
-  // }, [buddy]);
+  useEffect(() => {
+    console.log('buddy ====>', buddy);
+  }, [buddy]);
 
   useEffect(() => {
     if (error) showAlert('error', error.message);
