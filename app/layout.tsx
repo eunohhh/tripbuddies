@@ -7,7 +7,7 @@ import React, { PropsWithChildren } from 'react';
 import './globals.css';
 
 const pretendard = localFont({
-  src: '../font/PretendardVariable.woff2',
+  src: '../src/font/PretendardVariable.woff2',
   weight: '45 920',
   style: 'normal',
   display: 'swap',
