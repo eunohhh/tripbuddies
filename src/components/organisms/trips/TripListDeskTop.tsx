@@ -1,10 +1,10 @@
 'use client';
 
-import Loading from '@/app/(providers)/loading';
 import { useTripsQuery } from '@/hooks/queries';
 import { sliceArrayByLimit } from '@/utils/common/sliceArrayByLimits';
 import filterTripList from '@/utils/trips/filterTripList';
 import { showAlert } from '@/utils/ui/openCustomAlert';
+import Loading from '@app/(providers)/loading';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { RxTriangleLeft, RxTriangleRight } from 'react-icons/rx';
 import { twMerge } from 'tailwind-merge';

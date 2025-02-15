@@ -58,13 +58,12 @@ export async function POST(req: NextRequest) {
     .eq('buddy_id', userId)
     .single();
 
+  console.log('buddy =====>', buddy);
+  console.log('userError =====>', userError);
   if (userError) {
     console.error(userError);
     return NextResponse.json({ error: userError?.message }, { status: 401 });
   }
-
-  // revalidateTag('buddy');
-  // revalidatePath('/', 'layout');
 
   return NextResponse.json(buddy, { status: 200 });
 }

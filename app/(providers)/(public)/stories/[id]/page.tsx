@@ -1,8 +1,8 @@
 import { getSpecificStory } from '@/api-services/stories';
-import Loading from '@/app/loading';
 import StoryDetail from '@/components/organisms/stories/StoryDetail';
 import { QUERY_KEY_STORY } from '@/constants/query.constants';
 import { StoryWithBuddies } from '@/types/Story.types';
+import Loading from '@app/loading';
 import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query';
 import React, { Suspense } from 'react';
 

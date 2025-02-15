@@ -12,7 +12,8 @@ export default function SelectedResultRealtimeText({
   isMini?: boolean | null | 0;
 }) {
   return (
-    <div className="text-center pt-2">
+    // <div className="text-center pt-2">
+    <div className="text-center">
       <span className={twMerge('text-sm text-gray-500', isMini && 'text-xs')}>{firstLabel}</span>
       <span className={twMerge('text-md font-bold text-main-color', isMini && 'text-sm')}>
         {selectedData}
