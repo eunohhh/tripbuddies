@@ -1,7 +1,7 @@
 import { getTrip } from '@/api-services/trips';
-import Loading from '@/app/loading';
 import TripDetail from '@/components/organisms/trips/TripDetail';
 import { QUERY_KEY_TRIP } from '@/constants/query.constants';
+import Loading from '@app/loading';
 import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query';
 import React, { Suspense } from 'react';
 
