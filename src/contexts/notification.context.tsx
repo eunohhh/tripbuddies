@@ -17,7 +17,15 @@ import {
   RealtimePostgresInsertPayload,
   RealtimePostgresUpdatePayload,
 } from '@supabase/supabase-js';
-import { createContext, PropsWithChildren, useCallback, useEffect, useRef, useState } from 'react';
+import {
+  createContext,
+  PropsWithChildren,
+  useCallback,
+  useEffect,
+  useReducer,
+  useRef,
+  useState,
+} from 'react';
 import { useModal } from './modal.context';
 
 type NotificationProviderProps = {
@@ -34,6 +42,126 @@ const initialValue: NotificationContextType = {
   hasNotification: false,
 };
 
+type ActionType = 'like' | 'follow' | 'bookmark' | 'contract';
+
+type Action = {
+  type: {
+    changeType: 'new' | 'old';
+    ActionType: ActionType;
+  };
+  payload:
+    | RealtimePostgresInsertPayload<Notification>
+    | RealtimePostgresUpdatePayload<Notification>
+    | RealtimePostgresDeletePayload<Notification>;
+};
+
+const reducer = (notifications: ClassifiedNotification, action: Action) => {
+  switch (action.type.ActionType) {
+    case 'like':
+      if (
+        !notifications.storyLikes.some(
+          (notification) =>
+            notification.notification_id ===
+            (action.payload[action.type.changeType] as Notification).notification_id,
+        )
+      ) {
+        return {
+          ...notifications,
+          storyLikes: [
+            ...notifications.storyLikes,
+            action.payload[action.type.changeType] as Notification,
+          ],
+        };
+      } else {
+        return {
+          ...notifications,
+          storyLikes: notifications.storyLikes.filter(
+            (item) =>
+              item.notification_id !==
+              (action.payload[action.type.changeType] as Notification).notification_id,
+          ),
+        };
+      }
+    case 'follow':
+      if (
+        notifications.follows.some(
+          (notification) =>
+            notification.notification_id ===
+            (action.payload[action.type.changeType] as Notification).notification_id,
+        )
+      ) {
+        return {
+          ...notifications,
+          follows: notifications.follows.filter(
+            (item) =>
+              item.notification_id !==
+              (action.payload[action.type.changeType] as Notification).notification_id,
+          ),
+        };
+      } else {
+        return {
+          ...notifications,
+          follows: [
+            ...notifications.follows,
+            action.payload[action.type.changeType] as Notification,
+          ],
+        };
+      }
+    case 'bookmark':
+      if (
+        notifications.bookmarks.some(
+          (notification) =>
+            notification.notification_id ===
+            (action.payload[action.type.changeType] as Notification).notification_id,
+        )
+      ) {
+        return {
+          ...notifications,
+          bookmarks: notifications.bookmarks.filter(
+            (item) =>
+              item.notification_id !==
+              (action.payload[action.type.changeType] as Notification).notification_id,
+          ),
+        };
+      } else {
+        return {
+          ...notifications,
+          bookmarks: [
+            ...notifications.bookmarks,
+            action.payload[action.type.changeType] as Notification,
+          ],
+        };
+      }
+    case 'contract':
+      if (
+        notifications.contracts.some(
+          (notification) =>
+            notification.notification_id ===
+            (action.payload[action.type.changeType] as Notification).notification_id,
+        )
+      ) {
+        return {
+          ...notifications,
+          contracts: notifications.contracts.filter(
+            (item) =>
+              item.notification_id !==
+              (action.payload[action.type.changeType] as Notification).notification_id,
+          ),
+        };
+      } else {
+        return {
+          ...notifications,
+          contracts: [
+            ...notifications.contracts,
+            action.payload[action.type.changeType] as Notification,
+          ],
+        };
+      }
+    default:
+      return notifications;
+  }
+};
+
 export const NotificationContext = createContext<NotificationContextType>(initialValue);
 
 export const NotificationProvider = ({
@@ -41,49 +169,28 @@ export const NotificationProvider = ({
   initialNotifications,
 }: PropsWithChildren<NotificationProviderProps>) => {
   const { buddy } = useAuth();
+  const modal = useModal();
 
-  const { data, isPending: isPendingNotification, error } = useNotificationQuery();
+  const {
+    data: notificationsFromQuery,
+    isPending: isPendingNotification,
+    error,
+  } = useNotificationQuery();
 
-  const filteredNotifications = data?.filter(
-    (notification) => notification.notification_receiver === buddy?.buddy_id,
-  );
-  const initial = filteredNotifications || initialNotifications;
+  const initial = notificationsFromQuery || initialNotifications;
 
-  const [notifications, setNotifications] = useState<ClassifiedNotification>({
-    storyLikes:
-      initial?.filter(
-        (notification) =>
-          notification.notification_type === 'like' &&
-          notification.notification_isRead === false &&
-          notification.notification_sender !== buddy?.buddy_id,
-      ) || [],
-    follows:
-      initial?.filter(
-        (notification) =>
-          notification.notification_type === 'follow' &&
-          notification.notification_isRead === false &&
-          notification.notification_sender !== buddy?.buddy_id,
-      ) || [],
+  const [notifications, dispatch] = useReducer(reducer, {
+    storyLikes: initial?.filter((notification) => notification.notification_type === 'like') || [],
+    follows: initial?.filter((notification) => notification.notification_type === 'follow') || [],
     bookmarks:
-      initial?.filter(
-        (notification) =>
-          notification.notification_type === 'bookmark' &&
-          notification.notification_isRead === false &&
-          notification.notification_sender !== buddy?.buddy_id,
-      ) || [],
+      initial?.filter((notification) => notification.notification_type === 'bookmark') || [],
     contracts:
-      initial?.filter(
-        (notification) =>
-          notification.notification_type === 'contract' &&
-          notification.notification_isRead === false &&
-          notification.notification_sender !== buddy?.buddy_id,
-      ) || [],
+      initial?.filter((notification) => notification.notification_type === 'contract') || [],
   });
 
-  const modal = useModal();
+  const [hasNotification, setHasNotification] = useState(false);
   const prevNotificationsRef = useRef(notifications);
   const hasFetchedOnceRef = useRef(false);
-  const [hasNotification, setHasNotification] = useState(false);
 
   const queries = useContractQueries(
     notifications.contracts
@@ -91,279 +198,110 @@ export const NotificationProvider = ({
       .filter((id): id is string => id !== null),
   );
 
-  const handleRealTimePostsInsertUpdate = useCallback(
-    (
-      payload:
-        | RealtimePostgresInsertPayload<Notification>
-        | RealtimePostgresUpdatePayload<Notification>,
-    ) => {
+  const handleRealTimeNotificationInsert = useCallback(
+    (payload: RealtimePostgresInsertPayload<Notification>) => {
       if (
         payload.new.notification_receiver === buddy?.buddy_id &&
         payload.new.notification_sender !== buddy?.buddy_id
       ) {
-        if (payload.new.notification_type === 'like') {
-          setNotifications((prev) => {
-            // notification_isRead 값이 false인 경우만 추가
-            if (
-              payload.new.notification_isRead === false &&
-              !prev.storyLikes.some(
-                (notification) => notification.notification_id === payload.new.notification_id,
-              )
-            ) {
-              return {
-                ...prev,
-                storyLikes: [...prev.storyLikes, payload.new],
-              };
-            } else {
-              return {
-                ...prev,
-                storyLikes: prev.storyLikes.filter(
-                  (item) => item.notification_id !== payload.new.notification_id,
-                ),
-              };
-            }
-          });
-        }
-        if (payload.new.notification_type === 'follow') {
-          setNotifications((prev) => {
-            if (
-              payload.new.notification_isRead === false &&
-              !prev.follows.some(
-                (notification) => notification.notification_id === payload.new.notification_id,
-              )
-            ) {
-              return {
-                ...prev,
-                follows: [...prev.follows, payload.new],
-              };
-            } else {
-              return {
-                ...prev,
-                follows: prev.follows.filter(
-                  (item) => item.notification_id !== payload.new.notification_id,
-                ),
-              };
-            }
-          });
-        }
-        if (payload.new.notification_type === 'bookmark') {
-          setNotifications((prev) => {
-            if (
-              payload.new.notification_isRead === false &&
-              !prev.bookmarks.some(
-                (notification) => notification.notification_id === payload.new.notification_id,
-              )
-            ) {
-              return {
-                ...prev,
-                bookmarks: [...prev.bookmarks, payload.new],
-              };
-            } else {
-              return {
-                ...prev,
-                bookmarks: prev.bookmarks.filter(
-                  (item) => item.notification_id !== payload.new.notification_id,
-                ),
-              };
-            }
-          });
-        }
-        if (payload.new.notification_type === 'contract') {
-          setNotifications((prev) => {
-            if (
-              payload.new.notification_isRead === false &&
-              !prev.contracts.some(
-                (notification) => notification.notification_id === payload.new.notification_id,
-              )
-            ) {
-              return {
-                ...prev,
-                contracts: [...prev.contracts, payload.new],
-              };
-            } else {
-              return {
-                ...prev,
-                contracts: prev.contracts.filter(
-                  (item) => item.notification_id !== payload.new.notification_id,
-                ),
-              };
-            }
-          });
-        }
+        dispatch({
+          type: {
+            changeType: 'new',
+            ActionType: payload.new.notification_type as ActionType,
+          },
+          payload,
+        });
       }
     },
     [buddy],
   );
 
-  const handleRealTimePostsDelete = useCallback(
-    (payload: RealtimePostgresDeletePayload<Notification>) => {
-      const notification = notifications.storyLikes.find(
-        (notification) => notification.notification_id === payload.old.notification_id,
-      );
-
-      const followNotification = notifications.follows.find(
-        (notification) => notification.notification_id === payload.old.notification_id,
-      );
-      const bookmarkNotification = notifications.bookmarks.find(
-        (notification) => notification.notification_id === payload.old.notification_id,
-      );
-      const contractNotification = notifications.contracts.find(
-        (notification) => notification.notification_id === payload.old.notification_id,
-      );
-
-      if (notification) {
-        setNotifications((prev) => {
-          if (
-            payload.old.notification_isRead === false &&
-            !prev.storyLikes.some(
-              (notification) => notification.notification_id === payload.old.notification_id,
-            )
-          ) {
-            return {
-              ...prev,
-              storyLikes: prev.storyLikes.filter(
-                (item) => item.notification_id !== payload.old.notification_id,
-              ),
-            };
-          } else {
-            return prev;
-          }
-        });
-      }
-      if (followNotification) {
-        setNotifications((prev) => {
-          if (
-            payload.old.notification_isRead === false &&
-            !prev.follows.some(
-              (notification) => notification.notification_id === payload.old.notification_id,
-            )
-          ) {
-            return {
-              ...prev,
-              follows: prev.follows.filter(
-                (item) => item.notification_id !== payload.old.notification_id,
-              ),
-            };
-          } else {
-            return prev;
-          }
-        });
-      }
-      if (bookmarkNotification) {
-        setNotifications((prev) => {
-          if (
-            payload.old.notification_isRead === false &&
-            !prev.bookmarks.some(
-              (notification) => notification.notification_id === payload.old.notification_id,
-            )
-          ) {
-            return {
-              ...prev,
-              bookmarks: prev.bookmarks.filter(
-                (item) => item.notification_id !== payload.old.notification_id,
-              ),
-            };
-          } else {
-            return prev;
-          }
-        });
-      }
-      if (contractNotification) {
-        setNotifications((prev) => {
-          if (
-            payload.old.notification_isRead === false &&
-            !prev.contracts.some(
-              (notification) => notification.notification_id === payload.old.notification_id,
-            )
-          ) {
-            return {
-              ...prev,
-              contracts: prev.contracts.filter(
-                (item) => item.notification_id !== payload.old.notification_id,
-              ),
-            };
-          } else {
-            return prev;
-          }
+  const handleRealTimeNotificationUpdate = useCallback(
+    (payload: RealtimePostgresUpdatePayload<Notification>) => {
+      if (
+        payload.new.notification_receiver === buddy?.buddy_id &&
+        payload.new.notification_sender !== buddy?.buddy_id
+      ) {
+        dispatch({
+          type: {
+            changeType: 'new',
+            ActionType: payload.new.notification_type as ActionType,
+          },
+          payload,
         });
       }
     },
-    [notifications],
+    [buddy],
+  );
+  const handleRealTimeNotificationDelete = useCallback(
+    (payload: RealtimePostgresDeletePayload<Notification>) => {
+      if (payload.old.notification_receiver === buddy?.buddy_id) {
+        dispatch({
+          type: {
+            changeType: 'old',
+            ActionType: payload.old.notification_type as ActionType,
+          },
+          payload,
+        });
+      }
+    },
+    [buddy],
   );
 
   useEffect(() => {
     const allChanges = supabase
       .channel('schema-db-changes')
-      .on(
+      .on<Notification>(
         'postgres_changes',
         {
           event: 'INSERT',
           schema: 'public',
           table: 'notifications',
         },
-        handleRealTimePostsInsertUpdate,
+        (payload) => {
+          if (!payload.new.notification_isRead) {
+            handleRealTimeNotificationInsert(payload);
+          }
+        },
       )
-      .on(
+      .on<Notification>(
         'postgres_changes',
         {
           event: 'DELETE',
           schema: 'public',
           table: 'notifications',
-          // filter: `notification_isRead=eq.false`,
         },
-        handleRealTimePostsDelete,
+        (payload) => {
+          if (!payload.old.notification_isRead) {
+            handleRealTimeNotificationDelete(payload);
+          }
+        },
       )
-      .on(
+      .on<Notification>(
         'postgres_changes',
         {
           event: 'UPDATE',
           schema: 'public',
           table: 'notifications',
+          // filter: `notification_isRead=eq.false`,
         },
-        handleRealTimePostsInsertUpdate,
+        (payload) => {
+          if (!payload.new.notification_isRead) {
+            handleRealTimeNotificationUpdate(payload);
+          }
+        },
       )
       .subscribe();
 
     return () => {
       supabase.removeChannel(allChanges);
     };
-  }, [buddy, handleRealTimePostsDelete, handleRealTimePostsInsertUpdate]);
-
-  useEffect(() => {
-    const filteredNotifications = data?.filter(
-      (notification) => notification.notification_receiver === buddy?.buddy_id,
-    );
-    setNotifications({
-      storyLikes:
-        filteredNotifications?.filter(
-          (notification) =>
-            notification.notification_type === 'like' &&
-            notification.notification_isRead === false &&
-            notification.notification_sender !== buddy?.buddy_id,
-        ) || [],
-      follows:
-        filteredNotifications?.filter(
-          (notification) =>
-            notification.notification_type === 'follow' &&
-            notification.notification_isRead === false &&
-            notification.notification_sender !== buddy?.buddy_id,
-        ) || [],
-      bookmarks:
-        filteredNotifications?.filter(
-          (notification) =>
-            notification.notification_type === 'bookmark' &&
-            notification.notification_isRead === false &&
-            notification.notification_sender !== buddy?.buddy_id,
-        ) || [],
-      contracts:
-        filteredNotifications?.filter(
-          (notification) =>
-            notification.notification_type === 'contract' &&
-            notification.notification_isRead === false &&
-            notification.notification_sender !== buddy?.buddy_id,
-        ) || [],
-    });
-  }, [data, buddy]);
+  }, [
+    buddy,
+    handleRealTimeNotificationDelete,
+    handleRealTimeNotificationInsert,
+    handleRealTimeNotificationUpdate,
+  ]);
 
   const isPending = queries.some((query) => query.isPending);
 
