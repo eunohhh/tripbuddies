@@ -12,6 +12,11 @@ export async function GET() {
   } = await supabase.auth.getUser();
 
   if (userError) {
+    if (userError.message === 'Auth session missing!') {
+      return new Response(JSON.stringify({ message: 'must be logged in to get notifications' }), {
+        status: 200,
+      });
+    }
     return new Response(userError.message, { status: 500 });
   }
 

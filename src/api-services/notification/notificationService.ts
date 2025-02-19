@@ -4,12 +4,16 @@ import fetchWrapper from '@/utils/api/fetchWrapper';
 export async function getNotifications(): Promise<Notification[]> {
   const url = `/api/notification`;
   try {
-    const data = await fetchWrapper<Notification[]>(url, {
+    const data = await fetchWrapper<Notification[] | { message: string }>(url, {
       method: 'GET',
       cache: 'no-store',
     });
+    if ('message' in data) {
+      return [];
+    }
     return data;
   } catch (error: any) {
+    console.error('error ====>', error);
     throw error;
   }
 }
