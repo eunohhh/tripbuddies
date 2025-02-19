@@ -2,22 +2,33 @@
 
 import BuddyProfile from '@/components/molecules/profile/BuddyProfile';
 import { useModal } from '@/contexts/modal.context';
-import { useContractMutation, useContractQueries, useNotificationMutation } from '@/hooks/queries';
-import { Buddy } from '@/types/Auth.types';
+import {
+  useContractMutation,
+  useContractQueries,
+  useNotificationMutation,
+  useSpecificBuddyQuery,
+} from '@/hooks/queries';
 import { Notification } from '@/types/Notification.types';
 import { showAlert } from '@/utils/ui/openCustomAlert';
 import React, { useEffect, useState } from 'react';
 
 type ContractModalProps = {
-  buddies: Buddy[];
+  unreadContracts: Notification[];
   mode?: 'default' | 'notification';
   notifications: Notification[];
   queries: ReturnType<typeof useContractQueries>;
 };
 
-const ContractModal: React.FC<ContractModalProps> = ({ buddies, mode, queries, notifications }) => {
+const ContractModal: React.FC<ContractModalProps> = ({
+  unreadContracts,
+  mode,
+  queries,
+  notifications,
+}) => {
   const [index, setIndex] = useState(0);
   const modal = useModal();
+
+  const { data: specificBuddy } = useSpecificBuddyQuery(unreadContracts[index].notification_sender);
 
   // console.log('queries ====>', queries);
 
@@ -87,6 +98,8 @@ const ContractModal: React.FC<ContractModalProps> = ({ buddies, mode, queries, n
     }
   }, [index, notifications, modal]);
 
+  if (!specificBuddy) return null;
+
   return (
     <div className="bg-black/60 fixed top-0 left-0 w-full h-full flex justify-center items-center z-[9999]">
       <div className="flex flex-col justify-center items-center w-full gap-2">
@@ -101,7 +114,7 @@ const ContractModal: React.FC<ContractModalProps> = ({ buddies, mode, queries, n
           <div className="bg-white w-full min-h-[250px] max-h-[250px] xl:min-h-[300px] xl:max-h-[300px] py-2 rounded-lg flex flex-col justify-center items-center gap-3 transition-all duration-300">
             <div className="flex flex-col items-center gap-2 w-full">
               <BuddyProfile
-                clickedBuddy={buddies[index]}
+                clickedBuddy={specificBuddy}
                 loading={false}
                 mode={mode}
                 className="xl:mt-0"
