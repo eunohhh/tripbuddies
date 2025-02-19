@@ -21,7 +21,6 @@ import {
   useCallback,
   useEffect,
   useReducer,
-  useRef,
   useState,
 } from 'react';
 import { useModal } from './modal.context';
@@ -187,8 +186,6 @@ export const NotificationProvider = ({
   });
 
   const [isUnreadNotification, setIsUnreadNotification] = useState(false);
-  const prevNotificationsRef = useRef(notifications);
-  const hasFetchedOnceRef = useRef(false);
 
   const queries = useContractQueries(
     notifications.contracts
@@ -245,7 +242,7 @@ export const NotificationProvider = ({
   );
 
   useEffect(() => {
-    const allChanges = supabase
+    const notificationTableChanges = supabase
       .channel('schema-db-changes')
       .on<Notification>(
         'postgres_changes',
@@ -290,7 +287,7 @@ export const NotificationProvider = ({
       .subscribe();
 
     return () => {
-      supabase.removeChannel(allChanges);
+      supabase.removeChannel(notificationTableChanges);
     };
   }, [
     buddy,
