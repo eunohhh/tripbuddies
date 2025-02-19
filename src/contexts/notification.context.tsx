@@ -3,13 +3,11 @@
 import ContractModal from '@/components/organisms/contract/ContractModal';
 import { useAuth } from '@/hooks';
 import { useContractQueries, useNotificationQuery } from '@/hooks/queries';
-import { Buddy } from '@/types/Auth.types';
 import {
   ClassifiedNotification,
   Notification,
   NotificationContextType,
 } from '@/types/Notification.types';
-import fetchWrapper from '@/utils/api/fetchWrapper';
 import supabase from '@/utils/supabase/client';
 import { showAlert } from '@/utils/ui/openCustomAlert';
 import {
@@ -188,7 +186,7 @@ export const NotificationProvider = ({
       initial?.filter((notification) => notification.notification_type === 'contract') || [],
   });
 
-  const [hasNotification, setHasNotification] = useState(false);
+  const [isUnreadNotification, setIsUnreadNotification] = useState(false);
   const prevNotificationsRef = useRef(notifications);
   const hasFetchedOnceRef = useRef(false);
 
@@ -235,17 +233,15 @@ export const NotificationProvider = ({
   );
   const handleRealTimeNotificationDelete = useCallback(
     (payload: RealtimePostgresDeletePayload<Notification>) => {
-      if (payload.old.notification_receiver === buddy?.buddy_id) {
-        dispatch({
-          type: {
-            changeType: 'old',
-            ActionType: payload.old.notification_type as ActionType,
-          },
-          payload,
-        });
-      }
+      dispatch({
+        type: {
+          changeType: 'old',
+          ActionType: payload.old.notification_type as ActionType,
+        },
+        payload,
+      });
     },
-    [buddy],
+    [],
   );
 
   useEffect(() => {
@@ -309,77 +305,36 @@ export const NotificationProvider = ({
     if (isPending) return;
     if (queries.length === 0) return;
 
-    const prevNotifications = prevNotificationsRef.current;
-    async function fetchSpecificBuddy() {
-      const notIsReadContracts = notifications.contracts.filter(
-        (notification) => notification.notification_isRead === false,
-      );
-      const promises = notIsReadContracts.map(async (notification) => {
-        const url = `/api/buddyProfile/buddy?id=${notification.notification_sender}`;
-        const promise = fetchWrapper<Buddy>(url, { method: 'GET' });
-        return promise;
-      });
-      const data = await Promise.all(promises);
-      return data;
-    }
+    const unreadContracts = notifications.contracts.filter(
+      (notification) => notification.notification_isRead === false,
+    );
 
-    // 최초 실행 또는 notifications가 변경된 경우에만 실행
-    if (
-      !hasFetchedOnceRef.current ||
-      !prevNotifications ||
-      prevNotifications.contracts.length !== notifications.contracts.length ||
-      JSON.stringify(prevNotifications.contracts) !== JSON.stringify(notifications.contracts)
-    ) {
-      prevNotificationsRef.current = notifications;
-      hasFetchedOnceRef.current = true; // 최초 실행 여부를 기록
+    if (unreadContracts.length <= 0) return;
 
-      if (!modal) return;
-
-      fetchSpecificBuddy()
-        .then((data) => {
-          if (data.length > 0) {
-            showAlert('caution', `새로운 참여 요청이 ${data.length}건 있습니다.`, {
-              onConfirm: () => {
-                modal.openModal({
-                  component: () => (
-                    <ContractModal
-                      queries={queries}
-                      notifications={notifications.contracts}
-                      buddies={data}
-                      mode="notification"
-                    />
-                  ),
-                });
-              },
-            });
-          }
-        })
-        .catch((error) => {
-          console.error('error ====>', error);
+    showAlert('caution', `새로운 참여 요청이 ${unreadContracts.length}건 있습니다.`, {
+      onConfirm: () => {
+        modal.openModal({
+          component: () => (
+            <ContractModal
+              queries={queries}
+              notifications={unreadContracts}
+              unreadContracts={unreadContracts}
+              mode="notification"
+            />
+          ),
         });
-    }
+      },
+    });
   }, [modal, queries, notifications, isPending]);
 
   useEffect(() => {
     if (!buddy) return;
-    const hasUnreadNotifications =
-      (notifications.storyLikes.length > 0 &&
-        notifications.storyLikes.some(
-          (notification) => notification.notification_sender !== buddy?.buddy_id,
-        )) ||
-      (notifications.follows.length > 0 &&
-        notifications.follows.some(
-          (notification) => notification.notification_sender !== buddy?.buddy_id,
-        )) ||
-      (notifications.bookmarks.length > 0 &&
-        notifications.bookmarks.some(
-          (notification) => notification.notification_sender !== buddy?.buddy_id,
-        )) ||
-      (notifications.contracts.length > 0 &&
-        notifications.contracts.some(
-          (notification) => notification.notification_sender !== buddy?.buddy_id,
-        ));
-    setHasNotification(hasUnreadNotifications);
+
+    const isUnreadNotification = Object.values(notifications as ClassifiedNotification)
+      .flatMap((notification) => notification)
+      .some((notification) => notification.notification_sender !== buddy.buddy_id);
+
+    setIsUnreadNotification(isUnreadNotification);
   }, [notifications, buddy]);
 
   useEffect(() => {
@@ -394,7 +349,7 @@ export const NotificationProvider = ({
   }, [error]);
 
   return (
-    <NotificationContext.Provider value={{ notifications, hasNotification }}>
+    <NotificationContext.Provider value={{ notifications, hasNotification: isUnreadNotification }}>
       {children}
     </NotificationContext.Provider>
   );
