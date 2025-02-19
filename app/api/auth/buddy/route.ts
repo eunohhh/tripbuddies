@@ -58,8 +58,8 @@ export async function POST(req: NextRequest) {
     .eq('buddy_id', userId)
     .single();
 
-  console.log('buddy =====>', buddy);
-  console.log('userError =====>', userError);
+  // console.log('buddy =====>', buddy);
+  // console.log('userError =====>', userError);
   if (userError) {
     console.error(userError);
     return NextResponse.json({ error: userError?.message }, { status: 401 });
