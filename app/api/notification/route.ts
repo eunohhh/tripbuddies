@@ -3,31 +3,15 @@ import { createClient } from '@/utils/supabase/server';
 import { PostgrestError } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
 
-export async function GET() {
+export async function GET(request: NextRequest) {
   const supabase = createClient();
+  const buddyId = request.nextUrl.searchParams.get('buddyId');
 
-  const {
-    data: { user },
-    error: userError,
-  } = await supabase.auth.getUser();
-
-  if (userError) {
-    if (userError.message === 'Auth session missing!') {
-      return new Response(JSON.stringify({ message: 'must be logged in to get notifications' }), {
-        status: 200,
-      });
-    }
-    return new Response(userError.message, { status: 500 });
-  }
-
-  if (!user) {
-    return new Response('User not found', { status: 404 });
-  }
-
-  const {
-    data: { buddy },
-    error: buddyError,
-  } = await supabase.from('buddies').select('*').eq('buddy_email', user.email).single();
+  const { data: buddy, error: buddyError } = await supabase
+    .from('buddies')
+    .select('*')
+    .eq('buddy_id', buddyId)
+    .single();
 
   if (buddyError) {
     return new Response(buddyError.message, { status: 500 });
@@ -47,6 +31,8 @@ export async function GET() {
     .eq('notification_receiver', buddy.buddy_id)
     .neq('notification_sender', buddy.buddy_id)
     .order('notification_created_at', { ascending: false });
+
+  // console.log('notifications from route ====>', notifications);
 
   if (error) {
     return new Response(error.message, { status: 500 });

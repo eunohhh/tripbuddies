@@ -1,8 +1,9 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 'use client';
 
 import ContractModal from '@/components/organisms/contract/ContractModal';
 import { useAuth } from '@/hooks';
-import { useContractQueries, useNotificationQuery } from '@/hooks/queries';
+import { useNotificationQuery } from '@/hooks/queries';
 import {
   ClassifiedNotification,
   Notification,
@@ -20,6 +21,7 @@ import {
   PropsWithChildren,
   useCallback,
   useEffect,
+  useMemo,
   useReducer,
   useState,
 } from 'react';
@@ -172,7 +174,7 @@ export const NotificationProvider = ({
     data: notificationsFromQuery,
     isPending: isPendingNotification,
     error,
-  } = useNotificationQuery();
+  } = useNotificationQuery({ buddyId: buddy?.buddy_id ?? '' });
 
   const initial = notificationsFromQuery || initialNotifications;
 
@@ -186,12 +188,6 @@ export const NotificationProvider = ({
   });
 
   const [isUnreadNotification, setIsUnreadNotification] = useState(false);
-
-  const queries = useContractQueries(
-    notifications.contracts
-      .map((notification) => notification.notification_origin_id)
-      .filter((id): id is string => id !== null),
-  );
 
   const handleRealTimeNotificationInsert = useCallback(
     (payload: RealtimePostgresInsertPayload<Notification>) => {
@@ -296,16 +292,14 @@ export const NotificationProvider = ({
     handleRealTimeNotificationUpdate,
   ]);
 
-  const isPending = queries.some((query) => query.isPending);
+  const unreadContracts = useMemo(
+    () =>
+      notifications.contracts.filter((notification) => notification.notification_isRead === false),
+    [notifications],
+  );
 
   useEffect(() => {
-    if (isPending) return;
-    if (queries.length === 0) return;
-
-    const unreadContracts = notifications.contracts.filter(
-      (notification) => notification.notification_isRead === false,
-    );
-
+    if (!isUnreadNotification) return;
     if (unreadContracts.length <= 0) return;
 
     showAlert('caution', `새로운 참여 요청이 ${unreadContracts.length}건 있습니다.`, {
@@ -313,8 +307,7 @@ export const NotificationProvider = ({
         modal.openModal({
           component: () => (
             <ContractModal
-              queries={queries}
-              notifications={unreadContracts}
+              notifications={notifications.contracts}
               unreadContracts={unreadContracts}
               mode="notification"
             />
@@ -322,7 +315,7 @@ export const NotificationProvider = ({
         });
       },
     });
-  }, [modal, queries, notifications, isPending]);
+  }, [isUnreadNotification, unreadContracts]);
 
   useEffect(() => {
     if (!buddy) return;

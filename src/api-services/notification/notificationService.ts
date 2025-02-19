@@ -1,8 +1,8 @@
 import { Notification, PartialNotification } from '@/types/Notification.types';
 import fetchWrapper from '@/utils/api/fetchWrapper';
 
-export async function getNotifications(): Promise<Notification[]> {
-  const url = `/api/notification`;
+export async function getNotifications({ buddyId }: { buddyId: string }): Promise<Notification[]> {
+  const url = `/api/notification?buddyId=${buddyId}`;
   try {
     const data = await fetchWrapper<Notification[] | { message: string }>(url, {
       method: 'GET',

@@ -10,27 +10,26 @@ import {
 } from '@/hooks/queries';
 import { Notification } from '@/types/Notification.types';
 import { showAlert } from '@/utils/ui/openCustomAlert';
+import Loading from '@app/loading';
 import React, { useEffect, useState } from 'react';
 
 type ContractModalProps = {
   unreadContracts: Notification[];
   mode?: 'default' | 'notification';
   notifications: Notification[];
-  queries: ReturnType<typeof useContractQueries>;
 };
 
-const ContractModal: React.FC<ContractModalProps> = ({
-  unreadContracts,
-  mode,
-  queries,
-  notifications,
-}) => {
+const ContractModal: React.FC<ContractModalProps> = ({ unreadContracts, mode, notifications }) => {
   const [index, setIndex] = useState(0);
   const modal = useModal();
 
   const { data: specificBuddy } = useSpecificBuddyQuery(unreadContracts[index].notification_sender);
 
-  // console.log('queries ====>', queries);
+  const tripIds = notifications
+    .map((notification) => notification.notification_origin_id)
+    .filter((id): id is string => id !== null);
+
+  const queries = useContractQueries(tripIds);
 
   const { mutate: mutateNotification, error: notificationError } = useNotificationMutation();
   const { mutate: mutateContract, error: contractError } = useContractMutation();
@@ -48,20 +47,23 @@ const ContractModal: React.FC<ContractModalProps> = ({
   const handleOk = () => {
     // 컨트랙트 isPending 을 false로 변경
     // 노티피케이션 isRead 를 true로 변경
-
     try {
+      // console.log('queries[index].data ====>', queries[index].data);
+
       const currentContracts = queries[index].data?.contracts.filter(
         (contract) =>
           contract.contract_trip_id === notifications[index].notification_origin_id &&
           contract.contract_isPending,
       );
 
+      // console.log('currentContracts ====>', currentContracts);
+
       currentContracts?.sort(
         (a, b) =>
           new Date(b.contract_created_at).getTime() - new Date(a.contract_created_at).getTime(),
       );
 
-      if (currentContracts) {
+      if (currentContracts && currentContracts.length > 0) {
         currentContracts[index].contract_isPending = false;
         currentContracts[index].contract_validate_date = new Date().toISOString();
         mutateContract(currentContracts[index]);
@@ -71,6 +73,7 @@ const ContractModal: React.FC<ContractModalProps> = ({
       // console.log('newNotification ====>', newNotification);
 
       mutateNotification(newNotification);
+      // console.log('index ====>', index);
       if (index < notifications.length - 1) setIndex((prev) => prev + 1);
       if (index === notifications.length - 1) modal.closeModal();
     } catch (error: any) {
@@ -99,6 +102,7 @@ const ContractModal: React.FC<ContractModalProps> = ({
   }, [index, notifications, modal]);
 
   if (!specificBuddy) return null;
+  if (queries[index].isPending) return <Loading />;
 
   return (
     <div className="bg-black/60 fixed top-0 left-0 w-full h-full flex justify-center items-center z-[9999]">
