@@ -33,7 +33,7 @@ const ProvidersLayout: React.FC<PropsWithChildren> = async ({ children }) => {
   });
   await queryClient.prefetchQuery({
     queryKey: [QUERY_KEY_NOTIFICATION],
-    queryFn: () => getNotifications(),
+    queryFn: () => getNotifications({ buddyId: userId ?? '' }),
   });
   const dehydratedState = dehydrate(queryClient);
 

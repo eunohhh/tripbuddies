@@ -3,9 +3,10 @@ import { QUERY_KEY_NOTIFICATION } from '@/constants/query.constants';
 import { Notification } from '@/types/Notification.types';
 import { useQuery } from '@tanstack/react-query';
 
-export function useNotificationQuery() {
+export function useNotificationQuery({ buddyId }: { buddyId: string }) {
   return useQuery<Notification[], Error>({
     queryKey: [QUERY_KEY_NOTIFICATION],
-    queryFn: getNotifications,
+    queryFn: () => getNotifications({ buddyId }),
+    enabled: !!buddyId,
   });
 }

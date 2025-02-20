@@ -53,18 +53,24 @@ export async function POST(req: NextRequest) {
       }
     }
 
-    // 현재 여정의 contract가 생성된 수를 확인
+    // 현재 여정의 승인된 contract 수만 확인하도록 수정
     const { count: contractCount, error: contractCountError } = await supabase
       .from('contract')
       .select('*', { count: 'exact' })
-      .eq('contract_trip_id', payload.contract_trip_id);
+      .eq('contract_trip_id', payload.contract_trip_id)
+      .eq('contract_isPending', false); // 승인된 계약만 카운트
 
     if (contractCountError) {
       console.error('contract 수 확인 중 오류 발생:', contractCountError);
       return NextResponse.json({ error: 'contract 수 확인 중 오류 발생' }, { status: 500 });
     }
 
-    if (contractCount !== null && contractCount >= trip.trip_max_buddies_counts) {
+    // 승인된 계약 수가 최대 인원보다 크거나 같은 경우에만 차단
+    if (
+      !payload.contract_isPending &&
+      contractCount !== null &&
+      contractCount >= trip.trip_max_buddies_counts
+    ) {
       return NextResponse.json({ error: '해당 여정은 인원이 가득 찼습니다.' }, { status: 400 });
     }
 
@@ -73,6 +79,8 @@ export async function POST(req: NextRequest) {
     const isValidate = today <= tripEndDate;
 
     let contractData: PartialContract;
+
+    // 아래 조건이 문제인듯...
     if (payload.contract_isPending) {
       contractData = {
         contract_trip_id: payload.contract_trip_id,
