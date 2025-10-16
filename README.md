@@ -7,7 +7,7 @@
 ## 🌈 프로젝트 개요
 
 - **프로젝트명** : TripBuddies (트립버디즈)
-- **배포주소** : [https://www.tripbuddies.club/](https://www.tripbuddies.club/)
+- **배포주소** : [https://tripbuddies-drab.vercel.app](https://tripbuddies-drab.vercel.app)
 - **서비스의 한줄 소개** : 여행 친구가 필요하신가요? 트립 버디와 함께라면 국내는 물론, 해외 여행지에서도 나에게 꼭 맞는 여행 친구를 구할 수 있습니다!
 - **프로젝트 기간** : 2024.07.16 ~ 2024.08.21
 - **팀원** : **6명** (FE 개발자 5명 + UI/UX 디자이너 1명)
