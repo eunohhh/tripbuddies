@@ -1,16 +1,17 @@
-'use client';
+"use client";
 
-import TapMenuButton from '@/components/atoms/common/TapMenuButton';
-import { useAuth } from '@/hooks';
-import { usePathname } from 'next/navigation';
-import React from 'react';
-import { twMerge } from 'tailwind-merge';
+import { usePathname } from "next/navigation";
+import React from "react";
+import { twMerge } from "tailwind-merge";
+import TapMenuButton from "@/components/atoms/common/TapMenuButton";
+import { useAuth } from "@/hooks";
+
 // import { useNotification } from '@/hooks/notification/useNotification';
 
 const TapMenu: React.FC = () => {
   const { buddy } = useAuth();
   const pathname = usePathname();
-  const buddy_id = buddy ? buddy.buddy_id : '';
+  const buddy_id = buddy ? buddy.buddy_id : "";
 
   // const { notifications } = useNotification();
 
@@ -19,26 +20,30 @@ const TapMenu: React.FC = () => {
   // }, [notifications]);
 
   const hidden =
-    pathname.startsWith('/chat/') ||
-    pathname === '/login' ||
-    pathname === '/signup' ||
-    pathname === '/recover' ||
-    pathname === '/tutorial';
+    pathname.startsWith("/chat/") ||
+    pathname === "/login" ||
+    pathname === "/signup" ||
+    pathname === "/recover" ||
+    pathname === "/tutorial";
 
   // 아래 svg 들 svgr 로 추후 수정 요망
   return (
     <div
       className={twMerge(
-        'z-[99] fixed bottom-0 left-1/2 transform -translate-x-1/2 h-[54px] w-full max-w-[430px] min-w-[375px] bg-white shadow-tap-menu border-gray-200 grid grid-cols-4 xl:hidden',
-        hidden && 'hidden',
+        "-translate-x-1/2 fixed bottom-0 left-1/2 z-[99] grid h-[54px] w-full min-w-[375px] max-w-[430px] transform grid-cols-4 border-gray-200 bg-white shadow-tap-menu xl:hidden",
+        hidden && "hidden",
       )} // 변경 필요
     >
       <TapMenuButton iconName="Home" href="/" title="홈" />
       <TapMenuButton iconName="Trip" href="/trips" title="여정" />
-      <TapMenuButton iconName="Chat" href={buddy_id ? `/chat` : '/login'} title="채팅" />
+      <TapMenuButton
+        iconName="Chat"
+        href={buddy_id ? `/chat` : "/login"}
+        title="채팅"
+      />
       <TapMenuButton
         iconName="MyPage"
-        href={buddy_id ? `/profile/${buddy_id}` : '/login'}
+        href={buddy_id ? `/profile/${buddy_id}` : "/login"}
         title="마이페이지"
       />
     </div>

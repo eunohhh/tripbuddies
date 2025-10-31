@@ -1,5 +1,5 @@
-import { clsx, type ClassValue } from 'clsx';
-import { twMerge } from 'tailwind-merge';
+import { type ClassValue, clsx } from "clsx";
+import { twMerge } from "tailwind-merge";
 
 export function tailwindMerge(...inputs: ClassValue[]) {
   // clsx를 사용하여 입력된 모든 클래스네임을 결합하고,

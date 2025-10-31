@@ -5,7 +5,7 @@ export type AlertProps = {
 };
 
 export type AlertModalOptions = {
-  mode: 'success' | 'caution' | 'error'; // 얼러트 모드
+  mode: "success" | "caution" | "error"; // 얼러트 모드
   description: string; // 얼러트 설명
   options: AlertProps; // 옵션 객체
 };

@@ -1,6 +1,6 @@
-import { Tables } from './supabase';
+import { Tables } from "./supabase";
 
-export type Message = Tables<'messages'>;
+export type Message = Tables<"messages">;
 
 export type ContractData = {
   contract_id: string;

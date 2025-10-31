@@ -1,11 +1,11 @@
-'use client';
+"use client";
 
-import { twMerge } from 'tailwind-merge';
-import NavigateBefore from '../../../../public/svg/navigate_before.svg';
-import NavigateNext from '../../../../public/svg/navigate_next.svg';
+import { twMerge } from "tailwind-merge";
+import NavigateBefore from "../../../../public/svg/navigate_before.svg";
+import NavigateNext from "../../../../public/svg/navigate_next.svg";
 
 type NavigateProps = {
-  mode: 'before' | 'after';
+  mode: "before" | "after";
   onClick: () => void;
   className?: string;
 };
@@ -14,18 +14,19 @@ const Navigate: React.FC<NavigateProps> = ({ mode, onClick, className }) => {
   return (
     <div
       className={twMerge(
-        'absolute flex items-center justify-center w-9 h-9 text-black hover:text-primary-color-400 z-[99]',
-        mode === 'before'
-          ? '-left-[15px] top-[60%] -translate-y-[50%]'
-          : '-right-[15px] top-[60%] -translate-y-[50%]',
+        "absolute z-[99] flex h-9 w-9 items-center justify-center text-black hover:text-primary-color-400",
+        mode === "before"
+          ? "-left-[15px] -translate-y-[50%] top-[60%]"
+          : "-right-[15px] -translate-y-[50%] top-[60%]",
         className,
       )}
     >
       <button
-        className="w-full h-full rounded-full bg-white flex items-center justify-center shadow-md"
+        type="button"
+        className="flex h-full w-full items-center justify-center rounded-full bg-white shadow-md"
         onClick={onClick}
       >
-        {mode === 'before' ? <NavigateBefore /> : <NavigateNext />}
+        {mode === "before" ? <NavigateBefore /> : <NavigateNext />}
       </button>
     </div>
   );

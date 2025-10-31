@@ -3,7 +3,10 @@ const HomePageBuddies = () => {
   return (
     <>
       {buddies.map((buddy, index) => (
-        <div key={index} className="min-w-[200px] h-[75px] p-[12px] rounded-md bg-gray-200">
+        <div
+          key={index}
+          className="h-[75px] min-w-[200px] rounded-md bg-gray-200 p-[12px]"
+        >
           {buddy}
         </div>
       ))}

@@ -1,36 +1,41 @@
-'use client';
+"use client";
 
-import { useNotificationMutation } from '@/hooks/queries';
-import { Notification } from '@/types/Notification.types';
-import { getTimeSinceUpload } from '@/utils/common/getTimeSinceUpload';
-import { useQueryClient } from '@tanstack/react-query';
-import Image from 'next/image';
-import { useRouter } from 'next/navigation';
-import React from 'react';
+import { useQueryClient } from "@tanstack/react-query";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
+import React from "react";
+import { useNotificationMutation } from "@/hooks/queries";
+import { Notification } from "@/types/Notification.types";
+import { getTimeSinceUpload } from "@/utils/common/getTimeSinceUpload";
 
 interface NotificationListItemProps {
   notification: Notification;
 }
 
-const NotificationListItem: React.FC<NotificationListItemProps> = ({ notification }) => {
+const NotificationListItem: React.FC<NotificationListItemProps> = ({
+  notification,
+}) => {
   const queryClient = useQueryClient();
-  const timeSinceUpload = getTimeSinceUpload(notification.notification_created_at);
+  const timeSinceUpload = getTimeSinceUpload(
+    notification.notification_created_at,
+  );
   const router = useRouter();
 
-  const { mutate: mutateNotification, error: notificationError } = useNotificationMutation();
+  const { mutate: mutateNotification, error: notificationError } =
+    useNotificationMutation();
 
   const getNotificationUrl = (notification: Notification) => {
     switch (notification.notification_type) {
-      case 'follow':
+      case "follow":
         return `/profile/${notification.notification_origin_id}`;
-      case 'bookmark':
+      case "bookmark":
         return `/trips/${notification.notification_origin_id}`;
-      case 'contract':
+      case "contract":
         return `/trips/${notification.notification_origin_id}`;
-      case 'like':
+      case "like":
         return `/stories/${notification.notification_origin_id}`;
       default:
-        return '/notifications';
+        return "/notifications";
     }
   };
 
@@ -55,23 +60,25 @@ const NotificationListItem: React.FC<NotificationListItemProps> = ({ notificatio
   return (
     <li>
       <div
-        className="bg-white rounded-[16px] flex px-[20px] py-[12px] gap-[10px] cursor-pointer xl:bg-grayscale-color-70"
+        className="flex cursor-pointer gap-[10px] rounded-[16px] bg-white px-[20px] py-[12px] xl:bg-grayscale-color-70"
         onClick={handleClick}
       >
         <div>
           <Image
-            src={'/images/mascot_main.webp'}
-            alt={'mascot_main'}
+            src={"/images/mascot_main.webp"}
+            alt={"mascot_main"}
             width={45}
             height={45}
-            className="relative w-auto h-auto"
+            className="relative h-auto w-auto"
           />
         </div>
         <div>
-          <p className="text-[16px] font-bold text-grayscale-color-800">
+          <p className="font-bold text-[16px] text-grayscale-color-800">
             {notification.notification_content}
           </p>
-          <p className="text-[14px] font-medium text-grayscale-color-500">{timeSinceUpload}</p>
+          <p className="font-medium text-[14px] text-grayscale-color-500">
+            {timeSinceUpload}
+          </p>
         </div>
       </div>
     </li>

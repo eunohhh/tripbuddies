@@ -1,7 +1,11 @@
-import { postStoryLikes } from '@/api-services/stories';
-import { QUERY_KEY_STORY_LIKES } from '@/constants/query.constants';
-import { PartialStoryLikes, StoryLikes, StoryLikesData } from '@/types/Story.types';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { postStoryLikes } from "@/api-services/stories";
+import { QUERY_KEY_STORY_LIKES } from "@/constants/query.constants";
+import {
+  PartialStoryLikes,
+  StoryLikes,
+  StoryLikesData,
+} from "@/types/Story.types";
 
 export function useStoryLikesMutation(id: string) {
   const queryClient = useQueryClient();
@@ -11,21 +15,33 @@ export function useStoryLikesMutation(id: string) {
       await queryClient.cancelQueries({
         queryKey: [QUERY_KEY_STORY_LIKES, id],
       });
-      const previousLikes = queryClient.getQueryData<StoryLikes[]>([QUERY_KEY_STORY_LIKES, id]);
+      const previousLikes = queryClient.getQueryData<StoryLikes[]>([
+        QUERY_KEY_STORY_LIKES,
+        id,
+      ]);
       // console.log('data ====>', data);
       if (!data.isLiked) {
-        queryClient.setQueryData<PartialStoryLikes[]>([QUERY_KEY_STORY_LIKES, id], (old) =>
-          old ? [...old, data as PartialStoryLikes] : [data as PartialStoryLikes],
+        queryClient.setQueryData<PartialStoryLikes[]>(
+          [QUERY_KEY_STORY_LIKES, id],
+          (old) =>
+            old
+              ? [...old, data as PartialStoryLikes]
+              : [data as PartialStoryLikes],
         );
       } else {
-        queryClient.setQueryData<PartialStoryLikes[]>([QUERY_KEY_STORY_LIKES, id], (old) => old);
+        queryClient.setQueryData<PartialStoryLikes[]>(
+          [QUERY_KEY_STORY_LIKES, id],
+          (old) => old,
+        );
       }
 
       return { previousLikes };
     },
     onError: (error, newLikes, context: unknown) => {
       console.error(error);
-      const typedContext = context as { previousLikes: StoryLikes[] } | undefined;
+      const typedContext = context as
+        | { previousLikes: StoryLikes[] }
+        | undefined;
       if (typedContext?.previousLikes) {
         queryClient.setQueryData<StoryLikes[]>(
           [QUERY_KEY_STORY_LIKES, id],

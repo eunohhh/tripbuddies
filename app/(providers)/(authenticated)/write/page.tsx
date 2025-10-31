@@ -1,4 +1,4 @@
-import WriteMain from '@/components/organisms/write/WriteMain';
+import WriteMain from "@/components/organisms/write/WriteMain";
 
 const WritePage: React.FC = () => {
   return <WriteMain />;

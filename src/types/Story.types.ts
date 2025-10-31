@@ -1,7 +1,7 @@
-import { Buddy } from './Auth.types';
-import { Tables } from './supabase';
+import { Buddy } from "./Auth.types";
+import { Tables } from "./supabase";
 
-export type Story = Tables<'stories'>;
+export type Story = Tables<"stories">;
 
 export type StoryWithBuddies = Story & {
   buddies: Buddy;
@@ -30,7 +30,7 @@ export type StoryFilter = {
   className: string;
 };
 
-export type StoryLikes = Tables<'storylikes'>;
+export type StoryLikes = Tables<"storylikes">;
 
 export type PartialStoryLikes = Partial<StoryLikes>;
 

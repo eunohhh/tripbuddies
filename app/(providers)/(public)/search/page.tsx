@@ -1,10 +1,14 @@
-import { getTrips } from '@/api-services/trips';
-import SearchPageContainer from '@/components/organisms/search/SearchPageContainer';
-import { QUERY_KEY_TRIPS } from '@/constants/query.constants';
-import { TripInfiniteQueryResponse } from '@/types/Trips.types';
-import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query';
-import { Suspense } from 'react';
-import Loading from '../loading';
+import {
+  dehydrate,
+  HydrationBoundary,
+  QueryClient,
+} from "@tanstack/react-query";
+import { Suspense } from "react";
+import { getTrips } from "@/api-services/trips";
+import SearchPageContainer from "@/components/organisms/search/SearchPageContainer";
+import { QUERY_KEY_TRIPS } from "@/constants/query.constants";
+import { TripInfiniteQueryResponse } from "@/types/Trips.types";
+import Loading from "../loading";
 
 export default async function SearchPage() {
   const queryClient = new QueryClient();

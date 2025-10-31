@@ -1,4 +1,4 @@
-import Link from 'next/link';
+import Link from "next/link";
 
 type LinkButtonProps = {
   href: string;
@@ -7,7 +7,7 @@ type LinkButtonProps = {
 function LinkButton({ href }: LinkButtonProps) {
   return (
     <Link href={href}>
-      <span className="w-1/2 text-blue-500 text-right">{'>'}</span>
+      <span className="w-1/2 text-right text-blue-500">{">"}</span>
     </Link>
   );
 }

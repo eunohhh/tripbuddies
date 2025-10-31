@@ -1,11 +1,18 @@
-import { getInfiniteTrips, getTrips } from '@/api-services/trips';
-import FloatingButton from '@/components/atoms/home/FloatingButton';
-import TripList from '@/components/organisms/trips/TripList';
-import { QUERY_KEY_TRIP_INFINITE, QUERY_KEY_TRIPS } from '@/constants/query.constants';
-import { TripInfiniteQueryResponse } from '@/types/Trips.types';
-import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query';
-import React, { Suspense } from 'react';
-import Loading from '../loading';
+import {
+  dehydrate,
+  HydrationBoundary,
+  QueryClient,
+} from "@tanstack/react-query";
+import React, { Suspense } from "react";
+import { getInfiniteTrips, getTrips } from "@/api-services/trips";
+import FloatingButton from "@/components/atoms/home/FloatingButton";
+import TripList from "@/components/organisms/trips/TripList";
+import {
+  QUERY_KEY_TRIP_INFINITE,
+  QUERY_KEY_TRIPS,
+} from "@/constants/query.constants";
+import { TripInfiniteQueryResponse } from "@/types/Trips.types";
+import Loading from "../loading";
 
 const TripsPage: React.FC = async () => {
   const queryClient = new QueryClient();

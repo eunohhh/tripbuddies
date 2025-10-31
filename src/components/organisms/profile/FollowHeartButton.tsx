@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { showAlert } from '@/utils/ui/openCustomAlert';
-import { usePathname } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
+import { showAlert } from "@/utils/ui/openCustomAlert";
 
 function FollowHeartButton({
   followingId,
@@ -23,7 +23,7 @@ function FollowHeartButton({
 
   useEffect(() => {
     // URL 경로에서 rank가 있는지 확인
-    setHasRank(pathname.includes('rank'));
+    setHasRank(pathname.includes("rank"));
   }, [pathname]);
 
   useEffect(() => {
@@ -55,7 +55,10 @@ function FollowHeartButton({
     if (clickTimeout) clearTimeout(clickTimeout);
     setClickTimeout(setTimeout(() => setClickCount(0), 5000));
     if (clickCount >= 4) {
-      showAlert('caution', '너무 많이 클릭했습니다! 잠시 후 다시 시도해주세요.');
+      showAlert(
+        "caution",
+        "너무 많이 클릭했습니다! 잠시 후 다시 시도해주세요.",
+      );
       setTimeout(() => {
         setIsButtonDisabled(false);
       }, 10000);
@@ -63,13 +66,16 @@ function FollowHeartButton({
     }
 
     if (isFollowing) {
-      await fetch(`/api/buddyProfile/follow?followingId=${followingId}&followerId=${followerId}`, {
-        method: 'DELETE',
-      });
+      await fetch(
+        `/api/buddyProfile/follow?followingId=${followingId}&followerId=${followerId}`,
+        {
+          method: "DELETE",
+        },
+      );
     } else {
       await fetch(`/api/buddyProfile/follow`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           followingId,
           followerId,
@@ -88,11 +94,14 @@ function FollowHeartButton({
     <>
       {hasRank && !isOwnCard && (
         <button
-          className="absolute top-0 right-0 text-xl mr-2 mt-1"
+          type="button"
+          className="absolute top-0 right-0 mt-1 mr-2 text-xl"
           onClick={handleFollowToggle}
           disabled={isButtonDisabled}
         >
-          <span className={isFollowing ? 'text-main-color' : ''}>{isFollowing ? '♥' : '♡'}</span>
+          <span className={isFollowing ? "text-main-color" : ""}>
+            {isFollowing ? "♥" : "♡"}
+          </span>
         </button>
       )}
     </>

@@ -1,11 +1,11 @@
-import { PUBLIC_URL } from '@/constants/common.constants';
-import { createClient } from '@/utils/supabase/server';
 // import { revalidatePath } from 'next/cache';
-import { redirect } from 'next/navigation';
-import { NextResponse } from 'next/server';
+import { redirect } from "next/navigation";
+import { NextResponse } from "next/server";
+import { PUBLIC_URL } from "@/constants/common.constants";
+import { createClient } from "@/utils/supabase/server";
 
 export async function POST(req: Request) {
-  if (!req.body) redirect('/login');
+  if (!req.body) redirect("/login");
 
   const { email } = await req.json();
 
@@ -25,5 +25,5 @@ export async function POST(req: Request) {
   }
   // revalidatePath('/recover');
   // redirect('/recover');
-  return NextResponse.json({ message: 'Email sent' }, { status: 200 });
+  return NextResponse.json({ message: "Email sent" }, { status: 200 });
 }

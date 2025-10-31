@@ -1,16 +1,19 @@
-import Chip from '@/components/atoms/common/Chip';
-import SearchPageTitle from '@/components/atoms/search/SearchPageTitle';
-import { Gender } from '@/types/Gender.types';
-import React from 'react';
+import React from "react";
+import Chip from "@/components/atoms/common/Chip";
+import SearchPageTitle from "@/components/atoms/search/SearchPageTitle";
+import { Gender } from "@/types/Gender.types";
 
-const genderOptions: Gender[] = ['여성', '남성', '성별무관'];
+const genderOptions: Gender[] = ["여성", "남성", "성별무관"];
 
 type GenderSelectionProps = {
   selectedGender: string | null;
   setSelectedGender: (gender: string | null) => void;
 };
 
-const GenderSelection: React.FC<GenderSelectionProps> = ({ selectedGender, setSelectedGender }) => {
+const GenderSelection: React.FC<GenderSelectionProps> = ({
+  selectedGender,
+  setSelectedGender,
+}) => {
   const handleGenderClick = async (gender: string) => {
     const isSelected = selectedGender === gender;
     const newSelectedGender = isSelected ? null : gender;

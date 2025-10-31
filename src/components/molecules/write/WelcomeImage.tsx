@@ -1,4 +1,4 @@
-import Image from 'next/image';
+import Image from "next/image";
 
 interface WelcomeImageProps {
   isGray?: boolean;
@@ -11,7 +11,7 @@ export default function WelcomeImage({ isGray = false }: WelcomeImageProps) {
       alt="buddy character"
       width={250}
       height={250}
-      className={`h-[250px] w-[250px] xl:w-[500px] xl:h-[500px] ${isGray ? 'filter grayscale' : ''}`}
+      className={`h-[250px] w-[250px] xl:h-[500px] xl:w-[500px] ${isGray ? "grayscale filter" : ""}`}
     />
   );
 }

@@ -1,11 +1,13 @@
-'use client';
-import { useRouter, useSearchParams } from 'next/navigation';
-import { useState } from 'react';
+"use client";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useState } from "react";
 
 export function useUrlParams() {
   const searchParams = useSearchParams();
   const router = useRouter();
-  const [params, setParams] = useState(new URLSearchParams(searchParams.toString()));
+  const [params, setParams] = useState(
+    new URLSearchParams(searchParams.toString()),
+  );
 
   // useEffect(() => {
   //     setParams(new URLSearchParams(searchParams.toString()));
@@ -16,7 +18,7 @@ export function useUrlParams() {
     let hasChange = false;
 
     Object.keys(newParams).forEach((key) => {
-      if (newParams[key] === null || newParams[key] === '') {
+      if (newParams[key] === null || newParams[key] === "") {
         updatedParams.delete(key);
         hasChange = true;
       } else {
@@ -27,7 +29,7 @@ export function useUrlParams() {
 
     if (hasChange) {
       // 새로 설정된 값으로 업데이트
-      window.history.replaceState({}, '', `?${updatedParams.toString()}`);
+      window.history.replaceState({}, "", `?${updatedParams.toString()}`);
       setParams(updatedParams);
     }
   };

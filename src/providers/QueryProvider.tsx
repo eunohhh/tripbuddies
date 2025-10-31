@@ -1,7 +1,11 @@
-'use client';
-import { isServer, QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import React from 'react';
+"use client";
+import {
+  isServer,
+  QueryClient,
+  QueryClientProvider,
+} from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import React from "react";
 
 function makeQueryClient() {
   return new QueryClient({
@@ -18,7 +22,7 @@ function makeQueryClient() {
 }
 
 // undefined 로 초기값 설정
-let browserQueryClient: QueryClient | undefined = undefined;
+let browserQueryClient: QueryClient | undefined;
 
 function getQueryClient() {
   if (isServer) {
@@ -37,7 +41,9 @@ function QueryProvider({ children }: { children: React.ReactNode }) {
   return (
     <QueryClientProvider client={queryClient}>
       {children}
-      <ReactQueryDevtools initialIsOpen={process.env.NEXT_PUBLIC_RUN_MODE === 'local'} />
+      <ReactQueryDevtools
+        initialIsOpen={process.env.NEXT_PUBLIC_RUN_MODE === "local"}
+      />
     </QueryClientProvider>
   );
 }

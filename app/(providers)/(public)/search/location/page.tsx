@@ -1,11 +1,11 @@
-'use client';
+"use client";
 
-import SearchPageTitle from '@/components/atoms/search/SearchPageTitle';
-import SelectRegions from '@/components/molecules/common/SelectRegion';
-import { useLocation } from '@/contexts/locationSearch.context';
-import { useSelectRegion } from '@/hooks';
-import { useRouter, useSearchParams } from 'next/navigation';
-import { useEffect } from 'react';
+import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect } from "react";
+import SearchPageTitle from "@/components/atoms/search/SearchPageTitle";
+import SelectRegions from "@/components/molecules/common/SelectRegion";
+import { useLocation } from "@/contexts/locationSearch.context";
+import { useSelectRegion } from "@/hooks";
 
 export default function LocationSearchPage() {
   const router = useRouter();
@@ -13,7 +13,11 @@ export default function LocationSearchPage() {
   const { setLocation } = useLocation();
 
   const {
-    actions: { handleLocationTypeClick, handleChipClick, handleThirdLevelClick },
+    actions: {
+      handleLocationTypeClick,
+      handleChipClick,
+      handleThirdLevelClick,
+    },
     states: {
       thirdLevelLocation,
       firstLevelLocation,
@@ -24,7 +28,7 @@ export default function LocationSearchPage() {
   } = useSelectRegion();
 
   useEffect(() => {
-    const locationFromParams = searchParams.get('location');
+    const locationFromParams = searchParams.get("location");
     if (locationFromParams) {
       setLocation(locationFromParams);
     }
@@ -38,7 +42,7 @@ export default function LocationSearchPage() {
     if (thirdLevelLocation) {
       setLocation(thirdLevelLocation);
       const query = new URLSearchParams(window.location.search);
-      query.set('location', thirdLevelLocation);
+      query.set("location", thirdLevelLocation);
 
       // 문자열로 변환 후 url에 포함시킴
       router.push(`/search?${query.toString()}`);
@@ -46,7 +50,7 @@ export default function LocationSearchPage() {
   };
 
   return (
-    <div className="p-5 xl:grid xl:grid-cols-3 xl:gap-4 bg-white">
+    <div className="bg-white p-5 xl:grid xl:grid-cols-3 xl:gap-4">
       <div className="xl:col-span-1">
         <SearchPageTitle
           title="어디로 떠나시나요?"
@@ -58,7 +62,7 @@ export default function LocationSearchPage() {
           states={{
             firstLevelLocation,
             secondLevelLocation,
-            thirdLevelLocation: thirdLevelLocation || '',
+            thirdLevelLocation: thirdLevelLocation || "",
             secondLevelLocations,
             selectedSecondLevelLocations,
           }}
@@ -69,7 +73,8 @@ export default function LocationSearchPage() {
           }}
         />
         <button
-          className="flex justify-center items-center mx-auto w-full px-28 py-2 rounded-2xl bg-main-color font-semibold text-white text-xl m-3 mb-10 transition-colors duration-200 ease-in-out active:bg-gray-300 xl:w-1/2 xl:mt-8"
+          type="button"
+          className="m-3 mx-auto mb-10 flex w-full items-center justify-center rounded-2xl bg-main-color px-28 py-2 font-semibold text-white text-xl transition-colors duration-200 ease-in-out active:bg-gray-300 xl:mt-8 xl:w-1/2"
           onClick={handleSelectClick}
         >
           선택하기

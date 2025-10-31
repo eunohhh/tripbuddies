@@ -1,19 +1,19 @@
-import { TRIPS_ITEMS_PER_PAGE } from '@/constants/common.constants';
-import { TripWithContract } from '@/types/Trips.types';
-import { sliceArrayByLimit } from '@/utils/common/sliceArrayByLimits';
-import { createClient } from '@/utils/supabase/server';
-import { PostgrestError } from '@supabase/supabase-js';
-import { NextRequest, NextResponse } from 'next/server';
+import { PostgrestError } from "@supabase/supabase-js";
+import { NextRequest, NextResponse } from "next/server";
+import { TRIPS_ITEMS_PER_PAGE } from "@/constants/common.constants";
+import { TripWithContract } from "@/types/Trips.types";
+import { sliceArrayByLimit } from "@/utils/common/sliceArrayByLimits";
+import { createClient } from "@/utils/supabase/server";
 
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
-  const pageString = searchParams.get('page');
+  const pageString = searchParams.get("page");
   const supabase = await createClient();
 
   // 총 아이템 수를 가져옵니다.
   const { count: totalItems, error: countError } = await supabase
-    .from('trips')
-    .select('trip_id', { count: 'exact', head: true });
+    .from("trips")
+    .select("trip_id", { count: "exact", head: true });
 
   if (countError) {
     console.error(countError);
@@ -21,10 +21,13 @@ export async function GET(req: NextRequest) {
   }
 
   if (!totalItems) {
-    return NextResponse.json({ error: 'Total items not found' }, { status: 404 });
+    return NextResponse.json(
+      { error: "Total items not found" },
+      { status: 404 },
+    );
   }
 
-  if (pageString !== 'null') {
+  if (pageString !== "null") {
     const page = Number(pageString);
     const start = page * TRIPS_ITEMS_PER_PAGE;
     const end = start + TRIPS_ITEMS_PER_PAGE - 1;
@@ -36,9 +39,9 @@ export async function GET(req: NextRequest) {
       data: TripWithContract[] | null;
       error: PostgrestError | null;
     } = await supabase
-      .from('trips')
-      .select('*, contract (*)')
-      .order('trip_created_at', { ascending: false })
+      .from("trips")
+      .select("*, contract (*)")
+      .order("trip_created_at", { ascending: false })
       .range(start, end);
 
     if (tripError) {
@@ -47,7 +50,7 @@ export async function GET(req: NextRequest) {
     }
 
     if (!trips) {
-      return NextResponse.json({ error: 'Trips not found' }, { status: 404 });
+      return NextResponse.json({ error: "Trips not found" }, { status: 404 });
     }
 
     // 총 페이지 수를 계산합니다.
@@ -72,16 +75,16 @@ export async function GET(req: NextRequest) {
     data: TripWithContract[] | null;
     error: PostgrestError | null;
   } = await supabase
-    .from('trips')
-    .select('*, contract (*)')
-    .order('trip_created_at', { ascending: false });
+    .from("trips")
+    .select("*, contract (*)")
+    .order("trip_created_at", { ascending: false });
 
   if (tripError) {
     console.error(tripError);
     return NextResponse.json({ error: tripError?.message }, { status: 401 });
   }
   if (!trips) {
-    return NextResponse.json({ error: 'Trips not found' }, { status: 404 });
+    return NextResponse.json({ error: "Trips not found" }, { status: 404 });
   }
 
   const { slicedDataArray } = sliceArrayByLimit(trips, 8);

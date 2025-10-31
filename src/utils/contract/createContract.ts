@@ -5,10 +5,10 @@ export async function createContract(tripId: string, userId: string) {
       userId: userId,
     };
 
-    const response = await fetch('/api/contract', {
-      method: 'POST',
+    const response = await fetch("/api/contract", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(contractData),
     });
@@ -21,7 +21,7 @@ export async function createContract(tripId: string, userId: string) {
     const result = await response.json();
     return result;
   } catch (error) {
-    console.error('Contract 생성 중 오류 발생:', error);
+    console.error("Contract 생성 중 오류 발생:", error);
     throw error;
   }
 }

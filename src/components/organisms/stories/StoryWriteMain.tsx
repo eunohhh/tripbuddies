@@ -1,55 +1,55 @@
-'use client';
+"use client";
 
-import { StoryFilter, StoryOverlay } from '@/types/Story.types';
-import React, { useEffect, useState } from 'react';
-import StoryFilterImage from './StoryFilterImage';
-import StorySelectMedia from './StorySelectMedia';
-import StoryWriteText from './StoryWriteText';
+import React, { useCallback, useEffect, useState } from "react";
+import { StoryFilter, StoryOverlay } from "@/types/Story.types";
+import StoryFilterImage from "./StoryFilterImage";
+import StorySelectMedia from "./StorySelectMedia";
+import StoryWriteText from "./StoryWriteText";
 
 const filterImage = [
   {
-    name: 'basic',
-    className: 'relative',
+    name: "basic",
+    className: "relative",
   },
   {
-    name: 'sepia',
-    className: 'sepia relative',
+    name: "sepia",
+    className: "sepia relative",
   },
   {
-    name: 'saturate',
-    className: 'saturate-200 relative',
+    name: "saturate",
+    className: "saturate-200 relative",
   },
   {
-    name: 'invert',
-    className: 'invert relative',
+    name: "invert",
+    className: "invert relative",
   },
   {
-    name: 'grayscale',
-    className: 'grayscale relative',
+    name: "grayscale",
+    className: "grayscale relative",
   },
   {
-    name: 'contrast',
-    className: 'contrast-200 relative',
+    name: "contrast",
+    className: "contrast-200 relative",
   },
 ];
 
 const StoryWriteMain: React.FC = () => {
   const [step, setStep] = useState<number>(0);
   const [imageFile, setImageFile] = useState<File | null>(null);
-  const [selectedMedia, setSelectedMedia] = useState<string>('');
+  const [selectedMedia, setSelectedMedia] = useState<string>("");
   const [texts, setTexts] = useState<StoryOverlay[]>([]);
   const [selectedFilter, setSelectedFilter] = useState<StoryFilter>({
-    name: '',
-    className: '',
+    name: "",
+    className: "",
   });
 
-  const handleStep = (step: number) => {
+  const handleStep = useCallback((step: number) => {
     if (step === 0) {
       setImageFile(null);
-      setSelectedMedia('');
+      setSelectedMedia("");
     }
     setStep(step);
-  };
+  }, []);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -66,12 +66,12 @@ const StoryWriteMain: React.FC = () => {
   useEffect(() => {
     if (!imageFile) return;
     handleStep(1);
-  }, [imageFile]);
+  }, [imageFile, handleStep]);
 
   useEffect(() => {
-    document.documentElement.style.overscrollBehavior = 'none';
+    document.documentElement.style.overscrollBehavior = "none";
     return () => {
-      document.documentElement.style.overscrollBehavior = 'auto';
+      document.documentElement.style.overscrollBehavior = "auto";
     };
   }, []);
 

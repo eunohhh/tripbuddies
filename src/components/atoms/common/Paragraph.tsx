@@ -1,5 +1,5 @@
-import clsx from 'clsx';
-import React from 'react';
+import clsx from "clsx";
+import React from "react";
 
 type ParagraphProps = {
   children: React.ReactNode;
@@ -8,8 +8,15 @@ type ParagraphProps = {
 
 const Paragraph: React.FC<ParagraphProps> = ({ children, className }) => {
   return (
-    <div className="flex flex-col gap-2 w-full items-center justify-center">
-      <p className={clsx(`text-gray-500 w-full whitespace-pre-wrap px-3`, className)}>{children}</p>
+    <div className="flex w-full flex-col items-center justify-center gap-2">
+      <p
+        className={clsx(
+          `w-full whitespace-pre-wrap px-3 text-gray-500`,
+          className,
+        )}
+      >
+        {children}
+      </p>
     </div>
   );
 };

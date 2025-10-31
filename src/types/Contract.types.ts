@@ -1,7 +1,7 @@
-import { Trip, TripWithContract } from './Trips.types';
-import { Tables } from './supabase';
+import { Tables } from "./supabase";
+import { Trip, TripWithContract } from "./Trips.types";
 
-export type Contract = Tables<'contract'>;
+export type Contract = Tables<"contract">;
 
 export type PartialContract = Partial<Contract>;
 

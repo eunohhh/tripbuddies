@@ -1,6 +1,6 @@
-import { defaultMetaData } from '@/data/defaultMetaData';
-import { Metadata } from 'next';
-import React from 'react';
+import { Metadata } from "next";
+import React from "react";
+import { defaultMetaData } from "@/data/defaultMetaData";
 
 type AuthenticatedLayoutProps = {
   children: React.ReactNode;
@@ -8,7 +8,9 @@ type AuthenticatedLayoutProps = {
 
 export const metadata: Metadata = defaultMetaData;
 
-const AuthenticatedLayout: React.FC<AuthenticatedLayoutProps> = ({ children }) => {
+const AuthenticatedLayout: React.FC<AuthenticatedLayoutProps> = ({
+  children,
+}) => {
   return <>{children}</>;
 };
 

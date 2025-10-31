@@ -1,13 +1,13 @@
-'use client';
+"use client";
 
-import SearchPageTitle from '@/components/atoms/search/SearchPageTitle';
-import DateSearch from '@/components/organisms/search/DateSearch';
-import { useRouter, useSearchParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
+import SearchPageTitle from "@/components/atoms/search/SearchPageTitle";
+import DateSearch from "@/components/organisms/search/DateSearch";
 
 export default function DateSearchPage() {
-  const [startDate, setStartDate] = useState<string>('');
-  const [endDate, setEndDate] = useState<string>('');
+  const [startDate, setStartDate] = useState<string>("");
+  const [endDate, setEndDate] = useState<string>("");
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -17,8 +17,8 @@ export default function DateSearchPage() {
   tomorrow.setDate(today.getDate() + 1);
 
   useEffect(() => {
-    const startDateParam = searchParams.get('startDate') || '';
-    const endDateParam = searchParams.get('endDate') || '';
+    const startDateParam = searchParams.get("startDate") || "";
+    const endDateParam = searchParams.get("endDate") || "";
     setStartDate(startDateParam);
     setEndDate(endDateParam);
   }, [searchParams]);
@@ -41,7 +41,7 @@ export default function DateSearchPage() {
   };
 
   return (
-    <div className="p-5 pt-8 xl:grid xl:grid-cols-3 xl:gap-4 bg-white">
+    <div className="bg-white p-5 pt-8 xl:grid xl:grid-cols-3 xl:gap-4">
       <div className="xl:col-span-1">
         <SearchPageTitle
           title="언제 떠나시나요?"
@@ -51,7 +51,8 @@ export default function DateSearchPage() {
       <div className="xl:col-span-2">
         <DateSearch setDateChange={handleDateChange} />
         <button
-          className="flex justify-center items-center mx-auto w-full px-28 h-12 rounded-2xl bg-main-color font-semibold text-white text-xl mt-40 transition-colors duration-200 ease-in-out active:bg-gray-300 xl:w-[348px] xl:mt-8"
+          type="button"
+          className="mx-auto mt-40 flex h-12 w-full items-center justify-center rounded-2xl bg-main-color px-28 font-semibold text-white text-xl transition-colors duration-200 ease-in-out active:bg-gray-300 xl:mt-8 xl:w-[348px]"
           onClick={handleSelectClick}
         >
           선택하기

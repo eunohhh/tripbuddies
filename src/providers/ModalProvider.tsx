@@ -1,10 +1,12 @@
-'use client';
+"use client";
 
-import { useModal } from '@/contexts/modal.context';
-import { setModalContext } from '@/utils/ui/openCustomAlert';
-import React, { useEffect } from 'react';
+import React, { useEffect } from "react";
+import { useModal } from "@/contexts/modal.context";
+import { setModalContext } from "@/utils/ui/openCustomAlert";
 
-export const ModalProviderSetter: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const ModalProviderSetter: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
   const modal = useModal();
 
   useEffect(() => {

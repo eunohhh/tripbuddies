@@ -1,4 +1,4 @@
-import sharp from 'sharp';
+import sharp from "sharp";
 
 type ConvertToWebpProps = {
   inputBuffer: Buffer;
@@ -35,7 +35,7 @@ export async function convertToWebPServer({
         height = maxWidth;
         width = Math.floor(maxWidth * aspectRatio);
       }
-    } else if (maxWidth && maxHeight) {
+    } else if (maxHeight) {
       if (aspectRatio > 1) {
         // 가로가 더 긴 경우
         width = maxWidth;
@@ -63,15 +63,19 @@ export async function convertToWebPServer({
     }
 
     image = image.resize(width, height, {
-      fit: 'inside', // 이미지가 잘리지 않도록 함
+      fit: "inside", // 이미지가 잘리지 않도록 함
     });
   }
 
-  const buffer = await image.toFormat('webp').toBuffer();
+  const buffer = await image.toFormat("webp").toBuffer();
   return buffer;
 }
 
-export default async function convertToWebP(file: Blob, maxWidth: number, maxHeight?: number) {
+export default async function convertToWebP(
+  file: Blob,
+  maxWidth: number,
+  maxHeight?: number,
+) {
   try {
     const arrayBuffer = await file.arrayBuffer();
     const buffer = Buffer.from(arrayBuffer);
@@ -82,7 +86,7 @@ export default async function convertToWebP(file: Blob, maxWidth: number, maxHei
     });
     return convertedBuffer;
   } catch (error) {
-    console.error('이미지 변환 중 에러 발생 버퍼???:', error);
+    console.error("이미지 변환 중 에러 발생 버퍼???:", error);
     return null;
   }
 }

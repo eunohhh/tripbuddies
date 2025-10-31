@@ -1,6 +1,6 @@
-import { Tables } from './supabase';
+import { Tables } from "./supabase";
 
-export type Buddy = Tables<'buddies'>;
+export type Buddy = Tables<"buddies">;
 
 export type PartialBuddy = Partial<Buddy>;
 

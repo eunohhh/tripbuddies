@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import ChatList from '@/components/organisms/chatpage/ChatList';
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
+import ChatList from "@/components/organisms/chatpage/ChatList";
 
 const ChatPage = () => {
   const [isXlScreen, setIsXlScreen] = useState(false);
@@ -14,10 +14,10 @@ const ChatPage = () => {
 
     // 초기 실행 및 리사이즈 이벤트 설정
     handleResize();
-    window.addEventListener('resize', handleResize);
+    window.addEventListener("resize", handleResize);
 
     // 클린업 함수로 리스너 제거
-    return () => window.removeEventListener('resize', handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   return (

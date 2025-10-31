@@ -1,10 +1,10 @@
-import { TripWithContract } from '@/types/Trips.types';
+import { TripWithContract } from "@/types/Trips.types";
 
 export const sliceArrayByLimit = (
   totalPage: number | TripWithContract[],
   limit: number,
 ): { slicedPageArray: number[][]; slicedDataArray: TripWithContract[][] } => {
-  if (typeof totalPage === 'number') {
+  if (typeof totalPage === "number") {
     const totalPageArray = Array(totalPage)
       .fill(0)
       .map((_, i) => i + 1);

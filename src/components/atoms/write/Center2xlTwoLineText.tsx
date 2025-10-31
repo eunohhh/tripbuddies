@@ -11,8 +11,12 @@ export default function Center2xlTwoLineText({
 }: Center2xlTwoLineTextProps) {
   return (
     <div className={className}>
-      <p className="text-2xl mt-4 xl:text-4xl xl:mt-8 font-bold text-center">{firstText}</p>
-      <p className="text-2xl mt-2 xl:text-4xl xl:mt-8 font-bold text-center">{secondText}</p>
+      <p className="mt-4 text-center font-bold text-2xl xl:mt-8 xl:text-4xl">
+        {firstText}
+      </p>
+      <p className="mt-2 text-center font-bold text-2xl xl:mt-8 xl:text-4xl">
+        {secondText}
+      </p>
     </div>
   );
 }

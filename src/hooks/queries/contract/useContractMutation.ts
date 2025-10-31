@@ -1,7 +1,10 @@
-import { postContract } from '@/api-services/contracts';
-import { QUERY_KEY_CONTRACT, QUERY_KEY_TRIP } from '@/constants/query.constants';
-import { Contract, PartialContract } from '@/types/Contract.types';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { postContract } from "@/api-services/contracts";
+import {
+  QUERY_KEY_CONTRACT,
+  QUERY_KEY_TRIP,
+} from "@/constants/query.constants";
+import { Contract, PartialContract } from "@/types/Contract.types";
 
 export function useContractMutation() {
   const queryClient = useQueryClient();

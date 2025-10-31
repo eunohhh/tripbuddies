@@ -1,4 +1,4 @@
-import BuddyCard from '../FollowBuddyCard';
+import BuddyCard from "../FollowBuddyCard";
 
 type FollowListProps = {
   followList: string[];

@@ -1,22 +1,34 @@
-import { TripWithContract } from '@/types/Trips.types';
+import { TripWithContract } from "@/types/Trips.types";
 
-function filterTripList(tripsInfinite: TripWithContract[] | undefined, filter: string) {
+function filterTripList(
+  tripsInfinite: TripWithContract[] | undefined,
+  filter: string,
+) {
   switch (filter) {
-    case 'latest':
+    case "latest":
       return tripsInfinite?.sort((a, b) => {
-        return new Date(b.trip_created_at).getTime() - new Date(a.trip_created_at).getTime();
+        return (
+          new Date(b.trip_created_at).getTime() -
+          new Date(a.trip_created_at).getTime()
+        );
       });
-    case 'bookmark':
+    case "bookmark":
       return tripsInfinite?.sort((a, b) => {
         return b.trip_bookmarks_counts - a.trip_bookmarks_counts;
       });
-    case 'imminent':
+    case "imminent":
       return tripsInfinite?.sort((a, b) => {
-        return new Date(b.trip_start_date).getTime() - new Date(a.trip_start_date).getTime();
+        return (
+          new Date(b.trip_start_date).getTime() -
+          new Date(a.trip_start_date).getTime()
+        );
       });
-    case 'deadline':
+    case "deadline":
       return tripsInfinite?.sort((a, b) => {
-        return new Date(a.trip_start_date).getTime() - new Date(b.trip_start_date).getTime();
+        return (
+          new Date(a.trip_start_date).getTime() -
+          new Date(b.trip_start_date).getTime()
+        );
       });
     default:
       return tripsInfinite;

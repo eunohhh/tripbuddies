@@ -1,1 +1,1 @@
-export * from './tripService';
+export * from "./tripService";

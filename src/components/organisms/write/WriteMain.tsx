@@ -1,14 +1,17 @@
-'use client';
+"use client";
 
-import { updateBuddyTemperature } from '@/api-services/auth/client';
-import ProgressIndicator from '@/components/atoms/write/ProgressIndicator';
-import SelectAdditionalBuddyThemes from '@/components/organisms/write/SelectAdditionalBuddyThemes';
-import SelectDatePage from '@/components/organisms/write/SelectDatePage';
-import SelectRegionPage from '@/components/organisms/write/SelectRegionPage';
-import SelectTripThemesPage from '@/components/organisms/write/SelectTripThemesPage';
-import SuccessNotificationPage from '@/components/organisms/write/SuccessNotificationPage';
-import WelcomePage from '@/components/organisms/write/WelcomePage';
-import WriteTrip from '@/components/organisms/write/WriteTrip';
+import { useRouter, useSearchParams } from "next/navigation";
+import React, { useEffect, useState } from "react";
+import { twMerge } from "tailwind-merge";
+import { updateBuddyTemperature } from "@/api-services/auth/client";
+import ProgressIndicator from "@/components/atoms/write/ProgressIndicator";
+import SelectAdditionalBuddyThemes from "@/components/organisms/write/SelectAdditionalBuddyThemes";
+import SelectDatePage from "@/components/organisms/write/SelectDatePage";
+import SelectRegionPage from "@/components/organisms/write/SelectRegionPage";
+import SelectTripThemesPage from "@/components/organisms/write/SelectTripThemesPage";
+import SuccessNotificationPage from "@/components/organisms/write/SuccessNotificationPage";
+import WelcomePage from "@/components/organisms/write/WelcomePage";
+import WriteTrip from "@/components/organisms/write/WriteTrip";
 import {
   useAuth,
   useCalendar,
@@ -19,22 +22,27 @@ import {
   useSelectMeetPlace,
   useSelectRegion,
   useSelectSex,
-} from '@/hooks';
-import { useTripWrite } from '@/hooks/mypage/useTripWrite';
-import { useTripMutation } from '@/hooks/queries';
-import { PartialTrip, TripMutationData } from '@/types/Trips.types';
-import { showAlert } from '@/utils/ui/openCustomAlert';
-import { validateStep } from '@/utils/write/validateStep';
-import { useRouter, useSearchParams } from 'next/navigation';
-import React, { useEffect, useState } from 'react';
-import { twMerge } from 'tailwind-merge';
+} from "@/hooks";
+import { useTripWrite } from "@/hooks/mypage/useTripWrite";
+import { useTripMutation } from "@/hooks/queries";
+import { PartialTrip, TripMutationData } from "@/types/Trips.types";
+import { showAlert } from "@/utils/ui/openCustomAlert";
+import { validateStep } from "@/utils/write/validateStep";
 
 // 버튼 라벨 배열
-const buttonText = ['다음', '다음', '다음', '다음', '다음', '여정 만들기', '여정 페이지로'];
+const buttonText = [
+  "다음",
+  "다음",
+  "다음",
+  "다음",
+  "다음",
+  "여정 만들기",
+  "여정 페이지로",
+];
 
 const WriteMain: React.FC = () => {
   const [stepToDisplay, setStepToDisplay] = useState<number>(0);
-  const [tripId, setTripId] = useState<string>('');
+  const [tripId, setTripId] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isSuccess, setIsSuccess] = useState<boolean | null>(null);
   const [isMini, setIsMini] = useState<boolean>(false);
@@ -51,13 +59,14 @@ const WriteMain: React.FC = () => {
   const { buddyCounts, SelectBuddyCounts } = useSelectBuddyCounts({
     initialCounts: 2,
   });
-  const { SelectCalendar, startDateTimestamp, endDateTimestamp } = useCalendar();
+  const { SelectCalendar, startDateTimestamp, endDateTimestamp } =
+    useCalendar();
   const { actions, states } = useSelectRegion();
   const [PreferTripThemesToRender, selectedTripThemes] = usePreferTheme({
-    mode: 'trip',
+    mode: "trip",
   });
   const [PreferWantedBuddiesToRender, selectedWantedBuddies] = usePreferTheme({
-    mode: 'buddy',
+    mode: "buddy",
   });
   const {
     tripTitle,
@@ -105,8 +114,8 @@ const WriteMain: React.FC = () => {
     const tripData: PartialTrip = {
       trip_title: tripTitle,
       trip_content: tripContent,
-      trip_thumbnail: '',
-      trip_master_id: buddy?.buddy_id ?? '',
+      trip_thumbnail: "",
+      trip_master_id: buddy?.buddy_id ?? "",
       trip_max_buddies_counts: buddyCounts,
       trip_start_date: startDateTimestamp,
       trip_end_date: endDateTimestamp,
@@ -124,19 +133,19 @@ const WriteMain: React.FC = () => {
     };
     const formData = new FormData();
     if (tripImageFile) {
-      formData.append('trip_image', tripImageFile);
-      formData.append('trip_json', JSON.stringify(tripData));
+      formData.append("trip_image", tripImageFile);
+      formData.append("trip_json", JSON.stringify(tripData));
     } else {
-      formData.append('trip_json', JSON.stringify(tripData));
+      formData.append("trip_json", JSON.stringify(tripData));
     }
     try {
       if (!buddy?.buddy_id) {
-        throw new Error('사용자 ID가 없습니다.');
+        throw new Error("사용자 ID가 없습니다.");
       }
       const payload: TripMutationData = {
         newTrip: formData,
         id: buddy.buddy_id,
-        mode: 'new',
+        mode: "new",
       };
       const data = await postTrip(payload);
 
@@ -147,8 +156,8 @@ const WriteMain: React.FC = () => {
       setIsSuccess(true);
       return true;
     } catch (error) {
-      console.error('게시글 업데이트 중 오류 발생:', error);
-      showAlert('error', '여정을 작성하지 못하였습니다.');
+      console.error("게시글 업데이트 중 오류 발생:", error);
+      showAlert("error", "여정을 작성하지 못하였습니다.");
       setIsLoading(false);
       setIsSuccess(false);
       return false;
@@ -170,7 +179,7 @@ const WriteMain: React.FC = () => {
 
   useEffect(() => {
     if (postTripError) {
-      showAlert('error', postTripError.message);
+      showAlert("error", postTripError.message);
     }
   }, [postTripError]);
 
@@ -182,22 +191,42 @@ const WriteMain: React.FC = () => {
   }, [step, router, stepToDisplay]);
 
   useEffect(() => {
-    const funnel = searchParams.get('funnel');
+    const funnel = searchParams.get("funnel");
     if (funnel) setStep(Number(funnel));
   }, [searchParams, setStep]);
 
   return (
     <div
       className={twMerge(
-        'relative h-[calc(100dvh-56px-54px)] xl:h-[calc(100dvh-100px)]',
-        step === 5 && 'xl:h-[calc(100dvh-100px)]',
+        "relative h-[calc(100dvh-56px-54px)] xl:h-[calc(100dvh-100px)]",
+        step === 5 && "xl:h-[calc(100dvh-100px)]",
       )}
     >
-      <ProgressIndicator className="pt-1.5 h-[4%] xl:h-[5%]" step={step} counts={7} />
-      <section className="h-[96%] xl:h-[95%] flex flex-col">
-        <div className={twMerge('flex flex-col h-[90%] xl:h-[90%]', step === 0 && 'xl:mb-2')}>
-          {step === 0 && <WelcomePage SelectBuddyCounts={SelectBuddyCounts} isMini={isMini} />}
-          {step === 1 && <SelectRegionPage isMini={isMini} states={states} actions={actions} />}
+      <ProgressIndicator
+        className="h-[4%] pt-1.5 xl:h-[5%]"
+        step={step}
+        counts={7}
+      />
+      <section className="flex h-[96%] flex-col xl:h-[95%]">
+        <div
+          className={twMerge(
+            "flex h-[90%] flex-col xl:h-[90%]",
+            step === 0 && "xl:mb-2",
+          )}
+        >
+          {step === 0 && (
+            <WelcomePage
+              SelectBuddyCounts={SelectBuddyCounts}
+              isMini={isMini}
+            />
+          )}
+          {step === 1 && (
+            <SelectRegionPage
+              isMini={isMini}
+              states={states}
+              actions={actions}
+            />
+          )}
           {step === 2 && (
             <SelectDatePage
               startDateTimestamp={startDateTimestamp}
@@ -232,13 +261,18 @@ const WriteMain: React.FC = () => {
               handleImageChange={handleImageChange}
             />
           )}
-          {step === 6 && <SuccessNotificationPage isSuccess={isSuccess} isFile={!!tripImageFile} />}
+          {step === 6 && (
+            <SuccessNotificationPage
+              isSuccess={isSuccess}
+              isFile={!!tripImageFile}
+            />
+          )}
         </div>
-        <div className="relatvie h-[10%] w-[90%] xl:h-[10%] xl:w-[60%] mx-auto flex justify-center items-center">
+        <div className="relatvie mx-auto flex h-[10%] w-[90%] items-center justify-center xl:h-[10%] xl:w-[60%]">
           <NextButton
             className={twMerge(
-              'text-xl text-white leading-none bg-main-color font-bold py-3 px-4 my-0.5 xl:py-3 rounded-xl w-full hover:bg-main-color/80',
-              isMini && 'mt-0.5 mb-0',
+              "my-0.5 w-full rounded-xl bg-main-color px-4 py-3 font-bold text-white text-xl leading-none hover:bg-main-color/80 xl:py-3",
+              isMini && "mt-0.5 mb-0",
             )}
             onClick={async () => {
               if (step === 5) {

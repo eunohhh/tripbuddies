@@ -4,33 +4,33 @@ import type { TripWithContract } from "@/types/Trips.types";
 import { createClient } from "@/utils/supabase/server";
 
 export async function GET(
-	_req: NextRequest,
-	{ params }: { params: Promise<{ id: string }> },
+  _req: NextRequest,
+  { params }: { params: Promise<{ id: string }> },
 ) {
-	const { id } = await params;
+  const { id } = await params;
 
-	const supabase = await createClient();
+  const supabase = await createClient();
 
-	const {
-		data: trip,
-		error: tripError,
-	}: {
-		data: TripWithContract | null;
-		error: PostgrestError | null;
-	} = await supabase
-		.from("trips")
-		.select("*, contract (*)")
-		.eq("trip_id", id)
-		.maybeSingle();
+  const {
+    data: trip,
+    error: tripError,
+  }: {
+    data: TripWithContract | null;
+    error: PostgrestError | null;
+  } = await supabase
+    .from("trips")
+    .select("*, contract (*)")
+    .eq("trip_id", id)
+    .maybeSingle();
 
-	if (tripError) {
-		console.error(tripError);
-		return NextResponse.json({ error: tripError?.message }, { status: 401 });
-	}
+  if (tripError) {
+    console.error(tripError);
+    return NextResponse.json({ error: tripError?.message }, { status: 401 });
+  }
 
-	if (!trip) {
-		return NextResponse.json({ error: "Trip not found" }, { status: 404 });
-	}
+  if (!trip) {
+    return NextResponse.json({ error: "Trip not found" }, { status: 404 });
+  }
 
-	return NextResponse.json(trip, { status: 200 });
+  return NextResponse.json(trip, { status: 200 });
 }

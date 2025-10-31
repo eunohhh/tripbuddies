@@ -1,52 +1,53 @@
-'use client';
+"use client";
 
-import { QUERY_KEY_STORIES } from '@/constants/query.constants';
-import { useAuth } from '@/hooks';
-import { useStoryLikesMutation } from '@/hooks/queries';
-import { StoryLikes } from '@/types/Story.types';
-import { showAlert } from '@/utils/ui/openCustomAlert';
-import { useQueryClient } from '@tanstack/react-query';
-import { useRouter } from 'next/navigation';
-import React, { useEffect, useMemo, useState } from 'react';
-import { FaHeart, FaRegHeart } from 'react-icons/fa';
-import { twMerge } from 'tailwind-merge';
+import { useQueryClient } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
+import React, { useEffect, useMemo, useState } from "react";
+import { FaHeart, FaRegHeart } from "react-icons/fa";
+import { twMerge } from "tailwind-merge";
+import { QUERY_KEY_STORIES } from "@/constants/query.constants";
+import { useAuth } from "@/hooks";
+import { useStoryLikesMutation } from "@/hooks/queries";
+import { StoryLikes } from "@/types/Story.types";
+import { showAlert } from "@/utils/ui/openCustomAlert";
 
 type LikesButtonProps = {
   storyId: string;
   likesCount: number;
-  mode?: 'card' | 'detail';
+  mode?: "card" | "detail";
   likes: StoryLikes[];
 };
 
 const LikesButton: React.FC<LikesButtonProps> = ({
   storyId,
   likesCount,
-  mode = 'detail',
+  mode = "detail",
   likes,
 }) => {
   const { buddy } = useAuth();
   const router = useRouter();
   const queryClient = useQueryClient();
-  const { mutate: likesMutate, isPending: isPosting } = useStoryLikesMutation(storyId);
+  const { mutate: likesMutate, isPending: isPosting } =
+    useStoryLikesMutation(storyId);
 
   // const { data: likes, isPending: isLikesPending } = useStoryLikesQuery({
   //     id: storyId,
   // });
 
   const [isLiked, setIsLiked] = useState<boolean>(
-    likes?.find((like) => like.storylikes_buddy_id === buddy?.buddy_id) ? true : false,
+    !!likes?.find((like) => like.storylikes_buddy_id === buddy?.buddy_id),
   );
 
   const isOptimisticUpdate = useMemo(
-    () => (likes?.find((like) => like.storylikes_buddy_id === buddy?.buddy_id) ? true : false),
+    () => !!likes?.find((like) => like.storylikes_buddy_id === buddy?.buddy_id),
     [likes, buddy],
   );
 
   const handleClick = (e: React.MouseEvent<SVGElement>) => {
     // const isLikedDataSet = e.currentTarget.dataset.isliked;
     if (!buddy) {
-      showAlert('caution', '로그인이 필요합니다.', {
-        onConfirm: () => router.push('/login'),
+      showAlert("caution", "로그인이 필요합니다.", {
+        onConfirm: () => router.push("/login"),
       });
     } else {
       // setLikesCount(prev =>
@@ -71,8 +72,10 @@ const LikesButton: React.FC<LikesButtonProps> = ({
 
   useEffect(() => {
     if (likes && buddy) {
-      const isLiked = likes.find((like) => like.storylikes_buddy_id === buddy.buddy_id);
-      setIsLiked(isLiked ? true : false);
+      const isLiked = likes.find(
+        (like) => like.storylikes_buddy_id === buddy.buddy_id,
+      );
+      setIsLiked(!!isLiked);
       queryClient.invalidateQueries({
         queryKey: [QUERY_KEY_STORIES],
       });
@@ -89,12 +92,16 @@ const LikesButton: React.FC<LikesButtonProps> = ({
   return (
     <div
       className={twMerge(
-        'flex flex-row items-center gap-1',
-        mode === 'card' ? 'text-xs' : 'text-md',
+        "flex flex-row items-center gap-1",
+        mode === "card" ? "text-xs" : "text-md",
       )}
     >
       {isOptimisticUpdate ? (
-        <FaHeart data-isliked="liked" className="cursor-pointer fill-white" onClick={handleClick} />
+        <FaHeart
+          data-isliked="liked"
+          className="cursor-pointer fill-white"
+          onClick={handleClick}
+        />
       ) : (
         <FaRegHeart
           data-isliked="unliked"

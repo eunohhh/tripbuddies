@@ -1,15 +1,18 @@
-'use client';
+"use client";
 
-import { useCalendar } from '@/hooks';
-import React from 'react';
-import SelectedResultRealtimeText from '../write/SelectedResultRealtimeText';
+import React from "react";
+import { useCalendar } from "@/hooks";
+import SelectedResultRealtimeText from "../write/SelectedResultRealtimeText";
 
 type DateSearchSectionProps = {
   setDateChange: (start: string, end: string) => void;
 };
 
-const DateSearchSection: React.FC<DateSearchSectionProps> = ({ setDateChange }) => {
-  const { SelectCalendar, startDateTimestamp, endDateTimestamp } = useCalendar();
+const DateSearchSection: React.FC<DateSearchSectionProps> = ({
+  setDateChange,
+}) => {
+  const { SelectCalendar, startDateTimestamp, endDateTimestamp } =
+    useCalendar();
 
   React.useEffect(() => {
     if (startDateTimestamp && endDateTimestamp) {
@@ -22,9 +25,9 @@ const DateSearchSection: React.FC<DateSearchSectionProps> = ({ setDateChange }) 
   tomorrow.setDate(today.getDate() + 1);
 
   const formatDate = (date: Date) => {
-    const week = ['일', '월', '화', '수', '목', '금', '토'];
+    const week = ["일", "월", "화", "수", "목", "금", "토"];
     const dayOfWeek = week[date.getDay()];
-    return `${date.getFullYear().toString().slice(-2)}.${(date.getMonth() + 1).toString().padStart(2, '0')}.${date.getDate().toString().padStart(2, '0')}(${dayOfWeek})`;
+    return `${date.getFullYear().toString().slice(-2)}.${(date.getMonth() + 1).toString().padStart(2, "0")}.${date.getDate().toString().padStart(2, "0")}(${dayOfWeek})`;
   };
 
   return (

@@ -1,14 +1,14 @@
-'use client';
+"use client";
 
-import { showAlert } from '@/utils/ui/openCustomAlert';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState } from "react";
+import { showAlert } from "@/utils/ui/openCustomAlert";
 
 type UseNextButtonProps = {
   initialStep?: number;
   limit: number;
   buttonText: string;
   disabled?: boolean;
-  validateStep?: () => boolean | Promise<boolean | 'no-image'>;
+  validateStep?: () => boolean | Promise<boolean | "no-image">;
 };
 
 export const useNextButton = ({
@@ -25,16 +25,20 @@ export const useNextButton = ({
     if (validateStep) {
       const isValid = await validateStep();
       if (!isValid) return false; // 유효성 검사 실패 시 스텝 증가 안 함
-      if (isValid === 'no-image') {
-        showAlert('caution', '이미지를 선택하지 않으셨습니다. AI이미지로 자동생성 하시겠습니까?', {
-          onConfirm: () => {
-            setStep((prevStep) => prevStep + 1);
+      if (isValid === "no-image") {
+        showAlert(
+          "caution",
+          "이미지를 선택하지 않으셨습니다. AI이미지로 자동생성 하시겠습니까?",
+          {
+            onConfirm: () => {
+              setStep((prevStep) => prevStep + 1);
+            },
+            onCancel: () => {
+              return;
+            },
           },
-          onCancel: () => {
-            return;
-          },
-        });
-        return 'no-image';
+        );
+        return "no-image";
       }
     }
     return true;
@@ -56,7 +60,7 @@ export const useNextButton = ({
         const isValid = await handleNext();
         if (!isValid) {
           return;
-        } else if (isValid === 'no-image') {
+        } else if (isValid === "no-image") {
           if (onClick) onClick();
         } else {
           if (step < limit) setStep((prevStep) => prevStep + 1);

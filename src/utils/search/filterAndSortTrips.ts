@@ -1,4 +1,4 @@
-import { TripWithContract } from '@/types/Trips.types';
+import { TripWithContract } from "@/types/Trips.types";
 
 export const filterAndSortTrips = (
   trips: TripWithContract[],
@@ -8,7 +8,9 @@ export const filterAndSortTrips = (
     .map((trip) => {
       // 선택된 테마와 일치하는 테마의 갯수
       const tripThemes = [trip.trip_theme1, trip.trip_theme2, trip.trip_theme3];
-      const matchingCount = selectedThemes.filter((theme) => tripThemes.includes(theme)).length;
+      const matchingCount = selectedThemes.filter((theme) =>
+        tripThemes.includes(theme),
+      ).length;
       return { trip, matchingCount };
     })
     .filter(({ matchingCount }) => matchingCount > 0)

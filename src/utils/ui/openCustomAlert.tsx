@@ -1,4 +1,4 @@
-import { AlertProps, ModalContextType } from '@/types/Modal.types';
+import { AlertProps, ModalContextType } from "@/types/Modal.types";
 
 let modalContext: ModalContextType;
 
@@ -7,12 +7,14 @@ export function setModalContext(context: ModalContextType) {
 }
 
 export const showAlert = (
-  mode: 'success' | 'caution' | 'error',
+  mode: "success" | "caution" | "error",
   description: string,
   options: AlertProps = {},
 ): void => {
   if (!modalContext) {
-    console.error('Modal context is not set. Ensure ModalProvider is initialized.');
+    console.error(
+      "Modal context is not set. Ensure ModalProvider is initialized.",
+    );
     return;
   }
 

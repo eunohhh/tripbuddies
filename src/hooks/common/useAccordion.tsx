@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import React, { useState } from 'react';
-import { FaChevronDown, FaChevronUp } from 'react-icons/fa';
+import React, { useState } from "react";
+import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 
 type AccordionProps = {
   title: string;
@@ -37,18 +37,20 @@ const Accordion: React.FC<AccordionProps> = ({
   icon,
 }) => {
   return (
-    <div className="w-full rounded-lg mb-2">
+    <div className="mb-2 w-full rounded-lg">
       <div
-        className="flex items-center justify-between p-4 cursor-pointer"
+        className="flex cursor-pointer items-center justify-between p-4"
         onClick={toggleAccordion}
       >
         <div className="flex items-center">
-          {icon && <div className="text-xl mr-4">{icon}</div>}
+          {icon && <div className="mr-4 text-xl">{icon}</div>}
         </div>
         <div className="flex-grow text-center">
-          <div className="text-xl font-medium">{title}</div>
+          <div className="font-medium text-xl">{title}</div>
         </div>
-        <div className="text-xl">{isOpen ? <FaChevronUp /> : <FaChevronDown />}</div>
+        <div className="text-xl">
+          {isOpen ? <FaChevronUp /> : <FaChevronDown />}
+        </div>
       </div>
       {isOpen && <div className="border-t p-4">{children}</div>}
     </div>

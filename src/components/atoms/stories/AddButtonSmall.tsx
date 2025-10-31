@@ -1,28 +1,32 @@
-'use client';
-import Image from 'next/image';
-import { useRouter } from 'next/navigation';
-import React from 'react';
-import { twMerge } from 'tailwind-merge';
+"use client";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
+import React from "react";
+import { twMerge } from "tailwind-merge";
 
 type AddButtonSmallProps = {
   isBig?: boolean;
   onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
 };
 
-const AddButtonSmall: React.FC<AddButtonSmallProps> = ({ onClick = () => {}, isBig = false }) => {
+const AddButtonSmall: React.FC<AddButtonSmallProps> = ({
+  onClick = () => {},
+  isBig = false,
+}) => {
   const router = useRouter();
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     onClick(e);
-    if (!isBig) router.push('/write/story');
+    if (!isBig) router.push("/write/story");
   };
 
   return (
     <button
+      type="button"
       onClick={handleClick}
       className={twMerge(
-        'absolute bottom-0 right-0 w-[16px] h-[16px] bg-white rounded-full flex justify-center items-center',
-        isBig ? 'w-[20px] h-[20px]' : '',
+        "absolute right-0 bottom-0 flex h-[16px] w-[16px] items-center justify-center rounded-full bg-white",
+        isBig ? "h-[20px] w-[20px]" : "",
       )}
     >
       <Image

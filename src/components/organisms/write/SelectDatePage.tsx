@@ -1,7 +1,7 @@
-import Left2xlBoldText from '@/components/atoms/write/Left2xlText';
-import LeftSmGrayText from '@/components/atoms/write/LeftSmGrayText';
-import React from 'react';
-import SelectedResultRealtimeText from './SelectedResultRealtimeText';
+import React from "react";
+import Left2xlBoldText from "@/components/atoms/write/Left2xlText";
+import LeftSmGrayText from "@/components/atoms/write/LeftSmGrayText";
+import SelectedResultRealtimeText from "./SelectedResultRealtimeText";
 
 type SelectDatePageProps = {
   SelectCalendar: React.FC;
@@ -14,16 +14,16 @@ export default function SelectDatePage({
   startDateTimestamp,
   endDateTimestamp,
 }: SelectDatePageProps) {
-  const title = '날짜를 선택해주세요';
+  const title = "날짜를 선택해주세요";
   const subtitle = `여정 시작 날짜와 종료 날짜의 범위를 선택해주세요.`;
   return (
-    <div className="flex flex-col xl:flex-row h-full">
+    <div className="flex h-full flex-col xl:flex-row">
       <div className="w-full xl:w-[40%]">
         <Left2xlBoldText className="xl:text-2xl" text={title} />
         <LeftSmGrayText text={subtitle} />
       </div>
-      <div className="w-full h-full xl:w-[60%]">
-        <div className="flex justify-center items-center h-[80%]">
+      <div className="h-full w-full xl:w-[60%]">
+        <div className="flex h-[80%] items-center justify-center">
           <SelectCalendar />
         </div>
         <div>

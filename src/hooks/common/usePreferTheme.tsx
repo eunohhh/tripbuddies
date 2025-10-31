@@ -1,13 +1,18 @@
-'use client';
+"use client";
 
-import PreferTheme from '@/components/atoms/common/PreferTheme';
-import { buddyThemes, tripThemes } from '@/data/themes';
-import { AllBuddyTheme, AllTripTheme, BuddyTheme, TripTheme } from '@/types/Themes.types';
-import handleChipClick from '@/utils/common/handleChipClick';
-import React, { MouseEvent, useEffect, useRef, useState } from 'react';
+import React, { MouseEvent, useEffect, useRef, useState } from "react";
+import PreferTheme from "@/components/atoms/common/PreferTheme";
+import { buddyThemes, tripThemes } from "@/data/themes";
+import {
+  AllBuddyTheme,
+  AllTripTheme,
+  BuddyTheme,
+  TripTheme,
+} from "@/types/Themes.types";
+import handleChipClick from "@/utils/common/handleChipClick";
 
 type UsePreferThemeProps = {
-  mode: 'trip' | 'buddy';
+  mode: "trip" | "buddy";
   isLabel?: boolean;
 };
 // setSelectedTheme를 props로 내려받고 싶어서 추가.
@@ -22,9 +27,11 @@ export const usePreferTheme = ({
   (TripTheme | BuddyTheme)[],
 ] => {
   const themeRef = useRef<AllTripTheme[] | AllBuddyTheme[]>(
-    mode === 'trip' ? [...tripThemes] : [...buddyThemes],
+    mode === "trip" ? [...tripThemes] : [...buddyThemes],
   );
-  const [selectedTheme, setSelectedTheme] = useState<(TripTheme | BuddyTheme)[]>([]);
+  const [selectedTheme, setSelectedTheme] = useState<
+    (TripTheme | BuddyTheme)[]
+  >([]);
 
   const handleThemeChange = (e: MouseEvent<HTMLSpanElement>) => {
     e.preventDefault();
@@ -53,7 +60,7 @@ export const usePreferTheme = ({
         selectedTheme={selectedTheme}
         handleThemeChange={handleThemeChange}
         themes={themeRef.current}
-        label={!isLabel ? null : mode === 'trip' ? '여행 테마' : '버디즈 성향'}
+        label={!isLabel ? null : mode === "trip" ? "여행 테마" : "버디즈 성향"}
         className={className}
       />
     );

@@ -1,8 +1,8 @@
-import { Contract } from './Contract.types';
-import { Tables } from './supabase';
-import { BuddyTheme, TripTheme } from './Themes.types';
+import { Contract } from "./Contract.types";
+import { Tables } from "./supabase";
+import { BuddyTheme, TripTheme } from "./Themes.types";
 
-export type Trip = Tables<'trips'>;
+export type Trip = Tables<"trips">;
 
 export type PartialTrip = Partial<Trip>;
 
@@ -19,7 +19,7 @@ export type TripInfiniteQueryResponse = {
   currentPage: number;
 };
 
-export type BookMark = Tables<'tripbookmarks'>;
+export type BookMark = Tables<"tripbookmarks">;
 
 export type PartialBookMark = Partial<BookMark>;
 
@@ -52,5 +52,5 @@ export type TripEditTextData = {
 export type TripMutationData = {
   newTrip: FormData;
   id: string;
-  mode: 'new' | 'patch';
+  mode: "new" | "patch";
 };

@@ -1,9 +1,13 @@
-import { getStories } from '@/api-services/stories';
-import StoryList from '@/components/organisms/stories/StoryList';
-import { QUERY_KEY_STORY } from '@/constants/query.constants';
-import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query';
-import React, { Suspense } from 'react';
-import Loading from '../loading';
+import {
+  dehydrate,
+  HydrationBoundary,
+  QueryClient,
+} from "@tanstack/react-query";
+import React, { Suspense } from "react";
+import { getStories } from "@/api-services/stories";
+import StoryList from "@/components/organisms/stories/StoryList";
+import { QUERY_KEY_STORY } from "@/constants/query.constants";
+import Loading from "../loading";
 
 const StoriesPage: React.FC = async () => {
   const queryClient = new QueryClient();

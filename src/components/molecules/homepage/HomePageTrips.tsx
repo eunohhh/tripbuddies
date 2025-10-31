@@ -1,6 +1,6 @@
-import { TripWithContract } from '@/types/Trips.types';
-import React from 'react';
-import TripCard from '../../organisms/trips/TripCard';
+import React from "react";
+import { TripWithContract } from "@/types/Trips.types";
+import TripCard from "../../organisms/trips/TripCard";
 
 type HomePageTripsProps = {
   trips: TripWithContract[];

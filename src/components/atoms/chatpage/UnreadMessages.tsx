@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 type UnreadMessagesProps = {
   unread_count?: number;
@@ -6,7 +6,7 @@ type UnreadMessagesProps = {
 
 const UnreadMessages: React.FC<UnreadMessagesProps> = ({ unread_count }) => {
   return (
-    <span className="text-center text-[12px] font-semibold text-white bg-secondary-color-300 rounded-[40px] px-[7px] py-[4px]">
+    <span className="rounded-[40px] bg-secondary-color-300 px-[7px] py-[4px] text-center font-semibold text-[12px] text-white">
       {unread_count}
     </span>
   );

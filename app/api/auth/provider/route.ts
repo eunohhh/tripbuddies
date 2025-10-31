@@ -1,27 +1,30 @@
-import { PUBLIC_URL } from '@/constants/common.constants';
-import { createClient } from '@/utils/supabase/server';
-import { Provider } from '@supabase/supabase-js';
-import { redirect } from 'next/navigation';
-import { NextRequest, NextResponse } from 'next/server';
+import { Provider } from "@supabase/supabase-js";
+import { redirect } from "next/navigation";
+import { NextRequest, NextResponse } from "next/server";
+import { PUBLIC_URL } from "@/constants/common.constants";
+import { createClient } from "@/utils/supabase/server";
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
-  const provider = searchParams.get('provider');
+  const provider = searchParams.get("provider");
 
   const supabase = await createClient();
   if (!PUBLIC_URL) {
-    return NextResponse.json({ error: 'PUBLIC_URL is not set' }, { status: 401 });
+    return NextResponse.json(
+      { error: "PUBLIC_URL is not set" },
+      { status: 401 },
+    );
   }
 
   const getURL = () => {
     let url =
       PUBLIC_URL ?? // Set this to your site URL in production env.
       process?.env?.NEXT_PUBLIC_VERCEL_URL ?? // Automatically set by Vercel.
-      'http://localhost:3000/';
+      "http://localhost:3000/";
     // Make sure to include `https://` when not localhost.
-    url = url.startsWith('http') ? url : `https://${url}`;
+    url = url.startsWith("http") ? url : `https://${url}`;
     // Make sure to include a trailing `/`.
-    url = url.endsWith('/') ? url : `${url}/`;
+    url = url.endsWith("/") ? url : `${url}/`;
     return url;
   };
 

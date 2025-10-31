@@ -1,7 +1,7 @@
-import { getInfiniteTrips } from '@/api-services/trips/tripService';
-import { QUERY_KEY_TRIP_INFINITE } from '@/constants/query.constants';
-import { TripInfiniteQueryResponse } from '@/types/Trips.types';
-import { useInfiniteQuery } from '@tanstack/react-query';
+import { useInfiniteQuery } from "@tanstack/react-query";
+import { getInfiniteTrips } from "@/api-services/trips/tripService";
+import { QUERY_KEY_TRIP_INFINITE } from "@/constants/query.constants";
+import { TripInfiniteQueryResponse } from "@/types/Trips.types";
 
 export function useTripInfiniteQuery() {
   return useInfiniteQuery({

@@ -1,5 +1,5 @@
-import { createClient } from '@/utils/supabase/server';
-import { NextResponse } from 'next/server';
+import { NextResponse } from "next/server";
+import { createClient } from "@/utils/supabase/server";
 
 export async function PATCH(req: Request) {
   const { password } = await req.json();
@@ -19,13 +19,13 @@ export async function PATCH(req: Request) {
   }
 
   if (!user) {
-    return NextResponse.json({ error: 'User not found' }, { status: 404 });
+    return NextResponse.json({ error: "User not found" }, { status: 404 });
   }
 
   const { data: buddy, error: userError } = await supabase
-    .from('buddies')
-    .select('*')
-    .eq('buddy_id', user.id)
+    .from("buddies")
+    .select("*")
+    .eq("buddy_id", user.id)
     .single();
 
   if (userError) {

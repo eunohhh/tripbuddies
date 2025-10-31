@@ -1,9 +1,12 @@
-'use client';
+"use client";
 
-import { TripWithContract } from '@/types/Trips.types';
-import { filterAndSortTrips, filterAndSortTripsBuddies } from '@/utils/search/filterAndSortTrips';
-import supabase from '@/utils/supabase/client';
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
+import { TripWithContract } from "@/types/Trips.types";
+import {
+  filterAndSortTrips,
+  filterAndSortTripsBuddies,
+} from "@/utils/search/filterAndSortTrips";
+import supabase from "@/utils/supabase/client";
 
 export type Filters = {
   searchInput: string | null;
@@ -25,11 +28,19 @@ export const applyFilters = (trips: TripWithContract[], filters: Filters) => {
   // console.log('filters', filters);
 
   // 검색어
-  if (filters.searchInput && filters.searchInput.trim() !== '' && filters.searchInput !== 'null') {
+  if (
+    filters.searchInput &&
+    filters.searchInput.trim() !== "" &&
+    filters.searchInput !== "null"
+  ) {
     filteredItems = filteredItems.filter(
       (item: TripWithContract) =>
-        item.trip_title.toLowerCase().includes(filters.searchInput?.toLowerCase() || '') ||
-        item.trip_content.toLowerCase().includes(filters.searchInput?.toLowerCase() || ''),
+        item.trip_title
+          .toLowerCase()
+          .includes(filters.searchInput?.toLowerCase() || "") ||
+        item.trip_content
+          .toLowerCase()
+          .includes(filters.searchInput?.toLowerCase() || ""),
     );
   }
 
@@ -37,8 +48,8 @@ export const applyFilters = (trips: TripWithContract[], filters: Filters) => {
   if (
     filters.startDateTimestamp &&
     filters.endDateTimestamp &&
-    filters.startDateTimestamp !== 'null' &&
-    filters.endDateTimestamp !== 'null'
+    filters.startDateTimestamp !== "null" &&
+    filters.endDateTimestamp !== "null"
   ) {
     const startDate = new Date(filters.startDateTimestamp);
     const endDate = new Date(filters.endDateTimestamp);
@@ -52,23 +63,27 @@ export const applyFilters = (trips: TripWithContract[], filters: Filters) => {
   }
 
   // 장소
-  if (filters.thirdLevelLocation && filters.thirdLevelLocation !== 'null') {
+  if (filters.thirdLevelLocation && filters.thirdLevelLocation !== "null") {
     filteredItems = filteredItems.filter((item: TripWithContract) =>
-      item.trip_final_destination.includes(filters.thirdLevelLocation as string),
+      item.trip_final_destination.includes(
+        filters.thirdLevelLocation as string,
+      ),
     );
   }
 
   // 성별
-  if (filters.selectedGender && filters.selectedGender !== 'null') {
+  if (filters.selectedGender && filters.selectedGender !== "null") {
     filteredItems = filteredItems.filter(
-      (item: TripWithContract) => item.trip_wanted_sex === filters.selectedGender,
+      (item: TripWithContract) =>
+        item.trip_wanted_sex === filters.selectedGender,
     );
   }
 
   // 만남 장소
-  if (filters.selectedMeetingPlace && filters.selectedMeetingPlace !== 'null') {
+  if (filters.selectedMeetingPlace && filters.selectedMeetingPlace !== "null") {
     filteredItems = filteredItems.filter(
-      (item: TripWithContract) => item.trip_meet_location === filters.selectedMeetingPlace,
+      (item: TripWithContract) =>
+        item.trip_meet_location === filters.selectedMeetingPlace,
     );
   }
 
@@ -81,7 +96,8 @@ export const applyFilters = (trips: TripWithContract[], filters: Filters) => {
   ) {
     filteredItems = filteredItems.filter(
       (item: TripWithContract) =>
-        item.trip_start_age >= filters.startAge! && item.trip_end_age <= filters.endAge!,
+        item.trip_start_age >= filters.startAge! &&
+        item.trip_end_age <= filters.endAge!,
     );
   }
 
@@ -89,7 +105,7 @@ export const applyFilters = (trips: TripWithContract[], filters: Filters) => {
   if (
     filters.selectedThemes &&
     filters.selectedThemes.length > 0 &&
-    filters.selectedThemes.some((theme) => theme !== 'null' && theme !== '')
+    filters.selectedThemes.some((theme) => theme !== "null" && theme !== "")
   ) {
     filteredItems = filterAndSortTrips(filteredItems, filters.selectedThemes);
   }
@@ -98,9 +114,14 @@ export const applyFilters = (trips: TripWithContract[], filters: Filters) => {
   if (
     filters.selectedBuddyThemes &&
     filters.selectedBuddyThemes.length > 0 &&
-    filters.selectedBuddyThemes.some((theme) => theme !== 'null' && theme !== '')
+    filters.selectedBuddyThemes.some(
+      (theme) => theme !== "null" && theme !== "",
+    )
   ) {
-    filteredItems = filterAndSortTripsBuddies(filteredItems, filters.selectedBuddyThemes);
+    filteredItems = filterAndSortTripsBuddies(
+      filteredItems,
+      filters.selectedBuddyThemes,
+    );
   }
 
   return filteredItems;
@@ -113,12 +134,12 @@ export function useFilteredTrips(initialFilters: Filters) {
 
   useEffect(() => {
     const fetchFilteredTrips = async () => {
-      const { data, error } = await supabase.from('trips').select(
+      const { data, error } = await supabase.from("trips").select(
         // '*, contract:contract!contract_contract_trip_id_foreign (*)',
-        '*, contract (*)',
+        "*, contract (*)",
       );
       if (error) {
-        console.error('Fetch Error:', error.message);
+        console.error("Fetch Error:", error.message);
         return;
       }
 

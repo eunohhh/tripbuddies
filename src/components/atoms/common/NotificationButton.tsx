@@ -1,7 +1,7 @@
-'use client';
-import { useNotification } from '@/hooks/notification/useNotification';
-import Link from 'next/link';
-import Alarm from '../../../../public/svg/Alarm.svg';
+"use client";
+import Link from "next/link";
+import { useNotification } from "@/hooks/notification/useNotification";
+import Alarm from "../../../../public/svg/Alarm.svg";
 
 const NotificationButton = () => {
   const { hasNotification } = useNotification();
@@ -10,7 +10,7 @@ const NotificationButton = () => {
     <Link href="/notifications" className="relative cursor-pointer">
       <Alarm />
       {hasNotification && (
-        <div className="bg-[#E12B56] w-[8px] h-[8px] rounded-full absolute right-0 top-0 box-content border-2 border-white"></div>
+        <div className="absolute top-0 right-0 box-content h-[8px] w-[8px] rounded-full border-2 border-white bg-[#E12B56]"></div>
       )}
     </Link>
   );

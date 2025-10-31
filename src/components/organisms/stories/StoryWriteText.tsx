@@ -1,15 +1,15 @@
-'use client';
+"use client";
 
-import DefaultLoader from '@/components/atoms/common/DefaultLoader';
-import { useAuth } from '@/hooks';
-import { useStoryMutation } from '@/hooks/queries';
-import { StoryData, StoryFilter, StoryOverlay } from '@/types/Story.types';
-import { showAlert } from '@/utils/ui/openCustomAlert';
-import clsx from 'clsx';
-import Image from 'next/image';
-import { useRouter } from 'next/navigation';
-import React, { useState } from 'react';
-import DraggableInput from './DraggableInput';
+import clsx from "clsx";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
+import React, { useState } from "react";
+import DefaultLoader from "@/components/atoms/common/DefaultLoader";
+import { useAuth } from "@/hooks";
+import { useStoryMutation } from "@/hooks/queries";
+import { StoryData, StoryFilter, StoryOverlay } from "@/types/Story.types";
+import { showAlert } from "@/utils/ui/openCustomAlert";
+import DraggableInput from "./DraggableInput";
 
 type StoryWriteTextProps = {
   imageFile: File;
@@ -35,19 +35,19 @@ const StoryWriteText: React.FC<StoryWriteTextProps> = ({
   const handleSaveButtonClick = async () => {
     // console.log('save', texts);
 
-    if (!buddy) router.push('/login');
+    if (!buddy) router.push("/login");
     if (!imageFile) return;
     if (!texts.length) return;
 
     const formData = new FormData();
-    formData.append('imageFile', imageFile);
-    formData.append('texts', JSON.stringify(texts));
+    formData.append("imageFile", imageFile);
+    formData.append("texts", JSON.stringify(texts));
 
     const payload: StoryData = formData;
     const data = await mutateAsync(payload);
 
     // console.log(data);
-    showAlert('success', '스토리 생성이 완료되었습니다.', {
+    showAlert("success", "스토리 생성이 완료되었습니다.", {
       onConfirm: () => {
         router.push(`/stories/${data?.story_id}`);
       },
@@ -55,11 +55,15 @@ const StoryWriteText: React.FC<StoryWriteTextProps> = ({
   };
 
   return (
-    <section className="relative flex flex-col gap-4 w-full h-[calc(100dvh-57px-54px)] max-h-dvh overflow-hidden aspect-auto xl:min-w-[320px] xl:max-w-[430px] xl:mx-auto bg-gray-600">
+    <section className="relative flex aspect-auto h-[calc(100dvh-57px-54px)] max-h-dvh w-full flex-col gap-4 overflow-hidden bg-gray-600 xl:mx-auto xl:min-w-[320px] xl:max-w-[430px]">
       {isPending && <DefaultLoader />}
-      {error && <div className="z-10 text-white font-bold">스토리 생성중 오류가 발생했습니다.</div>}
+      {error && (
+        <div className="z-10 font-bold text-white">
+          스토리 생성중 오류가 발생했습니다.
+        </div>
+      )}
 
-      <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-transparent to-black/80 rounded-lg z-10"></div>
+      <div className="absolute top-0 left-0 z-10 h-full w-full rounded-lg bg-gradient-to-b from-transparent to-black/80"></div>
       <Image
         src={selectedMedia}
         alt="my-story-background"
@@ -68,14 +72,19 @@ const StoryWriteText: React.FC<StoryWriteTextProps> = ({
         priority
         onLoad={() => setIsLoaded(true)}
         className={clsx(
-          'object-contain',
-          isLoaded ? 'opacity-100' : 'opacity-0',
+          "object-contain",
+          isLoaded ? "opacity-100" : "opacity-0",
           selectedFilter.className,
         )}
       />
-      <DraggableInput texts={texts} setTexts={setTexts} selectedFilter={selectedFilter} />
+      <DraggableInput
+        texts={texts}
+        setTexts={setTexts}
+        selectedFilter={selectedFilter}
+      />
       <button
-        className="absolute bg-main-color text-white px-2 py-1 rounded-md top-0 right-0 z-10"
+        type="button"
+        className="absolute top-0 right-0 z-10 rounded-md bg-main-color px-2 py-1 text-white"
         onClick={handleSaveButtonClick}
       >
         업로드

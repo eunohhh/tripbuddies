@@ -18,7 +18,7 @@
 //   return isPwa;
 // }
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 
 const useCheckPwa = (): boolean => {
   const [isPwa, setIsPwa] = useState(false);
@@ -26,7 +26,7 @@ const useCheckPwa = (): boolean => {
   useEffect(() => {
     const checkPwa = (): boolean => {
       return (
-        window.matchMedia('(display-mode: standalone)').matches ||
+        window.matchMedia("(display-mode: standalone)").matches ||
         (window.navigator as any).standalone === true
       );
     };

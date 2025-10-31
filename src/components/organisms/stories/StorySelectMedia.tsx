@@ -1,16 +1,18 @@
-'use client';
+"use client";
 
-import Input from '@/components/atoms/common/Input';
-import isMobile from '@/utils/common/isMobile';
-import { useRouter } from 'next/navigation';
-import React, { useLayoutEffect, useRef, useState } from 'react';
+import { useRouter } from "next/navigation";
+import React, { useLayoutEffect, useRef, useState } from "react";
+import Input from "@/components/atoms/common/Input";
+import isMobile from "@/utils/common/isMobile";
 
 type StorySelectMediaProps = {
   handleFileChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
-const StorySelectMedia: React.FC<StorySelectMediaProps> = ({ handleFileChange }) => {
-  const [text, setText] = useState('');
+const StorySelectMedia: React.FC<StorySelectMediaProps> = ({
+  handleFileChange,
+}) => {
+  const [text, setText] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
   const formRef = useRef<HTMLFormElement>(null);
   const router = useRouter();
@@ -23,9 +25,9 @@ const StorySelectMedia: React.FC<StorySelectMediaProps> = ({ handleFileChange })
   useLayoutEffect(() => {
     const handleResize = () => {
       if (isMobile()) {
-        setText('업로드/촬영하기');
+        setText("업로드/촬영하기");
       } else {
-        setText('업로드');
+        setText("업로드");
       }
     };
 
@@ -40,19 +42,19 @@ const StorySelectMedia: React.FC<StorySelectMediaProps> = ({ handleFileChange })
     };
 
     handleResize(); // 초기 렌더링 시 크기 확인
-    window.addEventListener('resize', debouncedHandleResize); // 창 크기 변경 시 handleResize 호출
+    window.addEventListener("resize", debouncedHandleResize); // 창 크기 변경 시 handleResize 호출
 
     return () => {
-      window.removeEventListener('resize', debouncedHandleResize); // 컴포넌트 언마운트 시 이벤트 리스너 제거
+      window.removeEventListener("resize", debouncedHandleResize); // 컴포넌트 언마운트 시 이벤트 리스너 제거
     };
   }, [router]);
 
   return (
-    <section className="relative flex flex-col gap-4 w-full h-[calc(100dvh-57px-54px)] max-h-dvh overflow-hidden aspect-auto">
-      <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-transparent to-black/80 z-10"></div>
+    <section className="relative flex aspect-auto h-[calc(100dvh-57px-54px)] max-h-dvh w-full flex-col gap-4 overflow-hidden">
+      <div className="absolute top-0 left-0 z-10 h-full w-full bg-gradient-to-b from-transparent to-black/80"></div>
 
       <form
-        className="z-10 w-full flex justify-center items-center h-full top-0 left-0"
+        className="top-0 left-0 z-10 flex h-full w-full items-center justify-center"
         ref={formRef}
       >
         <Input
@@ -64,7 +66,7 @@ const StorySelectMedia: React.FC<StorySelectMediaProps> = ({ handleFileChange })
         />
         <button
           type="button"
-          className="text-sm text-white bg-main-color px-4 py-2 rounded-lg relative font-bold"
+          className="relative rounded-lg bg-main-color px-4 py-2 font-bold text-sm text-white"
           onClick={handleButtonClick}
         >
           {text}

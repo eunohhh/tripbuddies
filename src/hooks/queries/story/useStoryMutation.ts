@@ -1,7 +1,7 @@
-import { postStory } from '@/api-services/stories';
-import { QUERY_KEY_STORY } from '@/constants/query.constants';
-import { Story, StoryData } from '@/types/Story.types';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { postStory } from "@/api-services/stories";
+import { QUERY_KEY_STORY } from "@/constants/query.constants";
+import { Story, StoryData } from "@/types/Story.types";
 
 export function useStoryMutation() {
   const queryClient = useQueryClient();

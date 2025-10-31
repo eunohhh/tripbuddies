@@ -1,37 +1,39 @@
-'use client';
+"use client";
 
-import DefaultLoader from '@/components/atoms/common/DefaultLoader';
-import Input from '@/components/atoms/common/Input';
-import Navigate from '@/components/atoms/common/Navigate';
-import HomePageTitle from '@/components/molecules/homepage/HomePageTitle';
-import BuddyProfile from '@/components/molecules/profile/BuddyProfile';
-import TripEditText from '@/components/molecules/trips/TripEditText';
-import { useModal } from '@/contexts/modal.context';
-import { useTapScroll } from '@/hooks';
+import Image from "next/image";
+import { usePathname, useRouter } from "next/navigation";
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import DefaultLoader from "@/components/atoms/common/DefaultLoader";
+import Input from "@/components/atoms/common/Input";
+import Navigate from "@/components/atoms/common/Navigate";
+import HomePageTitle from "@/components/molecules/homepage/HomePageTitle";
+import BuddyProfile from "@/components/molecules/profile/BuddyProfile";
+import TripEditText from "@/components/molecules/trips/TripEditText";
+import { useModal } from "@/contexts/modal.context";
+import { useTapScroll } from "@/hooks";
 import {
   useBuddyQueries,
   useRecommendBuddiesQuery,
   useSpecificBuddyQuery,
   useTripMutation,
   useTripQuery,
-} from '@/hooks/queries';
-import { PartialTrip, TripWithContract } from '@/types/Trips.types';
-import { showAlert } from '@/utils/ui/openCustomAlert';
-import Image from 'next/image';
-import { usePathname, useRouter } from 'next/navigation';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
-import SelectImage from '../../../../public/svg/SelectImage.svg';
-import HomePageRecommendBuddiesList from '../homepage/HomePageRecommendBuddiesList';
-import TripCard from './TripCard';
+} from "@/hooks/queries";
+import { PartialTrip, TripWithContract } from "@/types/Trips.types";
+import { showAlert } from "@/utils/ui/openCustomAlert";
+import SelectImage from "../../../../public/svg/SelectImage.svg";
+import HomePageRecommendBuddiesList from "../homepage/HomePageRecommendBuddiesList";
+import TripCard from "./TripCard";
 
 type TripDetailProps = {
   id: string;
-  mode: 'edit' | 'detail';
+  mode: "edit" | "detail";
 };
 
 const TripDetail: React.FC<TripDetailProps> = ({ id, mode }) => {
   const { data: trip, isPending, error: tripError } = useTripQuery(id);
-  const [tripImage, setTripImage] = useState<string>(trip?.trip_thumbnail as string); // 옵티미스틱용
+  const [tripImage, setTripImage] = useState<string>(
+    trip?.trip_thumbnail as string,
+  ); // 옵티미스틱용
   const [tripData, setTripData] = useState<PartialTrip | null>(null);
   const [tripImageFile, setTripImageFile] = useState<File | null>(null); // 실제 업로드용
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -44,15 +46,15 @@ const TripDetail: React.FC<TripDetailProps> = ({ id, mode }) => {
     tripTitle: string;
     tripContent: string;
   }>({
-    tripTitle: trip?.trip_title || '',
-    tripContent: trip?.trip_content || '',
+    tripTitle: trip?.trip_title || "",
+    tripContent: trip?.trip_content || "",
   });
 
   const {
     data: buddy,
     isPending: buddyPending,
     error: buddyError,
-  } = useSpecificBuddyQuery(trip?.trip_master_id || '');
+  } = useSpecificBuddyQuery(trip?.trip_master_id || "");
 
   const {
     data: recommendBuddies,
@@ -66,11 +68,19 @@ const TripDetail: React.FC<TripDetailProps> = ({ id, mode }) => {
       .map((contract) => contract.contract_buddy_id) || [],
   );
 
-  const { mutate: postTrip, isPending: postTripPending, error: postTripError } = useTripMutation();
+  const {
+    mutate: postTrip,
+    isPending: postTripPending,
+    error: postTripError,
+  } = useTripMutation();
 
-  const { createScrollLeft, createScrollRight } = useTapScroll({ refs: [buddiesRef] }) ?? {};
+  const { createScrollLeft, createScrollRight } =
+    useTapScroll({ refs: [buddiesRef] }) ?? {};
 
-  const handleTripTitleChange = (data: { tripTitle: string; tripContent: string }) => {
+  const handleTripTitleChange = (data: {
+    tripTitle: string;
+    tripContent: string;
+  }) => {
     setTripTitleContent(data);
   };
 
@@ -89,7 +99,7 @@ const TripDetail: React.FC<TripDetailProps> = ({ id, mode }) => {
   };
 
   const handleTextEditClick = () => {
-    if (mode !== 'edit') return;
+    if (mode !== "edit") return;
     return modal.openModal({
       component: () => (
         <TripEditText
@@ -110,13 +120,13 @@ const TripDetail: React.FC<TripDetailProps> = ({ id, mode }) => {
     };
     const formData = new FormData();
     if (tripImageFile) {
-      formData.append('trip_image', tripImageFile);
-      formData.append('trip_json', JSON.stringify(newTripData));
+      formData.append("trip_image", tripImageFile);
+      formData.append("trip_json", JSON.stringify(newTripData));
     } else {
-      formData.append('trip_json', JSON.stringify(newTripData));
+      formData.append("trip_json", JSON.stringify(newTripData));
     }
-    postTrip({ newTrip: formData, id: id, mode: 'patch' });
-    showAlert('success', '여정 수정이 완료되었습니다.', {
+    postTrip({ newTrip: formData, id: id, mode: "patch" });
+    showAlert("success", "여정 수정이 완료되었습니다.", {
       onConfirm: () => {
         router.push(`/trips/${id}`);
       },
@@ -126,12 +136,12 @@ const TripDetail: React.FC<TripDetailProps> = ({ id, mode }) => {
   useEffect(() => {
     if (tripError || buddyError || recommendBuddiesError || postTripError) {
       showAlert(
-        'error',
+        "error",
         tripError?.message ||
           buddyError?.message ||
           recommendBuddiesError?.message ||
           postTripError?.message ||
-          '에러가 발생했습니다.',
+          "에러가 발생했습니다.",
         {
           onConfirm: () => {
             router.refresh();
@@ -169,15 +179,18 @@ const TripDetail: React.FC<TripDetailProps> = ({ id, mode }) => {
 
   // 마스터 아이디로 유저 찾아오는 로직 추가할 것
   return (
-    <div className="flex flex-col gap-2 bg-white h-full pb-20">
+    <div className="flex h-full flex-col gap-2 bg-white pb-20">
       {postTripPending && <DefaultLoader />}
       {/** 이미지 + 여행정보 묶음 영역 */}
-      <div className="relative h-full flex flex-col xl:flex-row">
+      <div className="relative flex h-full flex-col xl:flex-row">
         {/** 이미지 영역 */}
-        <div className="h-[217px] w-full bg-white xl:w-[40%] xl:min-h-[324px] flex justify-center items-center">
-          {mode === 'edit' && (
-            <div className="absolute h-[217px] xl:w-[40%] xl:min-h-[324px] w-full top-0 left-0 bg-black/55 z-10 flex justify-center items-center">
-              <button className="bg-grayscale-color-500/70 rounded p-1">
+        <div className="flex h-[217px] w-full items-center justify-center bg-white xl:min-h-[324px] xl:w-[40%]">
+          {mode === "edit" && (
+            <div className="absolute top-0 left-0 z-10 flex h-[217px] w-full items-center justify-center bg-black/55 xl:min-h-[324px] xl:w-[40%]">
+              <button
+                type="button"
+                className="rounded bg-grayscale-color-500/70 p-1"
+              >
                 <Input
                   type="file"
                   accept="image/*"
@@ -187,13 +200,13 @@ const TripDetail: React.FC<TripDetailProps> = ({ id, mode }) => {
                   ref={fileInputRef}
                 />
                 <SelectImage
-                  className="w-full h-full animate-pulse"
+                  className="h-full w-full animate-pulse"
                   onClick={handleSvgButtonClick}
                 />
               </button>
             </div>
           )}
-          <div className="relative aspect-auto w-full h-full xl:w-[90%] xl:h-[90%] flex justify-center items-center">
+          <div className="relative flex aspect-auto h-full w-full items-center justify-center xl:h-[90%] xl:w-[90%]">
             <Image
               src={tripImage}
               alt="trip image"
@@ -210,7 +223,7 @@ const TripDetail: React.FC<TripDetailProps> = ({ id, mode }) => {
             trip={trip}
             mode="detail"
             queries={queries}
-            isEdit={mode === 'edit'}
+            isEdit={mode === "edit"}
             handleTripDataChange={handleTripDataChange}
             handleTripTitleChange={handleTripTitleChange}
             tripTitleContent={tripTitleContent}
@@ -218,42 +231,42 @@ const TripDetail: React.FC<TripDetailProps> = ({ id, mode }) => {
         )}
       </div>
 
-      {mode === 'detail' && (
-        <div className="w-full flex justify-center items-center h-[4px] py-6">
-          <hr className="w-full xl:w-[85%] py-0.5 bg-grayscale-color-100/85 border-none mx-auto" />
+      {mode === "detail" && (
+        <div className="flex h-[4px] w-full items-center justify-center py-6">
+          <hr className="mx-auto w-full border-none bg-grayscale-color-100/85 py-0.5 xl:w-[85%]" />
         </div>
       )}
 
       {/** 글쓴이 정보 영역 */}
-      <div className="flex items-center bg-white gap-2 h-[217px] xl:w-[90%] mx-auto">
+      <div className="mx-auto flex h-[217px] items-center gap-2 bg-white xl:w-[90%]">
         <BuddyProfile clickedBuddy={buddy} loading={false} />
       </div>
 
-      {mode === 'detail' && (
-        <div className="w-full flex justify-center items-center h-[4px] py-10">
-          <hr className="w-full xl:w-[85%] py-0.5 bg-grayscale-color-100/85 border-none mx-auto" />
+      {mode === "detail" && (
+        <div className="flex h-[4px] w-full items-center justify-center py-10">
+          <hr className="mx-auto w-full border-none bg-grayscale-color-100/85 py-0.5 xl:w-[85%]" />
         </div>
       )}
 
       {/** 글 내용 */}
-      <div className="flex flex-col bg-white gap-2 h-[217px] p-4">
-        {mode === 'edit' && (
-          <div className="flex justify-end h-4 items-center">
+      <div className="flex h-[217px] flex-col gap-2 bg-white p-4">
+        {mode === "edit" && (
+          <div className="flex h-4 items-center justify-end">
             <span
-              className="text-grayscale-color-500 text-right flex justify-center"
+              className="flex justify-center text-right text-grayscale-color-500"
               onClick={handleTextEditClick}
             >
               수정하기
             </span>
           </div>
         )}
-        <p className="text-gray-950 text-center whitespace-pre-wrap h-full flex items-center justify-center">
+        <p className="flex h-full items-center justify-center whitespace-pre-wrap text-center text-gray-950">
           {tripTitleContent.tripContent ?? trip.trip_content}
         </p>
       </div>
 
       {/** 추천인기 버디즈 */}
-      <div className="relative z-10 bg-white w-[90%] xl:px-5 xl:w-full mx-auto">
+      <div className="relative z-10 mx-auto w-[90%] bg-white xl:w-full xl:px-5">
         <HomePageTitle
           title="추천 인기 버디즈"
           buttonText="전체보기"
@@ -263,7 +276,7 @@ const TripDetail: React.FC<TripDetailProps> = ({ id, mode }) => {
         />
 
         <div
-          className="overflow-x-scroll scrollbar-hidden flex gap-[16px] min-h-[100px]"
+          className="scrollbar-hidden flex min-h-[100px] gap-[16px] overflow-x-scroll"
           ref={buddiesRef}
         >
           <HomePageRecommendBuddiesList
@@ -273,8 +286,16 @@ const TripDetail: React.FC<TripDetailProps> = ({ id, mode }) => {
         </div>
         {createScrollLeft && createScrollRight && (
           <>
-            <Navigate mode="before" onClick={createScrollLeft(buddiesRef)} className="top-[70%]" />
-            <Navigate mode="after" onClick={createScrollRight(buddiesRef)} className="top-[70%]" />
+            <Navigate
+              mode="before"
+              onClick={createScrollLeft(buddiesRef)}
+              className="top-[70%]"
+            />
+            <Navigate
+              mode="after"
+              onClick={createScrollRight(buddiesRef)}
+              className="top-[70%]"
+            />
           </>
         )}
       </div>

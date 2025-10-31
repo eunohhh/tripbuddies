@@ -1,6 +1,9 @@
-import { getSpecificBuddy } from '@/api-services/auth/client';
-import { QUERY_KEY_BUDDY, QUERY_KEY_SPECIFIC_BUDDY } from '@/constants/query.constants';
-import { useQueries } from '@tanstack/react-query';
+import { useQueries } from "@tanstack/react-query";
+import { getSpecificBuddy } from "@/api-services/auth/client";
+import {
+  QUERY_KEY_BUDDY,
+  QUERY_KEY_SPECIFIC_BUDDY,
+} from "@/constants/query.constants";
 
 export function useBuddyQueries(buddyIds: string[]) {
   return useQueries({

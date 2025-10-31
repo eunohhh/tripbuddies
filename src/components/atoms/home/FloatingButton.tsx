@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import { useAuth } from '@/hooks';
-import { showAlert } from '@/utils/ui/openCustomAlert';
-import { useRouter } from 'next/navigation';
-import WriteIcon from '../../../../public/svg/WriteIcon.svg';
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/hooks";
+import { showAlert } from "@/utils/ui/openCustomAlert";
+import WriteIcon from "../../../../public/svg/WriteIcon.svg";
 
 export default function FloatingButton() {
   // const [opacity, setOpacity] = useState(1);
@@ -12,11 +12,11 @@ export default function FloatingButton() {
 
   const handleClick = () => {
     if (buddy) {
-      router.push('/write');
+      router.push("/write");
       return;
     } else {
-      showAlert('caution', '로그인이 필요한 서비스입니다.', {
-        onConfirm: () => router.replace('/login'),
+      showAlert("caution", "로그인이 필요한 서비스입니다.", {
+        onConfirm: () => router.replace("/login"),
       });
     }
   };
@@ -34,7 +34,8 @@ export default function FloatingButton() {
 
   return (
     <button
-      className="fixed bottom-16 right-1/2 transform translate-x-[49vw] sm:translate-x-[213px] xl:right-auto xl:left-1/2 xl:transform xl:translate-x-[495px] xl:bottom-2 bg-white text-white rounded-full p-[11px] shadow-lg z-[999]"
+      type="button"
+      className="fixed right-1/2 bottom-16 z-[999] translate-x-[49vw] transform rounded-full bg-white p-[11px] text-white shadow-lg sm:translate-x-[213px] xl:right-auto xl:bottom-2 xl:left-1/2 xl:translate-x-[495px] xl:transform"
       // style={{ opacity }}
       onClick={handleClick}
     >

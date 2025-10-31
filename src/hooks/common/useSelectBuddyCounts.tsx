@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { twMerge } from 'tailwind-merge';
+import { useState } from "react";
+import { twMerge } from "tailwind-merge";
 
 // type useSelectBuddyCountsProps = {
 //     buddyCounts: number;
@@ -14,7 +14,9 @@ type useSelectBuddyCountsProps = {
   initialCounts?: number;
 };
 
-export function useSelectBuddyCounts({ initialCounts = 2 }: useSelectBuddyCountsProps) {
+export function useSelectBuddyCounts({
+  initialCounts = 2,
+}: useSelectBuddyCountsProps) {
   const [buddyCounts, setBuddyCounts] = useState<number>(initialCounts);
 
   const handleAddBuddyCounts = () => {
@@ -41,13 +43,14 @@ export function useSelectBuddyCounts({ initialCounts = 2 }: useSelectBuddyCounts
     return (
       <div
         className={twMerge(
-          'flex justify-center items-center mx-auto flex-row gap-[2px]',
-          isEdit && 'mx-0',
+          "mx-auto flex flex-row items-center justify-center gap-[2px]",
+          isEdit && "mx-0",
         )}
       >
         <button
+          type="button"
           className={twMerge(
-            'text-[#647484] w-[30px] h-[30px] xl:w-[50px] xl:h-[50px] bg-[#edeff1] hover:bg-gray-400 flex items-center justify-center cursor-pointer',
+            "flex h-[30px] w-[30px] cursor-pointer items-center justify-center bg-[#edeff1] text-[#647484] hover:bg-gray-400 xl:h-[50px] xl:w-[50px]",
             className,
           )}
           onClick={handleSubBuddyCounts}
@@ -58,13 +61,13 @@ export function useSelectBuddyCounts({ initialCounts = 2 }: useSelectBuddyCounts
 
         <input
           type="hidden"
-          className="md:p-2 p-1 text-xs md:text-base focus:outline-none text-center h-[24px]"
+          className="h-[24px] p-1 text-center text-xs focus:outline-none md:p-2 md:text-base"
           readOnly
           name="custom-input-number"
         />
         <div
           className={twMerge(
-            'bg-main-color w-[30px] h-[30px] xl:w-[50px] xl:h-[50px] text-white md:text-base flex items-center justify-center cursor-default',
+            "flex h-[30px] w-[30px] cursor-default items-center justify-center bg-main-color text-white md:text-base xl:h-[50px] xl:w-[50px]",
             className,
           )}
         >
@@ -72,8 +75,9 @@ export function useSelectBuddyCounts({ initialCounts = 2 }: useSelectBuddyCounts
         </div>
 
         <button
+          type="button"
           className={twMerge(
-            'text-[#647484] w-[30px] h-[30px] xl:w-[50px] xl:h-[50px] bg-[#edeff1] hover:bg-gray-400 flex items-center justify-center cursor-pointer',
+            "flex h-[30px] w-[30px] cursor-pointer items-center justify-center bg-[#edeff1] text-[#647484] hover:bg-gray-400 xl:h-[50px] xl:w-[50px]",
             className,
           )}
           onClick={handleAddBuddyCounts}

@@ -1,8 +1,8 @@
-import { SecondLevel } from '@/types/Location.types';
-import clsx from 'clsx';
-import { useEffect, useRef, useState } from 'react';
-import { twMerge } from 'tailwind-merge';
-import Chip from '../common/Chip';
+import clsx from "clsx";
+import { useEffect, useRef, useState } from "react";
+import { twMerge } from "tailwind-merge";
+import { SecondLevel } from "@/types/Location.types";
+import Chip from "../common/Chip";
 
 function LocationList({
   locations,
@@ -23,22 +23,26 @@ function LocationList({
   useEffect(() => {
     const checkScrollable = () => {
       if (scrollRef.current) {
-        setIsScrollable(scrollRef.current.scrollWidth > scrollRef.current.clientWidth);
+        setIsScrollable(
+          scrollRef.current.scrollWidth > scrollRef.current.clientWidth,
+        );
       }
     };
     checkScrollable();
-    window.addEventListener('resize', checkScrollable);
-    return () => window.removeEventListener('resize', checkScrollable);
-  }, [locations]);
+    window.addEventListener("resize", checkScrollable);
+    return () => window.removeEventListener("resize", checkScrollable);
+  }, []);
 
   useEffect(() => {
     if (scrollRef.current) {
-      const selectedButton = scrollRef.current.children[selectedIndex] as HTMLElement;
+      const selectedButton = scrollRef.current.children[
+        selectedIndex
+      ] as HTMLElement;
       if (selectedButton) {
         selectedButton.scrollIntoView({
-          behavior: 'smooth',
-          block: 'nearest',
-          inline: 'center',
+          behavior: "smooth",
+          block: "nearest",
+          inline: "center",
         });
       }
     }
@@ -49,8 +53,8 @@ function LocationList({
       {/* 도/대륙 목록 */}
       <div
         className={twMerge(
-          'flex flex-nowrap gap-2 py-3 whitespace-nowrap overflow-x-hidden scrollbar-hide',
-          isMini && 'py-2',
+          "scrollbar-hide flex flex-nowrap gap-2 overflow-x-hidden whitespace-nowrap py-3",
+          isMini && "py-2",
         )}
         ref={scrollRef}
       >
@@ -62,7 +66,7 @@ function LocationList({
                 onChipClick(subLocation.name.ko);
                 setSelectedIndex(index);
               }}
-              className={clsx('text-sm', isMini && 'text-xs')}
+              className={clsx("text-sm", isMini && "text-xs")}
             >
               {subLocation.name.ko}
             </Chip>

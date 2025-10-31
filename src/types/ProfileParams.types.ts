@@ -1,4 +1,4 @@
-import { Tables } from './supabase';
+import { Tables } from "./supabase";
 
 type Params = {
   id: string;
@@ -14,6 +14,6 @@ type BuddyProfileProps = {
   isTempText?: boolean;
 };
 
-type Notifications = Tables<'notifications'>;
+type Notifications = Tables<"notifications">;
 
 export type { BuddyProfileProps, Notifications, Params, ProfilePageProps };

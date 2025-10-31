@@ -1,6 +1,6 @@
-import { create } from 'zustand';
+import { create } from "zustand";
 
-type PageState = 'main' | 'location' | 'date' | 'result';
+type PageState = "main" | "location" | "date" | "result";
 
 type StoreState = {
   currentPage: PageState;
@@ -8,7 +8,7 @@ type StoreState = {
 };
 
 const useStore = create<StoreState>((set) => ({
-  currentPage: 'main',
+  currentPage: "main",
   setCurrentPage: (page) => set({ currentPage: page }),
 }));
 

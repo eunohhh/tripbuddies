@@ -1,5 +1,5 @@
-'use client';
-import React, { DragEvent, TouchEvent, useRef, useState } from 'react';
+"use client";
+import React, { DragEvent, TouchEvent, useRef, useState } from "react";
 
 type Position = {
   top: number;
@@ -19,7 +19,7 @@ const DraggableComponent: React.FC = () => {
     if (draggableRef.current) {
       const rect = draggableRef.current.getBoundingClientRect();
       e.dataTransfer.setData(
-        'text/plain',
+        "text/plain",
         JSON.stringify({
           offsetX: e.clientX - rect.left,
           offsetY: e.clientY - rect.top,
@@ -28,7 +28,7 @@ const DraggableComponent: React.FC = () => {
       setTimeout(() => {
         if (draggableRef.current) {
           // draggableRef.current.style.display = 'none';
-          draggableRef.current.style.opacity = '0';
+          draggableRef.current.style.opacity = "0";
         }
       }, 0);
     }
@@ -37,13 +37,13 @@ const DraggableComponent: React.FC = () => {
   const handleDragEnd = () => {
     if (draggableRef.current) {
       // draggableRef.current.style.display = 'block';
-      draggableRef.current.style.opacity = '1';
+      draggableRef.current.style.opacity = "1";
     }
   };
 
   const handleDrop = (e: DragEvent<HTMLDivElement>) => {
     e.preventDefault();
-    const data = e.dataTransfer.getData('text/plain');
+    const data = e.dataTransfer.getData("text/plain");
     if (data) {
       const { offsetX, offsetY } = JSON.parse(data);
       const rect = containerRef.current?.getBoundingClientRect();
@@ -70,7 +70,7 @@ const DraggableComponent: React.FC = () => {
       setTimeout(() => {
         if (draggableRef.current) {
           // draggableRef.current.style.display = 'none';
-          draggableRef.current.style.opacity = '0';
+          draggableRef.current.style.opacity = "0";
         }
       }, 0);
     }
@@ -90,7 +90,7 @@ const DraggableComponent: React.FC = () => {
   const handleTouchEnd = () => {
     if (draggableRef.current) {
       // draggableRef.current.style.display = 'block';
-      draggableRef.current.style.opacity = '1';
+      draggableRef.current.style.opacity = "1";
     }
   };
 
@@ -101,10 +101,10 @@ const DraggableComponent: React.FC = () => {
       onDrop={handleDrop}
       onDragOver={handleDragOver}
       style={{
-        width: '100%',
-        height: '100dvh',
-        position: 'relative',
-        border: '1px solid #ccc',
+        width: "100%",
+        height: "100dvh",
+        position: "relative",
+        border: "1px solid #ccc",
       }}
     >
       <div
@@ -117,13 +117,13 @@ const DraggableComponent: React.FC = () => {
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
         style={{
-          width: '100px',
-          height: '100px',
-          backgroundColor: 'red',
-          position: 'absolute',
+          width: "100px",
+          height: "100px",
+          backgroundColor: "red",
+          position: "absolute",
           top: `${position.top}px`,
           left: `${position.left}px`,
-          cursor: 'grab',
+          cursor: "grab",
         }}
       ></div>
     </div>

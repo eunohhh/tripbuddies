@@ -1,9 +1,9 @@
-'use client';
-import NotificationListItem from '@/components/molecules/notifications/NotificationListItem';
-import { useNotification } from '@/hooks/notification/useNotification';
-import { useState } from 'react';
-import { RxTriangleLeft, RxTriangleRight } from 'react-icons/rx';
-import { twMerge } from 'tailwind-merge';
+"use client";
+import { useState } from "react";
+import { RxTriangleLeft, RxTriangleRight } from "react-icons/rx";
+import { twMerge } from "tailwind-merge";
+import NotificationListItem from "@/components/molecules/notifications/NotificationListItem";
+import { useNotification } from "@/hooks/notification/useNotification";
 
 const NotificationsListDesktop = () => {
   const { notifications } = useNotification();
@@ -17,7 +17,8 @@ const NotificationsListDesktop = () => {
 
   allNotifications.sort(
     (a, b) =>
-      new Date(b.notification_created_at).getTime() - new Date(a.notification_created_at).getTime(),
+      new Date(b.notification_created_at).getTime() -
+      new Date(a.notification_created_at).getTime(),
   );
 
   const [currentPage, setCurrentPage] = useState(1);
@@ -35,31 +36,39 @@ const NotificationsListDesktop = () => {
     }
   };
 
-  const pageNumbers = Array.from({ length: totalPages }, (_, index) => index + 1);
+  const pageNumbers = Array.from(
+    { length: totalPages },
+    (_, index) => index + 1,
+  );
 
   return (
     <div>
       <ul className="flex flex-col gap-[18px]">
         {currentNotifications.map((notification) => (
-          <NotificationListItem key={notification.notification_id} notification={notification} />
+          <NotificationListItem
+            key={notification.notification_id}
+            notification={notification}
+          />
         ))}
       </ul>
-      <div className="w-full justify-center items-center flex mt-4">
-        <div className="flex justify-center items-center gap-3">
+      <div className="mt-4 flex w-full items-center justify-center">
+        <div className="flex items-center justify-center gap-3">
           <div
-            className={`text-2xl ${currentPage === 1 ? 'text-grayscale-color-300 cursor-default' : 'text-grayscale-color-800 cursor-pointer'}`}
+            className={`text-2xl ${currentPage === 1 ? "cursor-default text-grayscale-color-300" : "cursor-pointer text-grayscale-color-800"}`}
             data-next="before"
             onClick={() => handlePageChange(currentPage - 1)}
           >
             <RxTriangleLeft />
           </div>
-          <div className="my-[30px] flex justify-center items-center gap-[16px] min-w-[100px]">
+          <div className="my-[30px] flex min-w-[100px] items-center justify-center gap-[16px]">
             {pageNumbers.map((page) => (
               <button
+                type="button"
                 key={page}
-                className={`text-[16px]  ${twMerge(
-                  'text-grayscale-color-700',
-                  page === currentPage && 'text-grayscale-color-800 font-semibold',
+                className={`text-[16px] ${twMerge(
+                  "text-grayscale-color-700",
+                  page === currentPage &&
+                    "font-semibold text-grayscale-color-800",
                 )}`}
                 onClick={() => handlePageChange(page)}
               >
@@ -68,7 +77,7 @@ const NotificationsListDesktop = () => {
             ))}
           </div>
           <div
-            className={`text-2xl ${currentPage === totalPages ? 'text-grayscale-color-300 cursor-default' : 'text-grayscale-color-800  cursor-pointer'}`}
+            className={`text-2xl ${currentPage === totalPages ? "cursor-default text-grayscale-color-300" : "cursor-pointer text-grayscale-color-800"}`}
             data-next="after"
             onClick={() => handlePageChange(currentPage + 1)}
           >

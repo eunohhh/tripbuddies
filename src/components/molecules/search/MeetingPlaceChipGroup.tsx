@@ -1,9 +1,9 @@
-import Chip from '@/components/atoms/common/Chip';
-import SearchPageTitle from '@/components/atoms/search/SearchPageTitle';
-import { MeetingPlace } from '@/types/MeetingPlace.types';
-import React from 'react';
+import React from "react";
+import Chip from "@/components/atoms/common/Chip";
+import SearchPageTitle from "@/components/atoms/search/SearchPageTitle";
+import { MeetingPlace } from "@/types/MeetingPlace.types";
 
-const meetingPlaceOptions: MeetingPlace[] = ['출발지', '여행지'];
+const meetingPlaceOptions: MeetingPlace[] = ["출발지", "여행지"];
 
 type MeetingPlaceChipGroupProps = {
   selectedMeetingPlace: string | null;

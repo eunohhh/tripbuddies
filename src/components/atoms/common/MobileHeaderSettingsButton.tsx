@@ -1,14 +1,16 @@
-'use client';
+"use client";
 
-import { useAuth } from '@/hooks';
-import { useRouter } from 'next/navigation';
-import Settings from '../../../../public/svg/Settings.svg';
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/hooks";
+import Settings from "../../../../public/svg/Settings.svg";
 
 type MobileHeaderSettingsButtonProps = {
   uuid: string;
 };
 
-const MobileHeaderSettingsButton = ({ uuid }: MobileHeaderSettingsButtonProps) => {
+const MobileHeaderSettingsButton = ({
+  uuid,
+}: MobileHeaderSettingsButtonProps) => {
   const { buddy } = useAuth();
   const router = useRouter();
 
@@ -19,7 +21,7 @@ const MobileHeaderSettingsButton = ({ uuid }: MobileHeaderSettingsButtonProps) =
   return (
     <Settings
       className="cursor-pointer"
-      onClick={() => router.push('/onboarding?funnel=0&mode=first')}
+      onClick={() => router.push("/onboarding?funnel=0&mode=first")}
     />
   );
 };

@@ -1,16 +1,16 @@
-'use client';
+"use client";
 
-import { useAuth } from '@/hooks';
-import { useContractQuery } from '@/hooks/queries';
-import getDaysLeft from '@/utils/common/getDaysLeft';
-import filterOldTrips from '@/utils/trips/filterOldTrips';
-import Image from 'next/image';
-import Link from 'next/link';
-import { useEffect, useMemo, useState } from 'react';
+import Image from "next/image";
+import Link from "next/link";
+import { useEffect, useMemo, useState } from "react";
+import { useAuth } from "@/hooks";
+import { useContractQuery } from "@/hooks/queries";
+import getDaysLeft from "@/utils/common/getDaysLeft";
+import filterOldTrips from "@/utils/trips/filterOldTrips";
 
 const HomePageBanner = () => {
   const { buddy } = useAuth();
-  const [randomImgSrc, setRandomImgSrc] = useState<string>('');
+  const [randomImgSrc, setRandomImgSrc] = useState<string>("");
 
   const { data, isPending, error } = useContractQuery({
     isBuddy: true,
@@ -21,11 +21,11 @@ const HomePageBanner = () => {
 
   useEffect(() => {
     const bannerImgs = [
-      'test_city.jpg',
-      'test_city2.jpg',
-      'test_banner1.webp',
-      'test_banner2.webp',
-      'test_banner3.webp',
+      "test_city.jpg",
+      "test_city2.jpg",
+      "test_banner1.webp",
+      "test_banner2.webp",
+      "test_banner3.webp",
     ];
     const randomImg = bannerImgs[Math.floor(Math.random() * bannerImgs.length)];
     setRandomImgSrc(`/images/${randomImg}`);
@@ -41,25 +41,27 @@ const HomePageBanner = () => {
   }, [data]);
 
   return (
-    <div className="relative h-[200px] z-0">
-      <div className="relative text-left font-semibold text-2xl px-4 py-8 h-[230px] flex flex-col justify-end aspect-auto z-0">
-        <div className="absolute top-0 left-0 w-full h-full bg-black/40"></div>
+    <div className="relative z-0 h-[200px]">
+      <div className="relative z-0 flex aspect-auto h-[230px] flex-col justify-end px-4 py-8 text-left font-semibold text-2xl">
+        <div className="absolute top-0 left-0 h-full w-full bg-black/40"></div>
         {randomImgSrc && (
           <Image
             src={randomImgSrc}
             alt="banner"
             fill
             sizes="(max-width: 768px) 100vw, (max-width: 1280px) 100vw, 33vw"
-            className="object-cover relative z-0"
+            className="relative z-0 object-cover"
             priority
           />
         )}
-        <div className="absolute inset-0 bg-black/30 z-10" />
-        <div className="relative z-20 text-white h-full flex flex-col justify-center gap-3">
+        <div className="absolute inset-0 z-10 bg-black/30" />
+        <div className="relative z-20 flex h-full flex-col justify-center gap-3 text-white">
           {upcomingTrips.length > 0 && (
             <Link href={`trips/${upcomingTrips[0].trip_id}`}>
               <p>
-                <span className="font-bold text-3xl">{buddy?.buddy_nickname}</span>
+                <span className="font-bold text-3xl">
+                  {buddy?.buddy_nickname}
+                </span>
                 님,
               </p>
               <p>{`예정된 ${upcomingTrips[0].trip_final_destination} 여행이`}</p>
@@ -74,7 +76,9 @@ const HomePageBanner = () => {
           {!data?.trips.length && buddy && !isPending && (
             <>
               <p>
-                <span className="font-bold text-3xl">{buddy?.buddy_nickname}</span>
+                <span className="font-bold text-3xl">
+                  {buddy?.buddy_nickname}
+                </span>
                 님,
               </p>
               <p>아직 여행 일정이 없군요!</p>

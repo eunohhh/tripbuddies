@@ -1,19 +1,19 @@
-'use client';
+"use client";
 
-import HomePageRecommendBuddiesList from '@/components/organisms/homepage/HomePageRecommendBuddiesList';
-import { Buddy } from '@/types/Auth.types';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
+import HomePageRecommendBuddiesList from "@/components/organisms/homepage/HomePageRecommendBuddiesList";
+import { Buddy } from "@/types/Auth.types";
 
-const medalIcons = ['/public/gif/medal.gif'];
+const medalIcons = ["/public/gif/medal.gif"];
 
 const Skeleton: React.FC = () => {
   return (
-    <div className="min-w-[200px] h-[75px] mx-1 rounded border border-gray-200 flex items-center p-2 animate-pulse mb-4">
-      <div className="flex-shrink-0 w-[60px] h-[60px] bg-gray-300 rounded-lg"></div>
-      <div className="mx-1 flex flex-col w-full">
-        <div className="h-4 bg-gray-300 rounded w-2/3 mb-2"></div>
-        <div className="h-4 bg-gray-300 rounded w-1/2 mb-2"></div>
-        <div className="h-3 bg-gray-300 rounded w-1/4"></div>
+    <div className="mx-1 mb-4 flex h-[75px] min-w-[200px] animate-pulse items-center rounded border border-gray-200 p-2">
+      <div className="h-[60px] w-[60px] flex-shrink-0 rounded-lg bg-gray-300"></div>
+      <div className="mx-1 flex w-full flex-col">
+        <div className="mb-2 h-4 w-2/3 rounded bg-gray-300"></div>
+        <div className="mb-2 h-4 w-1/2 rounded bg-gray-300"></div>
+        <div className="h-3 w-1/4 rounded bg-gray-300"></div>
       </div>
     </div>
   );
@@ -26,12 +26,14 @@ const RankPage: React.FC = () => {
   useEffect(() => {
     const fetchBuddies = async () => {
       try {
-        const response = await fetch('/api/buddyProfile/buddiesRecommendationList');
+        const response = await fetch(
+          "/api/buddyProfile/buddiesRecommendationList",
+        );
         const data = await response.json();
         setBuddies(data.buddies);
         setLoading(false);
       } catch (error) {
-        console.error('버디 추천 리스트 통신 오류 발생:', error);
+        console.error("버디 추천 리스트 통신 오류 발생:", error);
         setLoading(false);
       }
     };
@@ -39,7 +41,7 @@ const RankPage: React.FC = () => {
   }, []);
 
   return (
-    <div className="p-8 rounded-md w-full max-w-4xl mx-auto">
+    <div className="mx-auto w-full max-w-4xl rounded-md p-8">
       {/* <div className="flex items-center justify-between pb-6">
                 <div>
                     <h1 className="text-4xl font-semibold text-gray-900">

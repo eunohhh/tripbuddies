@@ -1,21 +1,11 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-'use client';
+"use client";
 
-import ContractModal from '@/components/organisms/contract/ContractModal';
-import { useAuth } from '@/hooks';
-import { useNotificationQuery } from '@/hooks/queries';
-import {
-  ClassifiedNotification,
-  Notification,
-  NotificationContextType,
-} from '@/types/Notification.types';
-import supabase from '@/utils/supabase/client';
-import { showAlert } from '@/utils/ui/openCustomAlert';
 import {
   RealtimePostgresDeletePayload,
   RealtimePostgresInsertPayload,
   RealtimePostgresUpdatePayload,
-} from '@supabase/supabase-js';
+} from "@supabase/supabase-js";
 import {
   createContext,
   PropsWithChildren,
@@ -24,8 +14,18 @@ import {
   useMemo,
   useReducer,
   useState,
-} from 'react';
-import { useModal } from './modal.context';
+} from "react";
+import ContractModal from "@/components/organisms/contract/ContractModal";
+import { useAuth } from "@/hooks";
+import { useNotificationQuery } from "@/hooks/queries";
+import {
+  ClassifiedNotification,
+  Notification,
+  NotificationContextType,
+} from "@/types/Notification.types";
+import supabase from "@/utils/supabase/client";
+import { showAlert } from "@/utils/ui/openCustomAlert";
+import { useModal } from "./modal.context";
 
 type NotificationProviderProps = {
   initialNotifications: Notification[] | undefined;
@@ -41,11 +41,11 @@ const initialValue: NotificationContextType = {
   hasNotification: false,
 };
 
-type ActionType = 'like' | 'follow' | 'bookmark' | 'contract';
+type ActionType = "like" | "follow" | "bookmark" | "contract";
 
 type Action = {
   type: {
-    changeType: 'new' | 'old';
+    changeType: "new" | "old";
     ActionType: ActionType;
   };
   payload:
@@ -56,12 +56,13 @@ type Action = {
 
 const reducer = (notifications: ClassifiedNotification, action: Action) => {
   switch (action.type.ActionType) {
-    case 'like':
+    case "like":
       if (
         !notifications.storyLikes.some(
           (notification) =>
             notification.notification_id ===
-            (action.payload[action.type.changeType] as Notification).notification_id,
+            (action.payload[action.type.changeType] as Notification)
+              .notification_id,
         )
       ) {
         return {
@@ -77,16 +78,18 @@ const reducer = (notifications: ClassifiedNotification, action: Action) => {
           storyLikes: notifications.storyLikes.filter(
             (item) =>
               item.notification_id !==
-              (action.payload[action.type.changeType] as Notification).notification_id,
+              (action.payload[action.type.changeType] as Notification)
+                .notification_id,
           ),
         };
       }
-    case 'follow':
+    case "follow":
       if (
         notifications.follows.some(
           (notification) =>
             notification.notification_id ===
-            (action.payload[action.type.changeType] as Notification).notification_id,
+            (action.payload[action.type.changeType] as Notification)
+              .notification_id,
         )
       ) {
         return {
@@ -94,7 +97,8 @@ const reducer = (notifications: ClassifiedNotification, action: Action) => {
           follows: notifications.follows.filter(
             (item) =>
               item.notification_id !==
-              (action.payload[action.type.changeType] as Notification).notification_id,
+              (action.payload[action.type.changeType] as Notification)
+                .notification_id,
           ),
         };
       } else {
@@ -106,12 +110,13 @@ const reducer = (notifications: ClassifiedNotification, action: Action) => {
           ],
         };
       }
-    case 'bookmark':
+    case "bookmark":
       if (
         notifications.bookmarks.some(
           (notification) =>
             notification.notification_id ===
-            (action.payload[action.type.changeType] as Notification).notification_id,
+            (action.payload[action.type.changeType] as Notification)
+              .notification_id,
         )
       ) {
         return {
@@ -119,7 +124,8 @@ const reducer = (notifications: ClassifiedNotification, action: Action) => {
           bookmarks: notifications.bookmarks.filter(
             (item) =>
               item.notification_id !==
-              (action.payload[action.type.changeType] as Notification).notification_id,
+              (action.payload[action.type.changeType] as Notification)
+                .notification_id,
           ),
         };
       } else {
@@ -131,12 +137,13 @@ const reducer = (notifications: ClassifiedNotification, action: Action) => {
           ],
         };
       }
-    case 'contract':
+    case "contract":
       if (
         notifications.contracts.some(
           (notification) =>
             notification.notification_id ===
-            (action.payload[action.type.changeType] as Notification).notification_id,
+            (action.payload[action.type.changeType] as Notification)
+              .notification_id,
         )
       ) {
         return {
@@ -144,7 +151,8 @@ const reducer = (notifications: ClassifiedNotification, action: Action) => {
           contracts: notifications.contracts.filter(
             (item) =>
               item.notification_id !==
-              (action.payload[action.type.changeType] as Notification).notification_id,
+              (action.payload[action.type.changeType] as Notification)
+                .notification_id,
           ),
         };
       } else {
@@ -161,7 +169,8 @@ const reducer = (notifications: ClassifiedNotification, action: Action) => {
   }
 };
 
-export const NotificationContext = createContext<NotificationContextType>(initialValue);
+export const NotificationContext =
+  createContext<NotificationContextType>(initialValue);
 
 export const NotificationProvider = ({
   children,
@@ -174,17 +183,27 @@ export const NotificationProvider = ({
     data: notificationsFromQuery,
     isPending: isPendingNotification,
     error,
-  } = useNotificationQuery({ buddyId: buddy?.buddy_id ?? '' });
+  } = useNotificationQuery({ buddyId: buddy?.buddy_id ?? "" });
 
   const initial = notificationsFromQuery || initialNotifications;
 
   const [notifications, dispatch] = useReducer(reducer, {
-    storyLikes: initial?.filter((notification) => notification.notification_type === 'like') || [],
-    follows: initial?.filter((notification) => notification.notification_type === 'follow') || [],
+    storyLikes:
+      initial?.filter(
+        (notification) => notification.notification_type === "like",
+      ) || [],
+    follows:
+      initial?.filter(
+        (notification) => notification.notification_type === "follow",
+      ) || [],
     bookmarks:
-      initial?.filter((notification) => notification.notification_type === 'bookmark') || [],
+      initial?.filter(
+        (notification) => notification.notification_type === "bookmark",
+      ) || [],
     contracts:
-      initial?.filter((notification) => notification.notification_type === 'contract') || [],
+      initial?.filter(
+        (notification) => notification.notification_type === "contract",
+      ) || [],
   });
 
   const [isUnreadNotification, setIsUnreadNotification] = useState(false);
@@ -197,7 +216,7 @@ export const NotificationProvider = ({
       ) {
         dispatch({
           type: {
-            changeType: 'new',
+            changeType: "new",
             ActionType: payload.new.notification_type as ActionType,
           },
           payload,
@@ -215,7 +234,7 @@ export const NotificationProvider = ({
       ) {
         dispatch({
           type: {
-            changeType: 'new',
+            changeType: "new",
             ActionType: payload.new.notification_type as ActionType,
           },
           payload,
@@ -228,7 +247,7 @@ export const NotificationProvider = ({
     (payload: RealtimePostgresDeletePayload<Notification>) => {
       dispatch({
         type: {
-          changeType: 'old',
+          changeType: "old",
           ActionType: payload.old.notification_type as ActionType,
         },
         payload,
@@ -239,13 +258,13 @@ export const NotificationProvider = ({
 
   useEffect(() => {
     const notificationTableChanges = supabase
-      .channel('schema-db-changes')
+      .channel("schema-db-changes")
       .on<Notification>(
-        'postgres_changes',
+        "postgres_changes",
         {
-          event: 'INSERT',
-          schema: 'public',
-          table: 'notifications',
+          event: "INSERT",
+          schema: "public",
+          table: "notifications",
         },
         (payload) => {
           if (!payload.new.notification_isRead) {
@@ -254,11 +273,11 @@ export const NotificationProvider = ({
         },
       )
       .on<Notification>(
-        'postgres_changes',
+        "postgres_changes",
         {
-          event: 'DELETE',
-          schema: 'public',
-          table: 'notifications',
+          event: "DELETE",
+          schema: "public",
+          table: "notifications",
         },
         (payload) => {
           if (!payload.old.notification_isRead) {
@@ -267,11 +286,11 @@ export const NotificationProvider = ({
         },
       )
       .on<Notification>(
-        'postgres_changes',
+        "postgres_changes",
         {
-          event: 'UPDATE',
-          schema: 'public',
-          table: 'notifications',
+          event: "UPDATE",
+          schema: "public",
+          table: "notifications",
           // filter: `notification_isRead=eq.false`,
         },
         (payload) => {
@@ -286,7 +305,6 @@ export const NotificationProvider = ({
       supabase.removeChannel(notificationTableChanges);
     };
   }, [
-    buddy,
     handleRealTimeNotificationDelete,
     handleRealTimeNotificationInsert,
     handleRealTimeNotificationUpdate,
@@ -294,7 +312,9 @@ export const NotificationProvider = ({
 
   const unreadContracts = useMemo(
     () =>
-      notifications.contracts.filter((notification) => notification.notification_isRead === false),
+      notifications.contracts.filter(
+        (notification) => notification.notification_isRead === false,
+      ),
     [notifications],
   );
 
@@ -302,44 +322,54 @@ export const NotificationProvider = ({
     if (!isUnreadNotification) return;
     if (unreadContracts.length <= 0) return;
 
-    showAlert('caution', `새로운 참여 요청이 ${unreadContracts.length}건 있습니다.`, {
-      onConfirm: () => {
-        modal.openModal({
-          component: () => (
-            <ContractModal
-              notifications={notifications.contracts}
-              unreadContracts={unreadContracts}
-              mode="notification"
-            />
-          ),
-        });
+    showAlert(
+      "caution",
+      `새로운 참여 요청이 ${unreadContracts.length}건 있습니다.`,
+      {
+        onConfirm: () => {
+          modal.openModal({
+            component: () => (
+              <ContractModal
+                notifications={notifications.contracts}
+                unreadContracts={unreadContracts}
+                mode="notification"
+              />
+            ),
+          });
+        },
       },
-    });
-  }, [isUnreadNotification, unreadContracts]);
+    );
+  }, [isUnreadNotification, unreadContracts, modal, notifications.contracts]);
 
   useEffect(() => {
     if (!buddy) return;
 
-    const isUnreadNotification = Object.values(notifications as ClassifiedNotification)
-      .flatMap((notification) => notification)
-      .some((notification) => notification.notification_sender !== buddy.buddy_id);
+    const isUnreadNotification = Object.values(
+      notifications as ClassifiedNotification,
+    )
+      .flat()
+      .some(
+        (notification) => notification.notification_sender !== buddy.buddy_id,
+      );
 
     setIsUnreadNotification(isUnreadNotification);
   }, [notifications, buddy]);
 
   useEffect(() => {
-    console.log('notifications 상태 변경 ====>', notifications);
+    console.log("notifications 상태 변경 ====>", notifications);
   }, [notifications]);
 
   useEffect(() => {
     if (error) {
       const message = error.message;
-      showAlert('error', message);
+      showAlert("error", message);
     }
   }, [error]);
 
   return (
-    <NotificationContext.Provider value={{ notifications, hasNotification: isUnreadNotification }}>
+    <NotificationContext.Provider
+      value={{ notifications, hasNotification: isUnreadNotification }}
+    >
       {children}
     </NotificationContext.Provider>
   );

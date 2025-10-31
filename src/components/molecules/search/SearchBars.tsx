@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import DateSearchButton from '@/components/atoms/search/DateSearchButton';
-import LocationSearchButton from '@/components/atoms/search/LocationSearchButton';
-import SearchInput from '@/components/atoms/search/SearchInput';
-import React from 'react';
+import React from "react";
+import DateSearchButton from "@/components/atoms/search/DateSearchButton";
+import LocationSearchButton from "@/components/atoms/search/LocationSearchButton";
+import SearchInput from "@/components/atoms/search/SearchInput";
 
 export type SearchBarsProps = {
   searchInput: string;
@@ -37,14 +37,14 @@ const SearchBars: React.FC<SearchBarsProps> = ({
 }) => {
   const handleLocationSelect = () => {
     if (thirdLevelLocation) {
-      console.log('선택한 장소:', thirdLevelLocation);
-      console.log('?', location);
+      console.log("선택한 장소:", thirdLevelLocation);
+      console.log("?", location);
       setThirdLevelLocation(thirdLevelLocation);
     }
   };
 
   return (
-    <section className="flex flex-col mx-auto my-6 gap-[18px] xl:flex-row xl:items-center xl:justify-center xl:max-w-screen-xl xl:gap-5">
+    <section className="mx-auto my-6 flex flex-col gap-[18px] xl:max-w-screen-xl xl:flex-row xl:items-center xl:justify-center xl:gap-5">
       <SearchInput
         value={searchInput}
         onKeyDown={handleKeyDown}
@@ -65,7 +65,8 @@ const SearchBars: React.FC<SearchBarsProps> = ({
       <LocationSearchButton onClick={handleLocationSelect} />
 
       <button
-        className="hidden xl:flex xl:w-[140px] xl:px-4 xl:py-2.5 rounded-xl bg-main-color justify-center items-center mx-auto font-semibold text-white text-sm transition-colors duration-200 ease-in-out active:bg-gray-300 whitespace-nowrap"
+        type="button"
+        className="mx-auto hidden items-center justify-center whitespace-nowrap rounded-xl bg-main-color font-semibold text-sm text-white transition-colors duration-200 ease-in-out active:bg-gray-300 xl:flex xl:w-[140px] xl:px-4 xl:py-2.5"
         onClick={handleShowResult}
       >
         검색하기

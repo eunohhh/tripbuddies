@@ -14,12 +14,12 @@ export default function LocationToggleButton({
   secondLabel,
 }: LocationToggleButtonProps) {
   return (
-    <div className="flex cursor-pointer ml:4 xl:mt-8 bg-grayscale-color-100 rounded-full p-1 w-full">
+    <div className="ml:4 flex w-full cursor-pointer rounded-full bg-grayscale-color-100 p-1 xl:mt-8">
       <div
         onClick={() => {
           onKoreaClick();
         }}
-        className={`flex justify-center items-center rounded-full px-4 py-1 w-1/2 text-center transition duration-300 ease-in-out font-semibold ${isKoreaSelected ? 'bg-white text-black' : 'bg-grayscale-color-100 text-white'}`}
+        className={`flex w-1/2 items-center justify-center rounded-full px-4 py-1 text-center font-semibold transition duration-300 ease-in-out ${isKoreaSelected ? "bg-white text-black" : "bg-grayscale-color-100 text-white"}`}
       >
         {firstLabel}
       </div>
@@ -27,7 +27,7 @@ export default function LocationToggleButton({
         onClick={() => {
           onGlobalClick();
         }}
-        className={`flex justify-center items-center rounded-full px-4 py-0.5 w-1/2 text-center transition duration-300 ease-in-out font-semibold ${!isKoreaSelected ? 'bg-white text-black' : 'bg-grayscale-color-100 text-white'}`}
+        className={`flex w-1/2 items-center justify-center rounded-full px-4 py-0.5 text-center font-semibold transition duration-300 ease-in-out ${!isKoreaSelected ? "bg-white text-black" : "bg-grayscale-color-100 text-white"}`}
       >
         {secondLabel}
       </div>

@@ -3,13 +3,17 @@ type SelectBuddyCountsProps = {
   setBuddyCounts: (count: number | null) => void;
 };
 
-export default function SelectBuddyCounts({ buddyCounts, setBuddyCounts }: SelectBuddyCountsProps) {
+export default function SelectBuddyCounts({
+  buddyCounts,
+  setBuddyCounts,
+}: SelectBuddyCountsProps) {
   // const [buddyCounts, setBuddyCounts] = useState(1);
 
   return (
     <div className="flex flex-row gap-[2px]">
       <button
-        className="text-[#647484] w-[30px] h-[30px] xl:w-[50px] xl:h-[50px] bg-[#edeff1] hover:bg-gray-400 flex items-center justify-center"
+        type="button"
+        className="flex h-[30px] w-[30px] items-center justify-center bg-[#edeff1] text-[#647484] hover:bg-gray-400 xl:h-[50px] xl:w-[50px]"
         onClick={() => {
           if (buddyCounts !== null && buddyCounts > 1) {
             setBuddyCounts(buddyCounts - 1);
@@ -21,16 +25,17 @@ export default function SelectBuddyCounts({ buddyCounts, setBuddyCounts }: Selec
       </button>
       <input
         type="hidden"
-        className="md:p-2 p-1 text-xs md:text-base focus:outline-none text-center h-[24px]"
+        className="h-[24px] p-1 text-center text-xs focus:outline-none md:p-2 md:text-base"
         readOnly
         name="custom-input-number"
       />
-      <div className="bg-main-color w-[30px] h-[30px] xl:w-[50px] xl:h-[50px] text-white md:text-base flex items-center justify-center cursor-default">
+      <div className="flex h-[30px] w-[30px] cursor-default items-center justify-center bg-main-color text-white md:text-base xl:h-[50px] xl:w-[50px]">
         <span>{buddyCounts}</span>
       </div>
       <div className="buttons-wrap flex flex-col items-center gap-[2px]">
         <button
-          className="text-[#647484] w-[30px] h-[30px] xl:w-[50px] xl:h-[50px] bg-[#edeff1] hover:bg-gray-400 flex items-center justify-center"
+          type="button"
+          className="flex h-[30px] w-[30px] items-center justify-center bg-[#edeff1] text-[#647484] hover:bg-gray-400 xl:h-[50px] xl:w-[50px]"
           onClick={() => {
             if (buddyCounts !== null && buddyCounts < 5) {
               setBuddyCounts(buddyCounts + 1);

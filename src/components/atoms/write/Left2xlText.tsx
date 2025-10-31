@@ -1,15 +1,20 @@
-import { twMerge } from 'tailwind-merge';
+import { twMerge } from "tailwind-merge";
 
 type Left2xlBoldTextProps = {
   text: string;
   className?: string;
 };
 
-export default function Left2xlBoldText({ text, className }: Left2xlBoldTextProps) {
+export default function Left2xlBoldText({
+  text,
+  className,
+}: Left2xlBoldTextProps) {
   return (
     <div>
       {/* <p className={twMerge('text-2xl mt-2 ml-2 xl:mt-8 font-bold', className)}>{text}</p> */}
-      <p className={twMerge('text-2xl mt-2 xl:mt-8 font-bold', className)}>{text}</p>
+      <p className={twMerge("mt-2 font-bold text-2xl xl:mt-8", className)}>
+        {text}
+      </p>
     </div>
   );
 }

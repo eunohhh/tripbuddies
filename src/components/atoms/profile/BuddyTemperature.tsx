@@ -1,5 +1,5 @@
-import Image from 'next/image';
-import { twMerge } from 'tailwind-merge';
+import Image from "next/image";
+import { twMerge } from "tailwind-merge";
 
 type BuddyTemperatureProps = {
   temperature: number;
@@ -15,11 +15,11 @@ const BuddyTemperature = ({
   isTempText = true,
 }: BuddyTemperatureProps) => {
   const smileIcons = [
-    '/svg/Smile1.svg',
-    '/svg/Smile2.svg',
-    '/svg/Smile3.svg',
-    '/svg/Smile4.svg',
-    '/svg/Smile5.svg',
+    "/svg/Smile1.svg",
+    "/svg/Smile2.svg",
+    "/svg/Smile3.svg",
+    "/svg/Smile4.svg",
+    "/svg/Smile5.svg",
   ];
 
   // 각 아이콘이 활성화될 임계 온도
@@ -31,16 +31,18 @@ const BuddyTemperature = ({
   }, 0);
 
   return (
-    <div className={twMerge('flex flex-col w-full', className)}>
+    <div className={twMerge("flex w-full flex-col", className)}>
       {isLabel && (
         <div className="flex w-full justify-between">
           <span className="block text-left xl:text-xl">버디즈 지수</span>
-          <span className="text-main-color">{temperature ? `${temperature} %` : '정보없음'}</span>
+          <span className="text-main-color">
+            {temperature ? `${temperature} %` : "정보없음"}
+          </span>
         </div>
       )}
       {/* 버디 온도 아이콘 5개 */}
       {/* Todo: 버디프로필 페이지 말고 다른 곳에서는 스마일 아이콘이 xl에서 커지면 안 됨 */}
-      <div className="flex justify-between mt-1">
+      <div className="mt-1 flex justify-between">
         {smileIcons.map((icon, index) => (
           <Image
             key={index}
@@ -54,15 +56,18 @@ const BuddyTemperature = ({
               // opacity: temperature >= thresholds[index] ? 1 : 0.3,
               filter:
                 index === closestThresholdIndex
-                  ? 'invert(31%) sepia(41%) saturate(7429%) hue-rotate(201deg) brightness(99%) contrast(106%)'
-                  : 'none',
+                  ? "invert(31%) sepia(41%) saturate(7429%) hue-rotate(201deg) brightness(99%) contrast(106%)"
+                  : "none",
             }}
           />
         ))}
       </div>
       {/* 온도게이지 */}
-      <div className="w-full rounded-full h-2 bg-[#A67000] mt-1">
-        <div className="h-2 rounded-full bg-main-color" style={{ width: `${temperature}%` }}></div>
+      <div className="mt-1 h-2 w-full rounded-full bg-[#A67000]">
+        <div
+          className="h-2 rounded-full bg-main-color"
+          style={{ width: `${temperature}%` }}
+        ></div>
       </div>
     </div>
   );

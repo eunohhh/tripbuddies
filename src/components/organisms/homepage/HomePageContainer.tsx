@@ -1,17 +1,17 @@
-'use client';
+"use client";
 
-import Navigate from '@/components/atoms/common/Navigate';
-import HomePageStories from '@/components/molecules/homepage/HomePageStories';
-import HomePageTitle from '@/components/molecules/homepage/HomePageTitle';
-import HomePageTrips from '@/components/molecules/homepage/HomePageTrips';
-import { useAuth, useTapScroll } from '@/hooks';
-import { useHomeQueries } from '@/hooks/queries';
-import { TripWithContract } from '@/types/Trips.types';
-import filterOldTrips from '@/utils/trips/filterOldTrips';
-import { showAlert } from '@/utils/ui/openCustomAlert';
-import { useEffect, useMemo, useRef } from 'react';
-import HomePageRecommendBuddiesList from './HomePageRecommendBuddiesList';
-import HomePageSearchBar from './HomePageSearchBar';
+import { useEffect, useMemo, useRef } from "react";
+import Navigate from "@/components/atoms/common/Navigate";
+import HomePageStories from "@/components/molecules/homepage/HomePageStories";
+import HomePageTitle from "@/components/molecules/homepage/HomePageTitle";
+import HomePageTrips from "@/components/molecules/homepage/HomePageTrips";
+import { useAuth, useTapScroll } from "@/hooks";
+import { useHomeQueries } from "@/hooks/queries";
+import { TripWithContract } from "@/types/Trips.types";
+import filterOldTrips from "@/utils/trips/filterOldTrips";
+import { showAlert } from "@/utils/ui/openCustomAlert";
+import HomePageRecommendBuddiesList from "./HomePageRecommendBuddiesList";
+import HomePageSearchBar from "./HomePageSearchBar";
 
 const HomePageContainer = () => {
   const buddiesRef = useRef<HTMLDivElement>(null);
@@ -30,7 +30,7 @@ const HomePageContainer = () => {
 
   useEffect(() => {
     queries.forEach((query) => {
-      if (query.error) showAlert('error', query.error.message);
+      if (query.error) showAlert("error", query.error.message);
     });
   }, [queries]);
 
@@ -42,9 +42,9 @@ const HomePageContainer = () => {
   // if (queries.some(query => query.isPending)) return <DefaultLoader />;
 
   return (
-    <div className="rounded-t-[32px] bg-white px-5 pt-4 pb-0 z-10 relative">
+    <div className="relative z-10 rounded-t-[32px] bg-white px-5 pt-4 pb-0">
       <HomePageSearchBar />
-      <div className="mt-12 pb-2 relative z-10 min-h-[200px] h-[200px]">
+      <div className="relative z-10 mt-12 h-[200px] min-h-[200px] pb-2">
         <HomePageTitle
           className="relative mt-0 mb-0 h-[40%]"
           title="추천 인기 버디즈"
@@ -53,25 +53,33 @@ const HomePageContainer = () => {
           href="/rank"
         />
         <div
-          className="relative overflow-x-scroll scrollbar-hidden flex gap-[16px] h-[60%]"
+          className="scrollbar-hidden relative flex h-[60%] gap-[16px] overflow-x-scroll"
           ref={buddiesRef}
         >
           {buddies.data?.buddies && (
             <HomePageRecommendBuddiesList
-              className="min-w-[243px] mx-0 border-none shadow-md xl:min-w-[258px]"
+              className="mx-0 min-w-[243px] border-none shadow-md xl:min-w-[258px]"
               buddies={buddies.data?.buddies}
             />
           )}
         </div>
         {createScrollLeft && createScrollRight && (
           <>
-            <Navigate mode="before" onClick={createScrollLeft(buddiesRef)} className="top-[73%]" />
-            <Navigate mode="after" onClick={createScrollRight(buddiesRef)} className="top-[73%]" />
+            <Navigate
+              mode="before"
+              onClick={createScrollLeft(buddiesRef)}
+              className="top-[73%]"
+            />
+            <Navigate
+              mode="after"
+              onClick={createScrollRight(buddiesRef)}
+              className="top-[73%]"
+            />
           </>
         )}
       </div>
 
-      <div className="mt-4 mb-2 relative z-10">
+      <div className="relative z-10 mt-4 mb-2">
         <HomePageTitle
           title="버디즈 스토리"
           buttonText="전체보기"
@@ -80,11 +88,14 @@ const HomePageContainer = () => {
           href="/stories"
         />
         <div
-          className="overflow-x-scroll scrollbar-hidden relative flex gap-[16px] z-10"
+          className="scrollbar-hidden relative z-10 flex gap-[16px] overflow-x-scroll"
           ref={storiesRef}
         >
           {stories.data?.stories && (
-            <HomePageStories stories={stories.data?.stories} buddy={buddy || null} />
+            <HomePageStories
+              stories={stories.data?.stories}
+              buddy={buddy || null}
+            />
           )}
         </div>
         {createScrollLeft && createScrollRight && (
@@ -95,7 +106,7 @@ const HomePageContainer = () => {
         )}
       </div>
 
-      <div className="mt-12 mb-0 relative z-10 min-h-[300px] h-[320px]">
+      <div className="relative z-10 mt-12 mb-0 h-[320px] min-h-[300px]">
         <HomePageTitle
           title="지금 모집중인 여정"
           buttonText="전체보기"
@@ -104,7 +115,7 @@ const HomePageContainer = () => {
           className="relative mt-0 mb-0 h-[25%]"
         />
         <div
-          className="relative overflow-x-scroll scrollbar-hidden flex gap-[16px] min-h-[215px] px-[1px] h-[75%]"
+          className="scrollbar-hidden relative flex h-[75%] min-h-[215px] gap-[16px] overflow-x-scroll px-[1px]"
           ref={tripsRef}
         >
           {upcomingTrips.length > 0 && (

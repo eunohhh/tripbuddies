@@ -1,11 +1,15 @@
-import { patchBuddyInfo } from '@/api-services/auth/client';
-import { QUERY_KEY_BUDDY } from '@/constants/query.constants';
-import { Buddy, PartialBuddy } from '@/types/Auth.types';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { patchBuddyInfo } from "@/api-services/auth/client";
+import { QUERY_KEY_BUDDY } from "@/constants/query.constants";
+import { Buddy, PartialBuddy } from "@/types/Auth.types";
 
 export function useUpdateBuddyMutation() {
   const queryClient = useQueryClient();
-  return useMutation<Buddy, Error, { buddyInfo?: PartialBuddy | null; imageFile?: File | null }>({
+  return useMutation<
+    Buddy,
+    Error,
+    { buddyInfo?: PartialBuddy | null; imageFile?: File | null }
+  >({
     mutationFn: ({
       buddyInfo = null,
       imageFile = null,

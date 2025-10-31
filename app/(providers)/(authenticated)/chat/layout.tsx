@@ -1,8 +1,8 @@
-import ChatLayoutHeader from '@/components/molecules/chatpage/ChatLayoutHeader';
-import ChatList from '@/components/organisms/chatpage/ChatList';
-import { defaultMetaData } from '@/data/defaultMetaData';
-import { Metadata } from 'next';
-import React from 'react';
+import { Metadata } from "next";
+import React from "react";
+import ChatLayoutHeader from "@/components/molecules/chatpage/ChatLayoutHeader";
+import ChatList from "@/components/organisms/chatpage/ChatList";
+import { defaultMetaData } from "@/data/defaultMetaData";
 
 type ChatPageLayoutProps = {
   children: React.ReactNode;

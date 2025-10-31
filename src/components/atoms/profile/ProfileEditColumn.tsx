@@ -5,12 +5,10 @@ type ProfileEditColumnProps = {
 
 function ProfileEditColumn({ label, value }: ProfileEditColumnProps) {
   return (
-    <>
-      <tr className="flex justify-between py-2">
-        <td className="w-1/2 text-gray-600">{label}</td>
-        <td className="w-4/5">{value}</td>
-      </tr>
-    </>
+    <tr className="flex justify-between py-2">
+      <td className="w-1/2 text-gray-600">{label}</td>
+      <td className="w-4/5">{value}</td>
+    </tr>
   );
 }
 

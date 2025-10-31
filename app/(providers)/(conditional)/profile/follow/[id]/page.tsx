@@ -1,4 +1,4 @@
-import FollowListPage from '@/components/organisms/profile/FollowListPage';
+import FollowListPage from "@/components/organisms/profile/FollowListPage";
 
 function FollowPage() {
   return <FollowListPage />;

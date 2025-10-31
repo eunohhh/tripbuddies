@@ -1,4 +1,4 @@
-import { Tables } from './supabase';
+import { Tables } from "./supabase";
 
 export type PartialNotification = Partial<Notification>;
 
@@ -14,4 +14,4 @@ export type ClassifiedNotification = {
   contracts: Notification[];
 };
 
-export type Notification = Tables<'notifications'>;
+export type Notification = Tables<"notifications">;

@@ -1,6 +1,6 @@
-import { defaultMetaData } from '@/data/defaultMetaData';
-import { Metadata } from 'next';
-import React from 'react';
+import { Metadata } from "next";
+import React from "react";
+import { defaultMetaData } from "@/data/defaultMetaData";
 
 type ConditionalLayoutProps = {
   children: React.ReactNode;

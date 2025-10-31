@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import { useEffect } from 'react';
-import { useInView } from 'react-intersection-observer';
+import { useEffect } from "react";
+import { useInView } from "react-intersection-observer";
 
 type InfiniteScrollProps = {
   fetchNextPage: () => void;

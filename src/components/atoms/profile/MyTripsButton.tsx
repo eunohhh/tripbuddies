@@ -1,8 +1,8 @@
-import Image from 'next/image';
-import Link from 'next/link';
+import Image from "next/image";
+import Link from "next/link";
 
 type MyTripsButtonProps = {
-  view: 'created' | 'bookmarked' | 'participated';
+  view: "created" | "bookmarked" | "participated";
   src: string;
   alt: string;
   id: string;
@@ -15,14 +15,14 @@ function MyTripsButton({ view, src, alt, id }: MyTripsButtonProps) {
         href={`/profile/mytrips/${id}?view=${view}`}
         className="flex items-center p-4 hover:bg-gray-1000"
       >
-        <div className="relative aspect-auto flex w-[20px] justify-center items-center">
+        <div className="relative flex aspect-auto w-[20px] items-center justify-center">
           <Image
             src={src}
             alt={alt}
             width={24}
             height={24}
             priority
-            className="object-contain w-auto h-auto"
+            className="h-auto w-auto object-contain"
           />
         </div>
         <span className="mx-auto">{alt}</span>
@@ -32,7 +32,7 @@ function MyTripsButton({ view, src, alt, id }: MyTripsButtonProps) {
           priority
           width={12}
           height={12}
-          className="object-contain w-auto h-auto"
+          className="h-auto w-auto object-contain"
         />
       </Link>
     </div>

@@ -1,23 +1,29 @@
-'use client';
+"use client";
 
+import { Provider } from "@supabase/supabase-js";
+import { useQueryClient } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
+import {
+  createContext,
+  PropsWithChildren,
+  useCallback,
+  useEffect,
+  useState,
+} from "react";
 import {
   deleteLogOut,
   patchResetPassword,
   postSendingResetEmail,
-} from '@/api-services/auth/client';
-import { QUERY_KEY_BUDDY } from '@/constants/query.constants';
+} from "@/api-services/auth/client";
+import { QUERY_KEY_BUDDY } from "@/constants/query.constants";
 import {
   useBuddyQuery,
   useLogInMutation,
   useNaverLogInMutation,
   useSignUpMutation,
-} from '@/hooks/queries';
-import { Buddy } from '@/types/Auth.types';
-import { showAlert } from '@/utils/ui/openCustomAlert';
-import { Provider } from '@supabase/supabase-js';
-import { useQueryClient } from '@tanstack/react-query';
-import { useRouter } from 'next/navigation';
-import { PropsWithChildren, createContext, useCallback, useEffect, useState } from 'react';
+} from "@/hooks/queries";
+import { Buddy } from "@/types/Auth.types";
+import { showAlert } from "@/utils/ui/openCustomAlert";
 
 export type AuthContextValue = {
   isLoggedIn: boolean;
@@ -52,9 +58,11 @@ export function AuthProvider({ children }: PropsWithChildren) {
 
   const { data: buddy, isPending: isBuddyPending, error } = useBuddyQuery();
 
-  const { mutateAsync: logInMutation, isPending: isLogInPending } = useLogInMutation();
+  const { mutateAsync: logInMutation, isPending: isLogInPending } =
+    useLogInMutation();
 
-  const { mutateAsync: signUpMutation, isPending: isSignUpPending } = useSignUpMutation();
+  const { mutateAsync: signUpMutation, isPending: isSignUpPending } =
+    useSignUpMutation();
 
   const { mutateAsync: naverLogInMutation, isPending: isNaverLogInPending } =
     useNaverLogInMutation();
@@ -62,84 +70,92 @@ export function AuthProvider({ children }: PropsWithChildren) {
   const router = useRouter();
   const queryClient = useQueryClient();
 
-  const logIn: AuthContextValue['logIn'] = useCallback(
+  const logIn: AuthContextValue["logIn"] = useCallback(
     async (email, password) => {
-      if (buddy) return showAlert('caution', '이미 로그인 되어 있어요');
+      if (buddy) return showAlert("caution", "이미 로그인 되어 있어요");
 
       try {
         const payload = { email, password };
         const buddy = await logInMutation(payload);
 
-        if (!buddy) return showAlert('caution', '알 수 없는 오류가 발생했어요');
+        if (!buddy) return showAlert("caution", "알 수 없는 오류가 발생했어요");
 
-        showAlert('success', `${buddy.buddy_nickname}님 환영합니다!`, {
+        showAlert("success", `${buddy.buddy_nickname}님 환영합니다!`, {
           onConfirm: () => {
-            router.replace('/');
+            router.replace("/");
             router.refresh();
           },
         });
       } catch (error: unknown) {
-        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-        if (errorMessage === 'Invalid login credentials') {
-          return showAlert('caution', '이메일, 비밀번호를 확인해주세요.');
+        const errorMessage =
+          error instanceof Error ? error.message : "Unknown error";
+        if (errorMessage === "Invalid login credentials") {
+          return showAlert("caution", "이메일, 비밀번호를 확인해주세요.");
         }
-        return showAlert('caution', errorMessage);
+        return showAlert("caution", errorMessage);
       }
     },
     [buddy, logInMutation, router],
   );
 
-  const logOut: AuthContextValue['logOut'] = useCallback(async () => {
-    if (!buddy) return showAlert('caution', '로그인하고 눌러주세요');
+  const logOut: AuthContextValue["logOut"] = useCallback(async () => {
+    if (!buddy) return showAlert("caution", "로그인하고 눌러주세요");
 
     try {
       await deleteLogOut();
     } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-      return showAlert('error', errorMessage, {
+      const errorMessage =
+        error instanceof Error ? error.message : "Unknown error";
+      return showAlert("error", errorMessage, {
         onConfirm: () => router.refresh(),
       });
     }
     queryClient.invalidateQueries({ queryKey: [QUERY_KEY_BUDDY] });
-    router.replace('/login');
+    router.replace("/login");
   }, [buddy, queryClient, router]);
 
-  const signUp: AuthContextValue['signUp'] = useCallback(
+  const signUp: AuthContextValue["signUp"] = useCallback(
     async (email, password) => {
-      if (buddy) return showAlert('caution', '이미 로그인 되어 있어요');
+      if (buddy) return showAlert("caution", "이미 로그인 되어 있어요");
 
       try {
         const payload = { email, password };
         const buddy = await signUpMutation(payload);
 
-        if (!buddy) return showAlert('caution', '알 수 없는 오류가 발생했어요');
+        if (!buddy) return showAlert("caution", "알 수 없는 오류가 발생했어요");
 
-        showAlert('success', `회원가입 성공 ${buddy.buddy_email}님 환영합니다!`, {
-          onConfirm: () => router.replace('/onboarding?funnel=0&mode=first'),
-        });
+        showAlert(
+          "success",
+          `회원가입 성공 ${buddy.buddy_email}님 환영합니다!`,
+          {
+            onConfirm: () => router.replace("/onboarding?funnel=0&mode=first"),
+          },
+        );
       } catch (error) {
         console.error(error);
-        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-        if (errorMessage === 'User already registered') {
-          return showAlert('caution', '이미 가입된 이메일입니다!');
+        const errorMessage =
+          error instanceof Error ? error.message : "Unknown error";
+        if (errorMessage === "User already registered") {
+          return showAlert("caution", "이미 가입된 이메일입니다!");
         }
-        return showAlert('caution', errorMessage);
+        return showAlert("caution", errorMessage);
       }
     },
     [buddy, signUpMutation, router],
   );
 
-  const loginWithProvider: AuthContextValue['loginWithProvider'] = useCallback(
+  const loginWithProvider: AuthContextValue["loginWithProvider"] = useCallback(
     async (provider) => {
       try {
-        showAlert('success', '소셜 로그인을 진행합니다', {
+        showAlert("success", "소셜 로그인을 진행합니다", {
           onConfirm: () => {
             window.location.href = `${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/provider?provider=${provider}`;
           },
         });
       } catch (error) {
-        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-        return showAlert('error', errorMessage, {
+        const errorMessage =
+          error instanceof Error ? error.message : "Unknown error";
+        return showAlert("error", errorMessage, {
           onConfirm: () => router.refresh(),
         });
       }
@@ -147,16 +163,17 @@ export function AuthProvider({ children }: PropsWithChildren) {
     [router],
   );
 
-  const sendingResetEmail: AuthContextValue['sendingResetEmail'] = useCallback(
+  const sendingResetEmail: AuthContextValue["sendingResetEmail"] = useCallback(
     async (email: string) => {
       try {
         await postSendingResetEmail(email);
-        return showAlert('success', '이메일 전송 성공!', {
-          onConfirm: () => router.replace('/login'),
+        return showAlert("success", "이메일 전송 성공!", {
+          onConfirm: () => router.replace("/login"),
         });
       } catch (error) {
-        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-        return showAlert('error', errorMessage, {
+        const errorMessage =
+          error instanceof Error ? error.message : "Unknown error";
+        return showAlert("error", errorMessage, {
           onConfirm: () => router.refresh(),
         });
       }
@@ -164,21 +181,29 @@ export function AuthProvider({ children }: PropsWithChildren) {
     [router],
   );
 
-  const resetPassword: AuthContextValue['resetPassword'] = useCallback(
+  const resetPassword: AuthContextValue["resetPassword"] = useCallback(
     async (password: string) => {
       try {
         const data = await patchResetPassword(password);
 
         queryClient.invalidateQueries({ queryKey: [QUERY_KEY_BUDDY] });
-        return showAlert('success', `${data.buddy_nickname}님 비밀번호 변경에 성공했어요!`, {
-          onConfirm: () => router.replace('/'),
-        });
+        return showAlert(
+          "success",
+          `${data.buddy_nickname}님 비밀번호 변경에 성공했어요!`,
+          {
+            onConfirm: () => router.replace("/"),
+          },
+        );
       } catch (error) {
-        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-        if (errorMessage === 'New password should be different from the old password.') {
-          return showAlert('caution', '기존 비밀번호와 동일합니다!');
+        const errorMessage =
+          error instanceof Error ? error.message : "Unknown error";
+        if (
+          errorMessage ===
+          "New password should be different from the old password."
+        ) {
+          return showAlert("caution", "기존 비밀번호와 동일합니다!");
         }
-        return showAlert('error', errorMessage, {
+        return showAlert("error", errorMessage, {
           onConfirm: () => router.refresh(),
         });
       }
@@ -186,21 +211,22 @@ export function AuthProvider({ children }: PropsWithChildren) {
     [queryClient, router],
   );
 
-  const naverLogIn: AuthContextValue['naverLogIn'] = useCallback(async () => {
+  const naverLogIn: AuthContextValue["naverLogIn"] = useCallback(async () => {
     try {
       const buddy = await naverLogInMutation();
-      if (!buddy) return showAlert('caution', '알 수 없는 오류가 발생했어요');
+      if (!buddy) return showAlert("caution", "알 수 없는 오류가 발생했어요");
 
       showAlert(
-        'success',
+        "success",
         `${buddy.buddy_isOnBoarding ? buddy.buddy_nickname : buddy.buddy_email}님 환영합니다!`,
         {
-          onConfirm: () => router.replace('/'),
+          onConfirm: () => router.replace("/"),
         },
       );
     } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-      return showAlert('error', errorMessage, {
+      const errorMessage =
+        error instanceof Error ? error.message : "Unknown error";
+      return showAlert("error", errorMessage, {
         onConfirm: () => router.refresh(),
       });
     }
@@ -211,15 +237,20 @@ export function AuthProvider({ children }: PropsWithChildren) {
   // }, [isPending]);
 
   useEffect(() => {
-    setIsPending(isBuddyPending || isLogInPending || isSignUpPending || isNaverLogInPending);
+    setIsPending(
+      isBuddyPending ||
+        isLogInPending ||
+        isSignUpPending ||
+        isNaverLogInPending,
+    );
   }, [isBuddyPending, isLogInPending, isSignUpPending, isNaverLogInPending]);
 
   useEffect(() => {
-    console.log('buddy ====>', buddy);
+    console.log("buddy ====>", buddy);
   }, [buddy]);
 
   useEffect(() => {
-    if (error) showAlert('error', error.message);
+    if (error) showAlert("error", error.message);
   }, [error]);
 
   const value: AuthContextValue = {

@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import { getAllBookmarks } from '@/api-services/trips';
-import { QUERY_KEY_MY_BOOKMARKS } from '@/constants/query.constants';
-import { TripWithContract } from '@/types/Trips.types';
-import { useQuery } from '@tanstack/react-query';
-import { useEffect, useState } from 'react';
+import { useQuery } from "@tanstack/react-query";
+import { useEffect, useState } from "react";
+import { getAllBookmarks } from "@/api-services/trips";
+import { QUERY_KEY_MY_BOOKMARKS } from "@/constants/query.constants";
+import { TripWithContract } from "@/types/Trips.types";
 
 export function useMyBookMarksQuery(clickedBuddyId: string) {
   const [enabled, setEnabled] = useState<boolean>(false);

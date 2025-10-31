@@ -1,38 +1,38 @@
-import { cva, VariantProps } from 'class-variance-authority';
-import Link from 'next/link';
-import React, { ComponentProps, forwardRef, PropsWithChildren } from 'react';
-import { twMerge } from 'tailwind-merge';
+import { cva, VariantProps } from "class-variance-authority";
+import Link from "next/link";
+import React, { ComponentProps, forwardRef, PropsWithChildren } from "react";
+import { twMerge } from "tailwind-merge";
 
 const buttonVariant = cva(
-  'rounded font-semibold transition hover:brightness-90 active:brightness-75',
+  "rounded font-semibold transition hover:brightness-90 active:brightness-75",
   {
     variants: {
       intent: {
-        primary: 'bg-primary-color-400',
-        secondary: 'border-secondary-color',
-        danger: 'border-red-500',
-        onBoarding: 'w-[90%] h-[88px] bg-transparent font-semibold',
+        primary: "bg-primary-color-400",
+        secondary: "border-secondary-color",
+        danger: "border-red-500",
+        onBoarding: "h-[88px] w-[90%] bg-transparent font-semibold",
       },
       size: {
-        sm: 'px-3 py-1 text-[13px]',
-        md: 'px-4 py-1.5 text-[15px]',
-        lg: 'px-5 py-2 text-[17px]',
+        sm: "px-3 py-1 text-[13px]",
+        md: "px-4 py-1.5 text-[15px]",
+        lg: "px-5 py-2 text-[17px]",
       },
       variant: {
-        selected: 'border-[#9E6B00] text-[#9E6B00]',
-        unselected: 'text-white',
+        selected: "border-[#9E6B00] text-[#9E6B00]",
+        unselected: "text-white",
       },
     },
     compoundVariants: [
       {
-        intent: 'onBoarding',
-        variant: 'selected',
-        className: 'border-[#9E6B00] text-[#9E6B00] bg-main-color/50',
+        intent: "onBoarding",
+        variant: "selected",
+        className: "border-[#9E6B00] bg-main-color/50 text-[#9E6B00]",
       },
       {
-        intent: 'onBoarding',
-        variant: 'unselected',
-        className: 'text-black',
+        intent: "onBoarding",
+        variant: "unselected",
+        className: "text-black",
       },
       // {
       //     intent: 'primary',
@@ -57,9 +57,9 @@ const buttonVariant = cva(
       // },
     ],
     defaultVariants: {
-      intent: 'primary',
-      size: 'md',
-      variant: 'selected',
+      intent: "primary",
+      size: "md",
+      variant: "selected",
     },
   },
 );
@@ -70,13 +70,16 @@ type ButtonProps = {
   selected?: boolean | null;
   onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
 } & ButtonVariantType &
-  (({} & ComponentProps<'button'>) | ({ href: string } & ComponentProps<typeof Link>));
+  (
+    | ({} & ComponentProps<"button">)
+    | ({ href: string } & ComponentProps<typeof Link>)
+  );
 
 const Button = forwardRef(
   (
     {
-      intent = 'primary',
-      size = 'md',
+      intent = "primary",
+      size = "md",
       selected = false,
       children,
       onClick,
@@ -85,14 +88,14 @@ const Button = forwardRef(
     }: PropsWithChildren<ButtonProps>,
     ref,
   ) => {
-    if ('href' in props) {
+    if ("href" in props) {
       return (
         <a
           className={twMerge(
             buttonVariant({
               intent,
               size,
-              variant: selected ? 'selected' : 'unselected',
+              variant: selected ? "selected" : "unselected",
             }),
             className,
           )}
@@ -108,7 +111,7 @@ const Button = forwardRef(
             buttonVariant({
               intent,
               size,
-              variant: selected ? 'selected' : 'unselected',
+              variant: selected ? "selected" : "unselected",
             }),
             className,
           )}
@@ -122,6 +125,6 @@ const Button = forwardRef(
   },
 );
 
-Button.displayName = 'Button';
+Button.displayName = "Button";
 
 export default Button;

@@ -1,9 +1,13 @@
-'use client';
+"use client";
 
-import CustomAlert from '@/components/organisms/common/CustomAlert';
-import { useLockBodyScroll } from '@/hooks';
-import { AlertModalOptions, ModalContextType, ModalOptions } from '@/types/Modal.types';
-import React, { createContext, useCallback, useContext, useState } from 'react';
+import React, { createContext, useCallback, useContext, useState } from "react";
+import CustomAlert from "@/components/organisms/common/CustomAlert";
+import { useLockBodyScroll } from "@/hooks";
+import {
+  AlertModalOptions,
+  ModalContextType,
+  ModalOptions,
+} from "@/types/Modal.types";
 
 const initialValue: ModalContextType = {
   open: () => {},
@@ -16,8 +20,11 @@ export const ModalContext = createContext<ModalContextType>(initialValue);
 
 export const useModal = () => useContext(ModalContext);
 
-export const ModalProviderDefault: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [alertModalOptions, setAlertModalOptions] = useState<AlertModalOptions | null>(null);
+export const ModalProviderDefault: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
+  const [alertModalOptions, setAlertModalOptions] =
+    useState<AlertModalOptions | null>(null);
   const [modalOptions, setModalOptions] = useState<ModalOptions | null>(null);
 
   const { setLock } = useLockBodyScroll();
@@ -39,7 +46,8 @@ export const ModalProviderDefault: React.FC<{ children: React.ReactNode }> = ({ 
   );
 
   const close = useCallback(() => {
-    if (alertModalOptions?.options.onConfirm) alertModalOptions.options.onConfirm();
+    if (alertModalOptions?.options.onConfirm)
+      alertModalOptions.options.onConfirm();
     setLock(false);
     setAlertModalOptions(null);
   }, [alertModalOptions, setLock]);
@@ -50,7 +58,8 @@ export const ModalProviderDefault: React.FC<{ children: React.ReactNode }> = ({ 
   }, [setLock]);
 
   const onCancel = useCallback(() => {
-    if (alertModalOptions?.options.onCancel) alertModalOptions.options.onCancel();
+    if (alertModalOptions?.options.onCancel)
+      alertModalOptions.options.onCancel();
     setLock(false);
     setAlertModalOptions(null);
   }, [alertModalOptions, setLock]);
@@ -71,7 +80,7 @@ export const ModalProviderDefault: React.FC<{ children: React.ReactNode }> = ({ 
           onClose={close}
         />
       )}
-      {modalOptions && modalOptions.component()}
+      {modalOptions?.component()}
     </ModalContext.Provider>
   );
 };

@@ -1,9 +1,15 @@
-'use client';
-import { useAuth } from '@/hooks';
-import { UnreadCount } from '@/types/UnreadCount.types';
-import supabase from '@/utils/supabase/client';
-import useChatStore from '@/zustand/chat.store';
-import React, { createContext, useCallback, useContext, useEffect, useState } from 'react';
+"use client";
+import React, {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
+import { useAuth } from "@/hooks";
+import { UnreadCount } from "@/types/UnreadCount.types";
+import supabase from "@/utils/supabase/client";
+import useChatStore from "@/zustand/chat.store";
 
 type UnreadMessagesContextType = {
   contractUnreadCounts: Record<string, number>;
@@ -12,7 +18,9 @@ type UnreadMessagesContextType = {
   setAllUnreadCounts: (count: number) => void;
 };
 
-const UnreadMessagesContext = createContext<UnreadMessagesContextType | undefined>(undefined);
+const UnreadMessagesContext = createContext<
+  UnreadMessagesContextType | undefined
+>(undefined);
 
 export const UnreadMessagesProvider: React.FC<{
   children: React.ReactNode;
@@ -20,23 +28,25 @@ export const UnreadMessagesProvider: React.FC<{
   const { buddy: currentBuddy } = useAuth();
   const { setUnreadCount } = useChatStore();
   const [allUnreadCounts, setAllUnreadCounts] = useState<number>(0);
-  const [contractUnreadCounts, setContractUnreadCounts] = useState<Record<string, number>>({});
+  const [contractUnreadCounts, setContractUnreadCounts] = useState<
+    Record<string, number>
+  >({});
   const fetchUnreadCounts = useCallback(async () => {
     if (!currentBuddy?.buddy_id) return;
 
     try {
-      const { data, error } = await supabase.rpc('get_unread_counts', {
+      const { data, error } = await supabase.rpc("get_unread_counts", {
         current_buddy_id: currentBuddy.buddy_id,
       });
 
       if (error) {
-        console.error('Error fetching unread counts:', error);
+        console.error("Error fetching unread counts:", error);
         return;
       }
       // console.log('data ====>', data);
 
       const unreadCounts: UnreadCount[] = data || [];
-      let updatedUnreadCounts: Record<string, number> = {};
+      const updatedUnreadCounts: Record<string, number> = {};
       unreadCounts.forEach(({ contract_trip_id, unread_count }) => {
         setUnreadCount(contract_trip_id, unread_count);
         updatedUnreadCounts[contract_trip_id] = unread_count;
@@ -45,10 +55,13 @@ export const UnreadMessagesProvider: React.FC<{
       // console.log('updatedUnreadCounts ====>', updatedUnreadCounts);
       setContractUnreadCounts(updatedUnreadCounts);
 
-      const totalUnreadCount = Object.values(updatedUnreadCounts).reduce((a, b) => a + b, 0);
+      const totalUnreadCount = Object.values(updatedUnreadCounts).reduce(
+        (a, b) => a + b,
+        0,
+      );
       setAllUnreadCounts(totalUnreadCount);
     } catch (error) {
-      console.error('Error fetching unread counts:', error);
+      console.error("Error fetching unread counts:", error);
     }
   }, [currentBuddy, setUnreadCount]);
 
@@ -56,20 +69,27 @@ export const UnreadMessagesProvider: React.FC<{
     fetchUnreadCounts();
 
     const messagesSubscription = supabase
-      .channel('chat-room')
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'messages' }, (payload) => {
-        // console.log('payload ====>', payload);
-        fetchUnreadCounts();
-      })
+      .channel("chat-room")
       .on(
-        'postgres_changes',
+        "postgres_changes",
+        { event: "*", schema: "public", table: "messages" },
+        (payload) => {
+          // console.log('payload ====>', payload);
+          fetchUnreadCounts();
+        },
+      )
+      .on(
+        "postgres_changes",
         {
-          event: 'UPDATE',
-          schema: 'public',
-          table: 'contract',
+          event: "UPDATE",
+          schema: "public",
+          table: "contract",
         },
         (payload) => {
-          if (payload.new.contract_last_message_read !== payload.old.contract_last_message_read) {
+          if (
+            payload.new.contract_last_message_read !==
+            payload.old.contract_last_message_read
+          ) {
             fetchUnreadCounts();
           }
         },
@@ -102,7 +122,9 @@ export const UnreadMessagesProvider: React.FC<{
 export const useUnreadMessagesContext = () => {
   const context = useContext(UnreadMessagesContext);
   if (context === undefined) {
-    throw new Error('useUnreadMessagesContext must be used within an UnreadMessagesProvider');
+    throw new Error(
+      "useUnreadMessagesContext must be used within an UnreadMessagesProvider",
+    );
   }
   return context;
 };

@@ -1,38 +1,49 @@
-'use client';
+"use client";
 
-import DefaultLoader from '@/components/atoms/common/DefaultLoader';
-import ProgressIndicator from '@/components/atoms/write/ProgressIndicator';
-import { useAuth, useNextButton, usePreferTheme, useSelectRegion } from '@/hooks';
-import { useUpdateBuddyMutation } from '@/hooks/queries';
-import { Buddy, PartialBuddy } from '@/types/Auth.types';
-import { getAgeFromBirthDate } from '@/utils/common/getAgeFromBirthDate';
-import { onBoardingValidation } from '@/utils/onboarding/onBoardingValidation';
-import redirectPermanently from '@/utils/onboarding/redirectPermanently';
-import { showAlert } from '@/utils/ui/openCustomAlert';
-import { CalendarDate, parseDate } from '@internationalized/date';
-import { useRouter, useSearchParams } from 'next/navigation';
-import React, { MouseEvent, useEffect, useLayoutEffect, useRef, useState } from 'react';
-import OnBoardingCalender from './OnBoardingCalender';
-import OnBoardingDivider from './OnBoardingDivider';
-import OnBoardingInput from './OnBoardingInput';
-import OnBoardingProfileImage from './OnBoardingProfileImage';
-import OnBoardingSelectGender from './OnBoardingSelectGender';
-import OnBoardingSelectLocationMbti from './OnBoardingSelectLocationMbti';
-import OnBoardingSelectPrefer from './OnBoardingSelectPrefer';
+import { CalendarDate, parseDate } from "@internationalized/date";
+import { useRouter, useSearchParams } from "next/navigation";
+import React, {
+  MouseEvent,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
+import DefaultLoader from "@/components/atoms/common/DefaultLoader";
+import ProgressIndicator from "@/components/atoms/write/ProgressIndicator";
+import {
+  useAuth,
+  useNextButton,
+  usePreferTheme,
+  useSelectRegion,
+} from "@/hooks";
+import { useUpdateBuddyMutation } from "@/hooks/queries";
+import { Buddy, PartialBuddy } from "@/types/Auth.types";
+import { getAgeFromBirthDate } from "@/utils/common/getAgeFromBirthDate";
+import { onBoardingValidation } from "@/utils/onboarding/onBoardingValidation";
+import redirectPermanently from "@/utils/onboarding/redirectPermanently";
+import { showAlert } from "@/utils/ui/openCustomAlert";
+import OnBoardingCalender from "./OnBoardingCalender";
+import OnBoardingDivider from "./OnBoardingDivider";
+import OnBoardingInput from "./OnBoardingInput";
+import OnBoardingProfileImage from "./OnBoardingProfileImage";
+import OnBoardingSelectGender from "./OnBoardingSelectGender";
+import OnBoardingSelectLocationMbti from "./OnBoardingSelectLocationMbti";
+import OnBoardingSelectPrefer from "./OnBoardingSelectPrefer";
 
 const buttonText = [
-  '다음',
-  '테스트시작하기',
-  '다음',
-  '다음',
-  '다음',
-  '다음',
-  '다음',
-  '다음',
-  '다음',
-  '다음',
-  '다음',
-  '트립버디즈 시작하기',
+  "다음",
+  "테스트시작하기",
+  "다음",
+  "다음",
+  "다음",
+  "다음",
+  "다음",
+  "다음",
+  "다음",
+  "다음",
+  "다음",
+  "트립버디즈 시작하기",
 ];
 
 const OnBoarding: React.FC = () => {
@@ -46,22 +57,22 @@ const OnBoarding: React.FC = () => {
   const profileImageRef = useRef<HTMLInputElement>(null);
 
   const [isEdit, setIsEdit] = useState<boolean | null>(null);
-  const [selectedGender, setSelectedGender] = useState<string>('');
-  const [selectedMbti, setSelectedMbti] = useState<string>('');
+  const [selectedGender, setSelectedGender] = useState<string>("");
+  const [selectedMbti, setSelectedMbti] = useState<string>("");
   const [stepToDisplay, setStepToDisplay] = useState<number>(0);
   const [showComponent, setShowComponent] = useState(false);
   const [calenderValue, setCalenderValue] = useState<CalendarDate>(
-    parseDate(new Date().toISOString().split('T')[0]),
+    parseDate(new Date().toISOString().split("T")[0]),
   );
-  const [selectedMedia, setSelectedMedia] = useState<string>('');
+  const [selectedMedia, setSelectedMedia] = useState<string>("");
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
   const { mutate, isPending, error } = useUpdateBuddyMutation();
   const [PreferBuddyTheme, selectedBuddyTheme] = usePreferTheme({
-    mode: 'buddy',
+    mode: "buddy",
   });
   const [PreferTripTheme, selectedTripTheme] = usePreferTheme({
-    mode: 'trip',
+    mode: "trip",
   });
   const { states, actions } = useSelectRegion();
 
@@ -82,12 +93,12 @@ const OnBoarding: React.FC = () => {
   };
 
   const handleNextButtonClick = () => {
-    if (!buddy) return showAlert('error', '로그인을 먼저 해주세요.');
+    if (!buddy) return showAlert("error", "로그인을 먼저 해주세요.");
     buddyInfoRef.current.buddy_id = buddy.buddy_id;
     // step 번호에 따라 유효성 검사 진행
     // 유효성 검사 진행 후 fetch 날리고 다음 단계로 이동
     if (step === 0) {
-      console.log('nicknameRef.current?.value', nicknameRef.current?.value);
+      console.log("nicknameRef.current?.value", nicknameRef.current?.value);
       const result = onBoardingValidation(nicknameRef.current?.value, step);
       if (!result) return setStep(0);
       buddyInfoRef.current.buddy_nickname = nicknameRef.current?.value;
@@ -99,10 +110,13 @@ const OnBoarding: React.FC = () => {
       return setStep(1);
     }
     if (step === 2) {
-      const jsDate = calenderValue.toDate('UTC'); // 'UTC' 타임존으로 변환
+      const jsDate = calenderValue.toDate("UTC"); // 'UTC' 타임존으로 변환
 
-      if (jsDate.toISOString().split('T')[0] === new Date().toISOString().split('T')[0]) {
-        showAlert('caution', '달력에서 날짜까지 선택해 주세요.');
+      if (
+        jsDate.toISOString().split("T")[0] ===
+        new Date().toISOString().split("T")[0]
+      ) {
+        showAlert("caution", "달력에서 날짜까지 선택해 주세요.");
         return setStep(2);
       }
 
@@ -140,7 +154,7 @@ const OnBoarding: React.FC = () => {
       buddyInfoRef.current.buddy_region = [
         states.secondLevelLocation,
         states.thirdLevelLocation,
-      ].join(' ');
+      ].join(" ");
       if (isEdit) {
         mutate({ buddyInfo: buddyInfoRef.current });
         setStep(4);
@@ -188,7 +202,7 @@ const OnBoarding: React.FC = () => {
     if (step === 9) {
       const result = onBoardingValidation(introductionRef.current?.value, step);
       if (!result) {
-        if (introductionRef.current) introductionRef.current.value = '';
+        if (introductionRef.current) introductionRef.current.value = "";
         return setStep(9);
       }
       buddyInfoRef.current.buddy_introduction = introductionRef.current?.value;
@@ -210,16 +224,20 @@ const OnBoarding: React.FC = () => {
           return setStep(11);
         }
       } else {
-        showAlert('caution', '프로필 이미지를 선택하지 않았습니다. 유지하시겠습니까?', {
-          onConfirm: () => {
-            if (isEdit) {
-              buddyInfoRef.current.buddy_profile_pic = `https://pedixhwyfardtsanotrp.supabase.co/storage/v1/object/public/buddies/profile/default_profile.webp`;
-              setStep(11);
-            } else {
-              setStep(11);
-            }
+        showAlert(
+          "caution",
+          "프로필 이미지를 선택하지 않았습니다. 유지하시겠습니까?",
+          {
+            onConfirm: () => {
+              if (isEdit) {
+                buddyInfoRef.current.buddy_profile_pic = `https://pedixhwyfardtsanotrp.supabase.co/storage/v1/object/public/buddies/profile/default_profile.webp`;
+                setStep(11);
+              } else {
+                setStep(11);
+              }
+            },
           },
-        });
+        );
         return setStep(10);
       }
     }
@@ -237,28 +255,28 @@ const OnBoarding: React.FC = () => {
 
   useEffect(() => {
     if (error) {
-      if (error.message === '이미 존재하는 닉네임입니다.') setStep(0);
-      return showAlert('error', error.message);
+      if (error.message === "이미 존재하는 닉네임입니다.") setStep(0);
+      return showAlert("error", error.message);
     }
   }, [error, setStep]);
 
   useEffect(() => {
     if (!buddy) {
-      return showAlert('error', '로그인을 먼저 해주세요.', {
-        onConfirm: () => router.push('/login'),
+      return showAlert("error", "로그인을 먼저 해주세요.", {
+        onConfirm: () => router.push("/login"),
       });
     } else if (buddy.buddy_isOnBoarding && isEdit === false) {
-      return showAlert('caution', '이미 온보딩을 완료하셨습니다.', {
-        onConfirm: () => router.push('/'),
+      return showAlert("caution", "이미 온보딩을 완료하셨습니다.", {
+        onConfirm: () => router.push("/"),
       });
     }
   }, [router, buddy, isEdit]);
 
   useEffect(() => {
     if (isEdit !== null) {
-      console.log('step =====>', step);
-      console.log('stepToDisplay =====>', stepToDisplay);
-      console.log('isEdit =====>', isEdit);
+      console.log("step =====>", step);
+      console.log("stepToDisplay =====>", stepToDisplay);
+      console.log("isEdit =====>", isEdit);
       if (step === stepToDisplay && step <= 11 && isEdit) {
         router.push(`/onboarding?funnel=${step}&mode=edit`);
       } else if (step === stepToDisplay && step <= 11 && !isEdit) {
@@ -271,16 +289,16 @@ const OnBoarding: React.FC = () => {
           buddyInfo: buddyInfoRef.current,
           imageFile: selectedFile ? selectedFile : null,
         });
-        router.push('/');
+        router.push("/");
       }
     }
   }, [step, router, mutate, isEdit, selectedFile, stepToDisplay]);
 
   useEffect(() => {
-    const funnel = searchParams.get('funnel');
-    const mode = searchParams.get('mode');
+    const funnel = searchParams.get("funnel");
+    const mode = searchParams.get("mode");
     if (funnel) setStep(Number(funnel));
-    if (mode === 'edit') setIsEdit(true);
+    if (mode === "edit") setIsEdit(true);
     else setIsEdit(false);
   }, [searchParams, setStep]);
 
@@ -301,30 +319,40 @@ const OnBoarding: React.FC = () => {
   }, [step]);
 
   return (
-    <section className="w-full flex flex-col h-[calc(100dvh-57px-54px)] xl:w-[720px] xl:mx-auto xl:h-[calc(100dvh-100px)]">
-      <div className="relative w-full h-full flex flex-col justify-center xl:justify-start">
+    <section className="flex h-[calc(100dvh-57px-54px)] w-full flex-col xl:mx-auto xl:h-[calc(100dvh-100px)] xl:w-[720px]">
+      <div className="relative flex h-full w-full flex-col justify-center xl:justify-start">
         <ProgressIndicator
           step={step}
           counts={11}
-          className="relative h-[5%] pt-1 xl:pt-5 flex items-center xl:h-[3%]"
+          className="relative flex h-[5%] items-center pt-1 xl:h-[3%] xl:pt-5"
         />
 
-        <div className="flex flex-col w-full h-[80%] xl:items-center flex-1">
+        <div className="flex h-[80%] w-full flex-1 flex-col xl:items-center">
           {/** mutate 중에 로딩 띄우기 추후수정요망*/}
           {isPending && (
-            <div className="fixed z-50 top-0 left-0 w-full h-full bg-black/50 flex justify-center items-center">
+            <div className="fixed top-0 left-0 z-50 flex h-full w-full items-center justify-center bg-black/50">
               <DefaultLoader />
             </div>
           )}
 
           {showComponent && step === 0 && (
-            <OnBoardingInput mode="nickname" ref={nicknameRef} isEdit={isEdit} />
+            <OnBoardingInput
+              mode="nickname"
+              ref={nicknameRef}
+              isEdit={isEdit}
+            />
           )}
           {showComponent && step === 1 && (
-            <OnBoardingDivider mode="welcome" name={nicknameRef.current?.value as string} />
+            <OnBoardingDivider
+              mode="welcome"
+              name={nicknameRef.current?.value as string}
+            />
           )}
           {showComponent && step === 2 && (
-            <OnBoardingCalender calenderValue={calenderValue} setCalenderValue={setCalenderValue} />
+            <OnBoardingCalender
+              calenderValue={calenderValue}
+              setCalenderValue={setCalenderValue}
+            />
           )}
 
           {showComponent && step === 3 && (
@@ -333,7 +361,7 @@ const OnBoarding: React.FC = () => {
           {showComponent && step === 4 && (
             <OnBoardingSelectLocationMbti
               mode="location"
-              selected={states.thirdLevelLocation || ''}
+              selected={states.thirdLevelLocation || ""}
               states={states}
               actions={actions}
             />
@@ -346,7 +374,10 @@ const OnBoarding: React.FC = () => {
             />
           )}
           {showComponent && step === 6 && (
-            <OnBoardingDivider mode="middle" name={nicknameRef.current?.value || ''} />
+            <OnBoardingDivider
+              mode="middle"
+              name={nicknameRef.current?.value || ""}
+            />
           )}
           {showComponent && step === 7 && (
             <OnBoardingSelectPrefer
@@ -361,7 +392,11 @@ const OnBoarding: React.FC = () => {
             />
           )}
           {showComponent && step === 9 && (
-            <OnBoardingInput mode="introduction" ref={introductionRef} isEdit={isEdit} />
+            <OnBoardingInput
+              mode="introduction"
+              ref={introductionRef}
+              isEdit={isEdit}
+            />
           )}
           {showComponent && step === 10 && (
             <OnBoardingProfileImage
@@ -372,13 +407,16 @@ const OnBoarding: React.FC = () => {
             />
           )}
           {showComponent && step === 11 && (
-            <OnBoardingDivider mode="end" name={nicknameRef.current?.value || ''} />
+            <OnBoardingDivider
+              mode="end"
+              name={nicknameRef.current?.value || ""}
+            />
           )}
         </div>
-        <div className="flex justify-center items-center">
+        <div className="flex items-center justify-center">
           <NextButton
             id="onboarding-next-button"
-            className="text-2xl bg-main-color font-bold py-2 px-4 mt-2 mb-2 rounded-2xl w-[90%] text-white"
+            className="mt-2 mb-2 w-[90%] rounded-2xl bg-main-color px-4 py-2 font-bold text-2xl text-white"
             onClick={handleNextButtonClick}
           />
         </div>

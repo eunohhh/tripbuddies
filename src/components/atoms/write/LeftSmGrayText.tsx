@@ -5,7 +5,7 @@ type LeftSmGrayTextProps = {
 export default function LeftSmGrayText({ text }: LeftSmGrayTextProps) {
   return (
     <div>
-      <p className="text-sm ml-3 xl:ml-2 xl:text-xl text-gray-500">{text}</p>
+      <p className="ml-3 text-gray-500 text-sm xl:ml-2 xl:text-xl">{text}</p>
     </div>
   );
 }

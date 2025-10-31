@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 const ExampleComponent: React.FC<{
   firstLabel: string;
@@ -12,16 +12,18 @@ const ExampleComponent: React.FC<{
 
   return (
     <div className="flex items-center justify-center">
-      <div className="w-full max-w-lg px-10 py-8 mx-auto rounded-lg items-center justify-center flex">
-        <span className="p-1 inline-flex border bg-gray-200 rounded-md">
+      <div className="mx-auto flex w-full max-w-lg items-center justify-center rounded-lg px-10 py-8">
+        <span className="inline-flex rounded-md border bg-gray-200 p-1">
           <button
-            className={`px-2 py-1 rounded ${selected === firstLabel ? 'bg-gray-300 ' : ''}`}
+            type="button"
+            className={`rounded px-2 py-1 ${selected === firstLabel ? "bg-gray-300" : ""}`}
             onClick={() => handleClick(firstLabel)}
           >
             {firstLabel}
           </button>
           <button
-            className={`px-2 py-1 rounded ${selected === secondLabel ? 'bg-gray-300' : ''}`}
+            type="button"
+            className={`rounded px-2 py-1 ${selected === secondLabel ? "bg-gray-300" : ""}`}
             onClick={() => handleClick(secondLabel)}
           >
             {secondLabel}

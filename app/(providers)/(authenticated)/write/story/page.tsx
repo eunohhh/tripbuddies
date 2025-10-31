@@ -1,5 +1,5 @@
-import StoryWriteMain from '@/components/organisms/stories/StoryWriteMain';
-import React from 'react';
+import React from "react";
+import StoryWriteMain from "@/components/organisms/stories/StoryWriteMain";
 
 const WriteStory: React.FC = () => {
   return <StoryWriteMain />;

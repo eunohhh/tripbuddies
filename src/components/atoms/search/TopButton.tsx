@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from "react";
 
 export default function TopButton({
   setShowResult,
@@ -9,34 +9,35 @@ export default function TopButton({
 }) {
   const [isVisible, setIsVisible] = useState(false);
 
-  const handleScroll = () => {
-    const dateSection = document.getElementById('result-section');
+  const handleScroll = useCallback(() => {
+    const dateSection = document.getElementById("result-section");
     if (dateSection) {
       const { top } = dateSection.getBoundingClientRect();
       setIsVisible(window.scrollY > top);
     }
-  };
+  }, []);
 
   const scrollToTop = () => {
     setShowResult(false);
     window.scrollTo({
       top: 0,
-      behavior: 'smooth',
+      behavior: "smooth",
     });
   };
 
   useEffect(() => {
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", handleScroll);
     return () => {
-      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener("scroll", handleScroll);
     };
-  }, []);
+  }, [handleScroll]);
 
   return (
     isVisible && (
       <button
+        type="button"
         onClick={scrollToTop}
-        className="fixed bottom-16 right-1/2 p-2 px-3 transform translate-x-[530%] xl:right-auto xl:left-1/2 xl:transform xl:translate-x-[1350%] xl:bottom-10 bg-main-color text-white rounded-full shadow-lg z-[999]"
+        className="fixed right-1/2 bottom-16 z-[999] translate-x-[530%] transform rounded-full bg-main-color p-2 px-3 text-white shadow-lg xl:right-auto xl:bottom-10 xl:left-1/2 xl:translate-x-[1350%] xl:transform"
       >
         ↑
       </button>

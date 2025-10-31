@@ -1,4 +1,4 @@
-import { BuddyTheme, TripTheme } from '@/types/Themes.types';
+import { BuddyTheme, TripTheme } from "@/types/Themes.types";
 
 const handleChipClick = (
   target: EventTarget & HTMLSpanElement,
@@ -17,12 +17,16 @@ const handleChipClick = (
   } else {
     // 선택된 Chip이 3개일 때, 가장 가까운 인덱스의 Chip을 해제하고 새로운 선택 추가
     const newSelected = [...prevSelected];
-    const targetIndex = data.findIndex((item) => item === target.innerText);
+    const targetIndex = data.indexOf(
+      target.innerText as TripTheme | BuddyTheme,
+    );
     const indexToReplace = prevSelected
-      .map((selected) => data.findIndex((item) => item === selected))
+      .map((selected) => data.indexOf(selected as TripTheme | BuddyTheme))
       .reduce(
         (prev, curr, idx) =>
-          Math.abs(curr - targetIndex) < Math.abs(prev - targetIndex) ? idx : prev,
+          Math.abs(curr - targetIndex) < Math.abs(prev - targetIndex)
+            ? idx
+            : prev,
         0,
       );
     newSelected[indexToReplace] = text;

@@ -1,16 +1,16 @@
-'use client';
+"use client";
 
-import { QUERY_KEY_FOLLOW_COUNT } from '@/constants/query.constants';
-import { useAuth } from '@/hooks';
-import { showAlert } from '@/utils/ui/openCustomAlert';
-import { useQueryClient } from '@tanstack/react-query';
-import { useParams, usePathname } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useQueryClient } from "@tanstack/react-query";
+import { useParams, usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
+import { QUERY_KEY_FOLLOW_COUNT } from "@/constants/query.constants";
+import { useAuth } from "@/hooks";
+import { showAlert } from "@/utils/ui/openCustomAlert";
 
 export default function FollowButton() {
   const { buddy } = useAuth();
-  const [followingId, setFollowingId] = useState<string | undefined>('');
-  const [followerId, setFollowerId] = useState<string | undefined>('');
+  const [followingId, setFollowingId] = useState<string | undefined>("");
+  const [followerId, setFollowerId] = useState<string | undefined>("");
   const [isFollowing, setIsFollowing] = useState<boolean | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -28,23 +28,28 @@ export default function FollowButton() {
         const tripMasterIdResponse = await fetch(
           `/api/contract/trip/masterId?trip_id=${currentBuddyId}`,
           {
-            method: 'GET',
+            method: "GET",
           },
         );
 
         if (!tripMasterIdResponse.ok) {
-          throw new Error(`Error fetching trip master ID: ${tripMasterIdResponse.statusText}`);
+          throw new Error(
+            `Error fetching trip master ID: ${tripMasterIdResponse.statusText}`,
+          );
         }
 
         const tripMasterData = await tripMasterIdResponse.json();
         return tripMasterData.trip_master_id;
       } catch (error) {
-        console.error('Error fetching trip master ID:', error);
+        console.error("Error fetching trip master ID:", error);
         return null;
       }
     };
 
-    const checkFollowStatus = async (followingId: string, followerId: string) => {
+    const checkFollowStatus = async (
+      followingId: string,
+      followerId: string,
+    ) => {
       // 내가 내가 만든 여정을 보는 상황에서 에러남..
       const isMe = followingId === followerId;
 
@@ -57,7 +62,7 @@ export default function FollowButton() {
         const checkResponse = await fetch(
           `/api/buddyProfile/follow?followingId=${followingId}&followerId=${followerId}`,
           {
-            method: 'GET',
+            method: "GET",
           },
         );
 
@@ -65,10 +70,12 @@ export default function FollowButton() {
           const data = await checkResponse.json();
           setIsFollowing(data.originFollow.length > 0);
         } else {
-          throw new Error(`Error checking follow status: ${checkResponse.statusText}`);
+          throw new Error(
+            `Error checking follow status: ${checkResponse.statusText}`,
+          );
         }
       } catch (error) {
-        console.error('Error checking follow status:', error);
+        console.error("Error checking follow status:", error);
       }
     };
 
@@ -76,24 +83,30 @@ export default function FollowButton() {
       const tripMasterId = await fetchTripMasterId();
       if (tripMasterId) {
         setFollowingId(tripMasterId);
-        await checkFollowStatus(tripMasterId, getCurrentBuddyId || '');
+        await checkFollowStatus(tripMasterId, getCurrentBuddyId || "");
       }
     };
 
     const handleProfileLogic = async () => {
-      setFollowingId(Array.isArray(currentBuddyId) ? currentBuddyId[0] : currentBuddyId || '');
+      setFollowingId(
+        Array.isArray(currentBuddyId)
+          ? currentBuddyId[0]
+          : currentBuddyId || "",
+      );
       await checkFollowStatus(
-        Array.isArray(currentBuddyId) ? currentBuddyId[0] : currentBuddyId || '',
-        getCurrentBuddyId || '',
+        Array.isArray(currentBuddyId)
+          ? currentBuddyId[0]
+          : currentBuddyId || "",
+        getCurrentBuddyId || "",
       );
     };
 
-    if (pathname.includes('trips')) {
+    if (pathname.includes("trips")) {
       // console.log('trips들어가냐?');
       setIsLoading(true);
       handleTripsLogic();
       setIsLoading(false);
-    } else if (pathname.includes('profile')) {
+    } else if (pathname.includes("profile")) {
       // console.log('profile들어가냐?');
       setIsLoading(true);
       handleProfileLogic();
@@ -105,10 +118,10 @@ export default function FollowButton() {
     if (isLoading) return;
     setIsLoading(true);
     try {
-      const response = await fetch('/api/buddyProfile/follow', {
-        method: 'POST',
+      const response = await fetch("/api/buddyProfile/follow", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           followingId: followingId,
@@ -118,14 +131,14 @@ export default function FollowButton() {
 
       if (!response.ok) {
         const errorData = await response.json();
-        console.error('Error:', errorData);
-        showAlert('error', errorData.message);
+        console.error("Error:", errorData);
+        showAlert("error", errorData.message);
         return;
       }
 
       const data = await response.json();
 
-      showAlert('success', '팔로우 성공했습니다.');
+      showAlert("success", "팔로우 성공했습니다.");
       setIsFollowing(true);
       queryClient.invalidateQueries({
         queryKey: [QUERY_KEY_FOLLOW_COUNT, currentBuddyId],
@@ -142,18 +155,18 @@ export default function FollowButton() {
       const response = await fetch(
         `/api/buddyProfile/follow?followingId=${followingId}&followerId=${buddy?.buddy_id}`,
         {
-          method: 'DELETE',
+          method: "DELETE",
         },
       );
 
       if (!response.ok) {
         const errorData = await response.json();
-        console.error('Error:', errorData);
-        showAlert('error', '팔로우 취소 중 오류가 발생했습니다.');
+        console.error("Error:", errorData);
+        showAlert("error", "팔로우 취소 중 오류가 발생했습니다.");
         return;
       }
 
-      showAlert('success', '팔로우가 취소되었습니다.');
+      showAlert("success", "팔로우가 취소되었습니다.");
       setIsFollowing(false);
       queryClient.invalidateQueries({
         queryKey: [QUERY_KEY_FOLLOW_COUNT, currentBuddyId],
@@ -164,16 +177,17 @@ export default function FollowButton() {
   };
 
   return isLoading || isFollowing === null ? (
-    <div className="relative h-7 w-24 mt-10"></div>
+    <div className="relative mt-10 h-7 w-24"></div>
   ) : (
     <button
-      className={`text-sm text-white bg-main-color rounded-full px-4 py-1 mt-10 ${
-        isLoading ? 'opacity-50 cursor-not-allowed' : ''
+      type="button"
+      className={`mt-10 rounded-full bg-main-color px-4 py-1 text-sm text-white ${
+        isLoading ? "cursor-not-allowed opacity-50" : ""
       }`}
       onClick={isFollowing ? handleUnfollow : handleFollow}
       disabled={isLoading}
     >
-      {isFollowing ? '팔로우 취소' : '팔로우 하기'}
+      {isFollowing ? "팔로우 취소" : "팔로우 하기"}
     </button>
   );
 }

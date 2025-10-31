@@ -1,12 +1,12 @@
-'use client';
-import useCheckPwa from '@/hooks/common/useCheckPwa';
-import { useEffect, useState } from 'react';
+"use client";
+import { useEffect, useState } from "react";
+import useCheckPwa from "@/hooks/common/useCheckPwa";
 
 // TypeScript 인터페이스 정의
 interface BeforeInstallPromptEvent extends Event {
   readonly platforms: string[];
   readonly userChoice: Promise<{
-    outcome: 'accepted' | 'dismissed';
+    outcome: "accepted" | "dismissed";
     platform: string;
   }>;
   prompt(): Promise<void>;
@@ -25,10 +25,10 @@ const InstallPromptHandler = () => {
       setDeferredPrompt(e);
     };
 
-    window.addEventListener('beforeinstallprompt', handler as any);
+    window.addEventListener("beforeinstallprompt", handler as any);
 
     return () => {
-      window.removeEventListener('beforeinstallprompt', handler as any);
+      window.removeEventListener("beforeinstallprompt", handler as any);
     };
   }, []);
 
@@ -41,7 +41,7 @@ const InstallPromptHandler = () => {
     setIsAndroid(isAndroid);
 
     if (isPwa) {
-      alert('PWA가 이미 설치되었습니다.');
+      alert("PWA가 이미 설치되었습니다.");
     }
   }, [isPwa]);
 
@@ -51,7 +51,7 @@ const InstallPromptHandler = () => {
     if (deferredPrompt) {
       (deferredPrompt as any).prompt();
       (deferredPrompt as any).userChoice.then((choiceResult: any) => {
-        if (choiceResult.outcome === 'accepted') {
+        if (choiceResult.outcome === "accepted") {
           // console.log('User accepted the install prompt');
         } else {
           // console.log('User dismissed the install prompt');
@@ -62,31 +62,34 @@ const InstallPromptHandler = () => {
       if (navigator.share) {
         try {
           await navigator.share({
-            title: 'PWA 설치',
-            text: '이 링크를 통해 PWA를 설치하세요:',
+            title: "PWA 설치",
+            text: "이 링크를 통해 PWA를 설치하세요:",
             url: window.location.href,
           });
-          console.log('PWA 설치 링크가 공유되었습니다.');
+          console.log("PWA 설치 링크가 공유되었습니다.");
         } catch (error) {
-          console.error('PWA 설치 링크 공유 실패:', error);
+          console.error("PWA 설치 링크 공유 실패:", error);
         }
       } else {
-        alert('이 브라우저는 웹 공유 API를 지원하지 않습니다.');
+        alert("이 브라우저는 웹 공유 API를 지원하지 않습니다.");
       }
     }
   };
 
   useEffect(() => {
     // alert('serviceWorker' in navigator);
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('/sw.js', { type: 'module' }).then(
-        function (registration) {
-          alert('Service Worker registered with scope:');
-          console.log('Service Worker registered with scope:', registration.scope);
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("/sw.js", { type: "module" }).then(
+        (registration) => {
+          alert("Service Worker registered with scope:");
+          console.log(
+            "Service Worker registered with scope:",
+            registration.scope,
+          );
         },
-        function (error) {
-          alert('Service Worker registration failed:');
-          console.log('Service Worker registration failed:', error);
+        (error) => {
+          alert("Service Worker registration failed:");
+          console.log("Service Worker registration failed:", error);
         },
       );
     }
@@ -98,10 +101,10 @@ const InstallPromptHandler = () => {
       setDeferredPrompt(e);
     };
 
-    window.addEventListener('beforeinstallprompt', handler as any);
+    window.addEventListener("beforeinstallprompt", handler as any);
 
     return () => {
-      window.removeEventListener('beforeinstallprompt', handler as any);
+      window.removeEventListener("beforeinstallprompt", handler as any);
     };
   }, []);
 
@@ -110,8 +113,12 @@ const InstallPromptHandler = () => {
   }
 
   return (
-    <div className="fixed bottom-0 right-0 m-4 z-50">
-      <button onClick={handleInstallClick} className="bg-blue-500 text-white px-4 py-2 rounded-md">
+    <div className="fixed right-0 bottom-0 z-50 m-4">
+      <button
+        type="button"
+        onClick={handleInstallClick}
+        className="rounded-md bg-blue-500 px-4 py-2 text-white"
+      >
         홈 화면에 추가하기
       </button>
     </div>

@@ -1,14 +1,14 @@
-'use client';
+"use client";
 
-import { useEffect, useState } from 'react';
-import { useSelectRegion } from '../common/useSelectRegion';
+import { useEffect, useState } from "react";
+import { useSelectRegion } from "../common/useSelectRegion";
 
 // 검색어
 export function useSearchInput(searchParams: URLSearchParams) {
-  const [searchInput, setSearchInput] = useState<string>('');
+  const [searchInput, setSearchInput] = useState<string>("");
 
   useEffect(() => {
-    const input = searchParams.get('searchInput') || '';
+    const input = searchParams.get("searchInput") || "";
     setSearchInput(input);
   }, [searchParams]);
   return { searchInput, setSearchInput };
@@ -16,13 +16,13 @@ export function useSearchInput(searchParams: URLSearchParams) {
 
 // 날짜
 export function useDateRange(searchParams: URLSearchParams) {
-  const [startDateTimestamp, setStartDateTimestamp] = useState<string>('');
-  const [endDateTimestamp, setEndDateTimestamp] = useState<string>('');
+  const [startDateTimestamp, setStartDateTimestamp] = useState<string>("");
+  const [endDateTimestamp, setEndDateTimestamp] = useState<string>("");
 
   // 쿼리 파라미터로 date 가져오기
   useEffect(() => {
-    const startDate = searchParams.get('startDate');
-    const endDate = searchParams.get('endDate');
+    const startDate = searchParams.get("startDate");
+    const endDate = searchParams.get("endDate");
     if (startDate && endDate) {
       setStartDateTimestamp(startDate);
       setEndDateTimestamp(endDate);
@@ -45,7 +45,7 @@ export function useLocationSelection(searchParams: URLSearchParams) {
   } = useSelectRegion();
 
   useEffect(() => {
-    const location = searchParams.get('location') || null;
+    const location = searchParams.get("location") || null;
 
     if (location) {
       handleThirdLevelClick(location);
@@ -70,6 +70,8 @@ export function useAgeRange() {
 
 // 만남 장소
 export function useMeetingPlaceSelection() {
-  const [selectedMeetingPlace, setSelectedMeetingPlace] = useState<string | null>(null);
+  const [selectedMeetingPlace, setSelectedMeetingPlace] = useState<
+    string | null
+  >(null);
   return { selectedMeetingPlace, setSelectedMeetingPlace };
 }

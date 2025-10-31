@@ -1,14 +1,14 @@
-import React from 'react';
+import React from "react";
 
 const RankPageSkeleton: React.FC = () => {
   return (
-    <div className="bg-gray-100 rounded-lg p-4 relative animate-pulse">
-      <div className="relative rounded-lg overflow-hidden h-48 bg-gray-300">
-        <div className="absolute inset-0 bg-gradient-to-r from-gray-300 via-gray-200 to-gray-300 animate-shimmer"></div>
+    <div className="relative animate-pulse rounded-lg bg-gray-100 p-4">
+      <div className="relative h-48 overflow-hidden rounded-lg bg-gray-300">
+        <div className="absolute inset-0 animate-shimmer bg-gradient-to-r from-gray-300 via-gray-200 to-gray-300"></div>
       </div>
-      <div className="mt-4 flex justify-between items-center">
-        <span className="text-xl font-bold text-gray-300 bg-gray-300 rounded w-1/3 h-6"></span>
-        <div className="bg-gray-300 rounded w-1/4 h-6"></div>
+      <div className="mt-4 flex items-center justify-between">
+        <span className="h-6 w-1/3 rounded bg-gray-300 font-bold text-gray-300 text-xl"></span>
+        <div className="h-6 w-1/4 rounded bg-gray-300"></div>
       </div>
     </div>
   );
