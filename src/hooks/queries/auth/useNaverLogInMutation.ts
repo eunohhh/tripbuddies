@@ -6,8 +6,12 @@ import { Buddy } from "@/types/Auth.types";
 export function useNaverLogInMutation() {
   const queryClient = useQueryClient();
 
-  return useMutation<Buddy | null, Error, void>({
-    mutationFn: () => postNaverLogIn(),
+  return useMutation<
+    { redirectUrl: string; buddy: Buddy } | null,
+    Error,
+    string
+  >({
+    mutationFn: (accessToken) => postNaverLogIn(accessToken),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [QUERY_KEY_BUDDY] });
     },

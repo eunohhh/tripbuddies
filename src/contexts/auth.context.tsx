@@ -35,7 +35,7 @@ export type AuthContextValue = {
   loginWithProvider: (provider: Provider) => void;
   resetPassword: (password: string) => void;
   sendingResetEmail: (email: string) => void;
-  naverLogIn: () => void;
+  naverLogIn: (accessToken: string) => void;
 };
 
 const initialValue: AuthContextValue = {
@@ -211,26 +211,30 @@ export function AuthProvider({ children }: PropsWithChildren) {
     [queryClient, router],
   );
 
-  const naverLogIn: AuthContextValue["naverLogIn"] = useCallback(async () => {
-    try {
-      const buddy = await naverLogInMutation();
-      if (!buddy) return showAlert("caution", "알 수 없는 오류가 발생했어요");
+  const naverLogIn: AuthContextValue["naverLogIn"] = useCallback(
+    async (accessToken: string) => {
+      try {
+        const data = await naverLogInMutation(accessToken);
+        if (!data) return showAlert("caution", "알 수 없는 오류가 발생했어요");
+        const { redirectUrl, buddy } = data;
 
-      showAlert(
-        "success",
-        `${buddy.buddy_isOnBoarding ? buddy.buddy_nickname : buddy.buddy_email}님 환영합니다!`,
-        {
-          onConfirm: () => router.replace("/"),
-        },
-      );
-    } catch (error) {
-      const errorMessage =
-        error instanceof Error ? error.message : "Unknown error";
-      return showAlert("error", errorMessage, {
-        onConfirm: () => router.refresh(),
-      });
-    }
-  }, [naverLogInMutation, router]);
+        showAlert(
+          "success",
+          `${buddy.buddy_isOnBoarding ? buddy.buddy_nickname : buddy.buddy_email}님 환영합니다!`,
+          {
+            onConfirm: () => router.replace("/"),
+          },
+        );
+      } catch (error) {
+        const errorMessage =
+          error instanceof Error ? error.message : "Unknown error";
+        return showAlert("error", errorMessage, {
+          onConfirm: () => router.refresh(),
+        });
+      }
+    },
+    [naverLogInMutation, router],
+  );
 
   // useEffect(() => {
   //     console.log('isPending ====>', isPending);

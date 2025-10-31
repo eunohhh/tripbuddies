@@ -12,8 +12,8 @@ const LoadingPage: React.FC = () => {
     if (window.location.hash) {
       const hash = window.location.hash.substring(1);
       const params = new URLSearchParams(hash);
-      const accessToken = params.get("access_token");
-      if (accessToken) naverLogIn();
+      const token = params.get("access_token");
+      if (token) naverLogIn(token);
     }
   }, [naverLogIn]);
 
