@@ -3,7 +3,7 @@
 import Script from "next/script";
 import React, { useCallback, useRef, useState } from "react";
 import { SiNaver } from "react-icons/si";
-import { PUBLIC_URL } from "@/constants/common.constants"; // import Script from 'next/script';
+import { PUBLIC_URL } from "@/constants/common.constants";
 
 const NaverLogInButton: React.FC = () => {
   const [naverObj, setNaverObj] = useState<any>(null);

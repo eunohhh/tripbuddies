@@ -5,7 +5,6 @@ import DefaultLoader from "@/components/atoms/common/DefaultLoader";
 import { useAuth } from "@/hooks";
 
 const LoadingPage: React.FC = () => {
-  // useAuth 의 함수들은 모두 useCallback 처리함
   const { naverLogIn } = useAuth();
 
   useEffect(() => {
