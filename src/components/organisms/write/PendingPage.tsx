@@ -29,11 +29,11 @@ export default function PendingPage({ isFile }: { isFile: boolean }) {
       <div className="relative mt-2 h-full">
         <div className="fixed top-0 left-0 z-50 flex h-dvh w-dvw items-center justify-center" />
         <Center2xlTwoLineText
-          className="relative h-[15%]"
+          className="relative"
           firstText="버디가 열심히 글을"
           secondText="작성하고 있어요!"
         />
-        <div className="relative flex h-[40%] items-center justify-center">
+        <div className="relative flex items-center justify-center">
           <div className="mx-auto flex h-[230px] w-[300px] justify-center xl:h-[400px] xl:w-[400px]">
             <MascotImage intent="main" className="h-[70%] w-[70%]" />
           </div>
