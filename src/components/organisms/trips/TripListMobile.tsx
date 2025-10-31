@@ -77,7 +77,7 @@ const TripListMobile: React.FC = () => {
         </div>
         <button
           type="button"
-          className="flex items-center justify-center gap-0.5 rounded-full bg-primary-color-400 px-2 py-1 text-white shadow-sm"
+          className="flex items-center justify-center gap-0.5 rounded-full bg-primary-color-400 px-2 py-1 text-black shadow-sm"
           onClick={() => setFilterOpen((prev) => !prev)}
         >
           <span>필터</span>
