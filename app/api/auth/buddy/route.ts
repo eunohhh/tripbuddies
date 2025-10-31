@@ -7,7 +7,7 @@ import { NextRequest, NextResponse } from 'next/server';
 
 // 클라이언트에서 요청할 때
 export async function GET() {
-  const supabase = createClient();
+  const supabase = await createClient();
   const {
     data: { user },
     error,
@@ -51,7 +51,7 @@ export async function GET() {
 // 서버에서 요청할 때
 export async function POST(req: NextRequest) {
   const { userId } = await req.json();
-  const supabase = createClient();
+  const supabase = await createClient();
   const { data: buddy, error: userError } = await supabase
     .from('buddies')
     .select('*')
@@ -74,7 +74,7 @@ export const PATCH = async (req: NextRequest) => {
   const formData = await req.formData();
   const file = formData.get('imageFile') as Blob;
   const buddyInfo: PartialBuddy = JSON.parse(formData.get('buddyInfo') as string);
-  const supabase = createClient();
+  const supabase = await createClient();
 
   if (!buddyInfo) {
     return NextResponse.json({ error: 'Buddy info not found' }, { status: 404 });

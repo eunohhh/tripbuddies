@@ -14,7 +14,7 @@ export async function GET(req: NextRequest) {
     );
   }
 
-  const supabase = createClient();
+  const supabase = await createClient();
 
   try {
     const { data: trip, error } = await supabase

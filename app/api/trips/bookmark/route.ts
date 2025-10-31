@@ -5,7 +5,7 @@ import { PostgrestError } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(req: NextRequest) {
-  const supabase = createClient();
+  const supabase = await createClient();
   const bookmark_buddy_id = req.nextUrl.searchParams.get('bookmark_buddy_id');
   const bookmark_trip_id = req.nextUrl.searchParams.get('bookmark_trip_id');
 
@@ -32,7 +32,7 @@ export async function GET(req: NextRequest) {
 }
 
 export async function POST(req: NextRequest) {
-  const supabase = createClient();
+  const supabase = await createClient();
   const { bookmark_buddy_id, bookmark_trip_id, is_bookmarked }: BookMarkRequest = await req.json();
 
   // console.log('isbookmarked', is_bookmarked);

@@ -6,7 +6,7 @@ import { PostgrestError } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(req: NextRequest) {
-  const supabase = createClient();
+  const supabase = await createClient();
   const mode = req.nextUrl.searchParams.get('mode');
 
   try {

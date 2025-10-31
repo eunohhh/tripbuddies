@@ -11,7 +11,7 @@ export async function POST(req: Request) {
 
   // console.log('recover-redirect 에서 받은 이메일 =>', email);
 
-  const supabase = createClient();
+  const supabase = await createClient();
 
   const { error } = await supabase.auth.resetPasswordForEmail(email, {
     redirectTo: `${PUBLIC_URL}`,

@@ -6,7 +6,7 @@ export async function GET(req: NextRequest) {
 
   // 아래 createClient 함수 내부에서 쿠키를 사용하기 때문에 try 문 안에 있으면 빌드에러가 발생합니다.
   // 따라서 여기서 생성해줍니다.
-  const supabase = createClient();
+  const supabase = await createClient();
 
   try {
     // buddies 테이블에서 buddy_temperature가 가장 높은 10명 가져오기

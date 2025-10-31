@@ -8,7 +8,7 @@ import { NextRequest, NextResponse } from 'next/server';
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
   const pageString = searchParams.get('page');
-  const supabase = createClient();
+  const supabase = await createClient();
 
   // 총 아이템 수를 가져옵니다.
   const { count: totalItems, error: countError } = await supabase
@@ -112,7 +112,7 @@ export async function GET(req: NextRequest) {
 
 //     const pageString = searchParams.get('page');
 
-//     const supabase = createClient();
+//     const supabase = await createClient();
 
 //     if (pageString) {
 //         const page = Number(pageString);

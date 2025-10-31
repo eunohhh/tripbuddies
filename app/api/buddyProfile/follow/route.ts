@@ -17,7 +17,7 @@ export async function GET(req: NextRequest) {
     );
   }
 
-  const supabase = createClient();
+  const supabase = await createClient();
 
   try {
     const { data: originFollow, error } = await supabase
@@ -72,7 +72,7 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  const supabase = createClient();
+  const supabase = await createClient();
 
   try {
     const { data: follow, error } = await supabase.from('follow').insert({
@@ -146,7 +146,7 @@ export async function DELETE(req: NextRequest) {
     );
   }
 
-  const supabase = createClient();
+  const supabase = await createClient();
 
   try {
     const { data: follow, error } = await supabase

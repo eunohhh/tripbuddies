@@ -10,7 +10,7 @@ import OpenAI from 'openai';
 const OPEN_AI_SECRET_KEY = process.env.OPEN_AI_SECRET_KEY;
 
 export async function POST(req: NextRequest) {
-  const supabase = createClient();
+  const supabase = await createClient();
 
   try {
     // 헤더에서 사용자 ID를 가져옴

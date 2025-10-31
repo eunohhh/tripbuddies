@@ -46,7 +46,7 @@ export async function POST(request: Request) {
     const userData = await response.json();
     const userEmail = userData.response.email;
 
-    const supabase = createClient();
+    const supabase = await createClient();
 
     // signInWithPassword로 로그인 시도
     const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({

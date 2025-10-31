@@ -5,7 +5,7 @@ import { PostgrestError } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET() {
-  const supabase = createClient();
+  const supabase = await createClient();
 
   const {
     data: stories,
@@ -43,7 +43,7 @@ export async function POST(req: NextRequest) {
 
   const imageBuffer = await convertToWebP(file, 1080);
 
-  const supabase = createClient();
+  const supabase = await createClient();
   const filePath = `stories_${Date.now()}.webp`;
 
   if (!imageBuffer) {

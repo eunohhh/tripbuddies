@@ -4,7 +4,7 @@ import { PostgrestError } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(req: NextRequest) {
-  const supabase = createClient();
+  const supabase = await createClient();
   const bookmark_buddy_id = req.nextUrl.searchParams.get('bookmark_buddy_id');
 
   if (!bookmark_buddy_id) {

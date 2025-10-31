@@ -15,7 +15,7 @@ export async function GET(request: NextRequest) {
   // console.log("다음 주소 =>", next);
 
   if (token_hash && type) {
-    const supabase = createClient();
+    const supabase = await createClient();
 
     const { data, error } = await supabase.auth.verifyOtp({
       type,

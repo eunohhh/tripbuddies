@@ -7,7 +7,7 @@ export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
   const id = searchParams.get('id');
 
-  const supabase = createClient();
+  const supabase = await createClient();
 
   try {
     const { data: buddy, error }: { data: Buddy | null; error: PostgrestError | null } =

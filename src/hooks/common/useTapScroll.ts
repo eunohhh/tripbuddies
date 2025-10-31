@@ -1,94 +1,97 @@
-'use client';
-import { useLockBodyScroll } from '@/hooks';
-import React, { useCallback, useEffect, useState } from 'react';
+"use client";
+import type React from "react";
+import { useCallback, useEffect, useState } from "react";
+import { useLockBodyScroll } from "@/hooks";
 
 type UseTapScrollProps = {
-  refs: React.RefObject<HTMLElement>[];
+	refs: React.RefObject<HTMLElement | null>[];
 };
 
 export function useTapScroll({ refs }: UseTapScrollProps) {
-  const { setLock } = useLockBodyScroll(false);
-  const [isDesktop, setIsDesktop] = useState<boolean | null>(null);
+	const { setLock } = useLockBodyScroll(false);
+	const [isDesktop, setIsDesktop] = useState<boolean | null>(null);
 
-  useEffect(() => {
-    const handleResize = () => {
-      setIsDesktop(window.innerWidth >= 1280);
-    };
+	useEffect(() => {
+		const handleResize = () => {
+			setIsDesktop(window.innerWidth >= 1280);
+		};
 
-    window.addEventListener('resize', handleResize);
-    handleResize(); // Initial check on mount
+		window.addEventListener("resize", handleResize);
+		handleResize(); // Initial check on mount
 
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  }, []);
+		return () => {
+			window.removeEventListener("resize", handleResize);
+		};
+	}, []);
 
-  useEffect(() => {
-    const handleMouseDown = (container: HTMLElement) => (event: MouseEvent) => {
-      const startX = event.pageX - container.offsetLeft;
-      const scrollLeft = container.scrollLeft;
+	useEffect(() => {
+		const handleMouseDown = (container: HTMLElement) => (event: MouseEvent) => {
+			const startX = event.pageX - container.offsetLeft;
+			const scrollLeft = container.scrollLeft;
 
-      const handleMouseMove = (moveEvent: MouseEvent) => {
-        const x = moveEvent.pageX - container.offsetLeft;
-        const walk = (x - startX) * 2; // Adjust scroll speed
-        container.scrollLeft = scrollLeft - walk;
-      };
+			const handleMouseMove = (moveEvent: MouseEvent) => {
+				const x = moveEvent.pageX - container.offsetLeft;
+				const walk = (x - startX) * 2; // Adjust scroll speed
+				container.scrollLeft = scrollLeft - walk;
+			};
 
-      const handleMouseUp = () => {
-        container.removeEventListener('mousemove', handleMouseMove);
-        container.removeEventListener('mouseup', handleMouseUp);
-      };
+			const handleMouseUp = () => {
+				container.removeEventListener("mousemove", handleMouseMove);
+				container.removeEventListener("mouseup", handleMouseUp);
+			};
 
-      container.addEventListener('mousemove', handleMouseMove);
-      container.addEventListener('mouseup', handleMouseUp);
-    };
+			container.addEventListener("mousemove", handleMouseMove);
+			container.addEventListener("mouseup", handleMouseUp);
+		};
 
-    const containers = refs;
-    if (containers && isDesktop === false) {
-      containers.forEach((container) => {
-        const current = container.current;
-        if (current) {
-          current.addEventListener('mousedown', handleMouseDown(current));
-        }
-      });
-    }
+		const containers = refs;
+		if (containers && isDesktop === false) {
+			containers.forEach((container) => {
+				const current = container.current;
+				if (current) {
+					current.addEventListener("mousedown", handleMouseDown(current));
+				}
+			});
+		}
 
-    return () => {
-      if (containers && isDesktop === false) {
-        containers.forEach((container) => {
-          const current = container.current;
-          if (current) {
-            current.removeEventListener('mousedown', handleMouseDown(current));
-          }
-        });
-      }
-    };
-  }, [refs, setLock, isDesktop]);
+		return () => {
+			if (containers && isDesktop === false) {
+				containers.forEach((container) => {
+					const current = container.current;
+					if (current) {
+						current.removeEventListener("mousedown", handleMouseDown(current));
+					}
+				});
+			}
+		};
+	}, [refs, isDesktop]);
 
-  // Handlers for arrow buttons on desktop, with specific ref
-  const createScrollHandler = useCallback(
-    (ref: React.RefObject<HTMLElement>, direction: 'left' | 'right') => {
-      if (!isDesktop) return () => {};
+	// Handlers for arrow buttons on desktop, with specific ref
+	const createScrollHandler = useCallback(
+		(ref: React.RefObject<HTMLElement | null>, direction: "left" | "right") => {
+			if (!isDesktop) return () => {};
 
-      return () => {
-        if (ref.current) {
-          const scrollAmount = direction === 'left' ? -500 : 500;
-          ref.current.scrollBy({
-            left: scrollAmount,
-            behavior: 'smooth',
-          });
-        }
-      };
-    },
-    [isDesktop],
-  );
+			return () => {
+				if (ref.current) {
+					const scrollAmount = direction === "left" ? -500 : 500;
+					ref.current.scrollBy({
+						left: scrollAmount,
+						behavior: "smooth",
+					});
+				}
+			};
+		},
+		[isDesktop],
+	);
 
-  return isDesktop
-    ? {
-        createScrollLeft: (ref: React.RefObject<HTMLElement>) => createScrollHandler(ref, 'left'),
-        createScrollRight: (ref: React.RefObject<HTMLElement>) => createScrollHandler(ref, 'right'),
-      }
-    : null;
+	return isDesktop
+		? {
+				createScrollLeft: (ref: React.RefObject<HTMLElement | null>) =>
+					createScrollHandler(ref, "left"),
+				createScrollRight: (ref: React.RefObject<HTMLElement | null>) =>
+					createScrollHandler(ref, "right"),
+			}
+		: null;
 }
 
 // const createMouseDownHandler = useCallback(
