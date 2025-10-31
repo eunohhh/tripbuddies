@@ -1,7 +1,7 @@
 import Link from "next/link";
 import React from "react";
 import { twMerge } from "tailwind-merge";
-import ArrowRight from "../../../../public/svg/ArrowRight.svg";
+import { ArrowRight } from "@/components/icons/ArrowRight";
 
 type HomePageTitleProps = {
   title: string;

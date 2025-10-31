@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
+import { Alarm } from "@/components/icons/Alarm";
 import { useNotification } from "@/hooks/notification/useNotification";
-import Alarm from "../../../../public/svg/Alarm.svg";
 
 const NotificationButton = () => {
   const { hasNotification } = useNotification();

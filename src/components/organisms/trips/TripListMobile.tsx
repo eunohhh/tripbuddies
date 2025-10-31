@@ -3,10 +3,10 @@
 import React, { useMemo, useState } from "react";
 import { twMerge } from "tailwind-merge";
 import LoaderOnly from "@/components/atoms/common/LoaderOnly";
+import { Filter as FilterIcon } from "@/components/icons/Filter";
 import InfiniteScroll from "@/components/molecules/common/InfiniteScroll";
 import { useTripInfiniteQuery } from "@/hooks/queries";
 import filterTripList from "@/utils/trips/filterTripList";
-import FilterIcon from "../../../../public/svg/Filter.svg";
 import TripCard from "./TripCard";
 
 const FilterButton = [

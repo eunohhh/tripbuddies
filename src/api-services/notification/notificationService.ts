@@ -6,6 +6,7 @@ export async function getNotifications({
 }: {
   buddyId: string;
 }): Promise<Notification[]> {
+  if (!buddyId) return [];
   const url = `/api/notification?buddyId=${buddyId}`;
   try {
     const data = await fetchWrapper<Notification[] | { message: string }>(url, {

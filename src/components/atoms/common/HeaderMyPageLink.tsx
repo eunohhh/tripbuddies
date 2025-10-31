@@ -2,8 +2,8 @@
 
 import Link from "next/link";
 import React from "react";
+import { MyPageIcon } from "@/components/icons/MyPageIcon";
 import { useAuth } from "@/hooks";
-import MyPageIcon from "../../../../public/svg/mypageicon.svg";
 import NotificationButton from "./NotificationButton";
 
 const HeaderMyPageLink: React.FC = () => {

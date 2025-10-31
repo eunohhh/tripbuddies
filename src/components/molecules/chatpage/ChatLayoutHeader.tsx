@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import Arrow_Back from "../../../../public/svg/Arrow_back.svg";
+import { ArrowBack as Arrow_Back } from "@/components/icons/ArrowBack";
 
 const ChatLayoutHeader = () => {
   const router = useRouter();

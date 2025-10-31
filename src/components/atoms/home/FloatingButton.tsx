@@ -1,9 +1,9 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { WriteIcon } from "@/components/icons/WriteIcon";
 import { useAuth } from "@/hooks";
 import { showAlert } from "@/utils/ui/openCustomAlert";
-import WriteIcon from "../../../../public/svg/WriteIcon.svg";
 
 export default function FloatingButton() {
   // const [opacity, setOpacity] = useState(1);

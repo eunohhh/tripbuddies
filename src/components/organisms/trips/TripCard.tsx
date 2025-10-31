@@ -10,6 +10,9 @@ import Chip from "@/components/atoms/common/Chip";
 import DefaultLoader from "@/components/atoms/common/DefaultLoader";
 import TripStartDate from "@/components/atoms/trips/TripStartDate";
 import TripTimeSinceUpload from "@/components/atoms/trips/TripTimeSinceUpload";
+import { CalendarMonth as Calendar_month } from "@/components/icons/CalendarMonth";
+import { Distance } from "@/components/icons/Distance";
+import { Groups } from "@/components/icons/Groups";
 import {
   QUERY_KEY_CONTRACT,
   QUERY_KEY_MY_BOOKMARKS,
@@ -42,9 +45,6 @@ import supabase from "@/utils/supabase/client";
 import { deleteTrip } from "@/utils/trips/deleteTrip";
 import { leaveTrip } from "@/utils/trips/leaveTrip";
 import { showAlert } from "@/utils/ui/openCustomAlert";
-import Calendar_month from "../../../../public/svg/Calendar_month.svg";
-import Distance from "../../../../public/svg/Distance.svg";
-import Groups from "../../../../public/svg/Groups.svg";
 import TripEditSelectDate from "../../molecules/trips/TripEditSelectDate";
 import TripEditSelectGenderBuddyTheme from "../../molecules/trips/TripEditSelectGenderBuddyTheme";
 import TripEditSelectRegion from "../../molecules/trips/TripEditSelectRegion";

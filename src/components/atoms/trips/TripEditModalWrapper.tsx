@@ -1,9 +1,9 @@
 "use client";
 
 import React from "react";
+import { Close } from "@/components/icons/Close";
 import MobileHeader from "@/components/molecules/common/MobileHeader";
 import { useModal } from "@/contexts/modal.context";
-import Close from "../../../../public/svg/Close.svg";
 
 type TripEditModalWrapperProps = {
   children: React.ReactNode;

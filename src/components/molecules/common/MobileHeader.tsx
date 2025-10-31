@@ -6,12 +6,12 @@ import React, { useEffect, useState } from "react";
 import { getTrip } from "@/api-services/trips";
 import MobileHeaderSettingsButton from "@/components/atoms/common/MobileHeaderSettingsButton";
 import NotificationButton from "@/components/atoms/common/NotificationButton";
+import { ArrowBack as Arrow_Back } from "@/components/icons/ArrowBack";
+import { Close } from "@/components/icons/Close";
+import { HomeSearch as Search } from "@/components/icons/HomeSearch";
 import { useModal } from "@/contexts/modal.context";
 import { useAuth } from "@/hooks";
 import { TripWithContract } from "@/types/Trips.types";
-import Arrow_Back from "../../../../public/svg/Arrow_back.svg";
-import Close from "../../../../public/svg/Close.svg";
-import Search from "../../../../public/svg/HomeSearch.svg";
 
 const MobileHeader: React.FC = () => {
   const pathname = usePathname();

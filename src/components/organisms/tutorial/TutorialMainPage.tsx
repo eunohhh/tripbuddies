@@ -4,8 +4,8 @@ import { useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import Tuto from "@/components/atoms/tutorial/Tuto";
 import ProgressIndicator from "@/components/atoms/write/ProgressIndicator";
+import { ArrowBack } from "@/components/icons/ArrowBack";
 import { setCookieAction } from "@/utils/tutorial/setCookieAction";
-import ArrowBack from "../../../../public/svg/Arrow_back.svg";
 
 const TutorialMainPage: React.FC = () => {
   const [step, setStep] = useState(0);

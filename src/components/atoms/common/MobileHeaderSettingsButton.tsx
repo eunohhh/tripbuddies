@@ -1,8 +1,8 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { Settings } from "@/components/icons/Settings";
 import { useAuth } from "@/hooks";
-import Settings from "../../../../public/svg/Settings.svg";
 
 type MobileHeaderSettingsButtonProps = {
   uuid: string;

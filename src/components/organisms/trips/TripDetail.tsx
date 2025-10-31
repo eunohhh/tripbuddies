@@ -6,6 +6,7 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import DefaultLoader from "@/components/atoms/common/DefaultLoader";
 import Input from "@/components/atoms/common/Input";
 import Navigate from "@/components/atoms/common/Navigate";
+import { SelectImage } from "@/components/icons/SelectImage";
 import HomePageTitle from "@/components/molecules/homepage/HomePageTitle";
 import BuddyProfile from "@/components/molecules/profile/BuddyProfile";
 import TripEditText from "@/components/molecules/trips/TripEditText";
@@ -20,7 +21,6 @@ import {
 } from "@/hooks/queries";
 import { PartialTrip, TripWithContract } from "@/types/Trips.types";
 import { showAlert } from "@/utils/ui/openCustomAlert";
-import SelectImage from "../../../../public/svg/SelectImage.svg";
 import HomePageRecommendBuddiesList from "../homepage/HomePageRecommendBuddiesList";
 import TripCard from "./TripCard";
 
@@ -93,7 +93,7 @@ const TripDetail: React.FC<TripDetailProps> = ({ id, mode }) => {
     }
   };
 
-  const handleSvgButtonClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleSvgButtonClick = (e: React.MouseEvent<SVGSVGElement>) => {
     e.preventDefault();
     fileInputRef.current?.click();
   };

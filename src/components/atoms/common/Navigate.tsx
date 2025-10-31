@@ -1,8 +1,8 @@
 "use client";
 
 import { twMerge } from "tailwind-merge";
-import NavigateBefore from "../../../../public/svg/navigate_before.svg";
-import NavigateNext from "../../../../public/svg/navigate_next.svg";
+import { NavigateBefore } from "@/components/icons/NavigateBefore";
+import { NavigateNext } from "@/components/icons/NavigateNext";
 
 type NavigateProps = {
   mode: "before" | "after";

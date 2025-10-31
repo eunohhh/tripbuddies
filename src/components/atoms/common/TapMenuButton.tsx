@@ -4,11 +4,11 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React from "react";
 import { twMerge } from "tailwind-merge";
+import { Chat } from "@/components/icons/Chat";
+import { Home } from "@/components/icons/Home";
+import { Mypage } from "@/components/icons/Mypage";
+import { Trip } from "@/components/icons/Trip";
 import { useUnreadMessagesContext } from "@/contexts/unreadMessages.context";
-import Chat from "../../../../public/svg/Chat.svg";
-import Home from "../../../../public/svg/Home.svg";
-import Mypage from "../../../../public/svg/Mypage.svg";
-import Trip from "../../../../public/svg/Trip.svg";
 import UnreadMessages from "../chatpage/UnreadMessages";
 
 interface TapMenuButtonProps {

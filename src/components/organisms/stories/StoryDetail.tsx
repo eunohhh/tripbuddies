@@ -6,6 +6,7 @@ import React, { MouseEvent, useEffect, useRef, useState } from "react";
 import { twMerge } from "tailwind-merge";
 import DefaultLoader from "@/components/atoms/common/DefaultLoader";
 import LikesButton from "@/components/atoms/stories/LikesButton";
+import { Close } from "@/components/icons/Close";
 import { useAuth, useTapScroll } from "@/hooks";
 import {
   useDeleteStoryMutation,
@@ -14,7 +15,6 @@ import {
 } from "@/hooks/queries";
 import { StoryOverlay, StoryWithBuddies } from "@/types/Story.types";
 import { showAlert } from "@/utils/ui/openCustomAlert";
-import Close from "../../../../public/svg/Close.svg";
 
 type StoryDetailProps = {
   id: string;
