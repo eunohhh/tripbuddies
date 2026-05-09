@@ -1,5 +1,6 @@
 packages:
   - "."
 
-onlyBuiltDependencies:
-  - sharp
+allowBuilds:
+  sharp: true
+  supabase: true
