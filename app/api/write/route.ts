@@ -63,19 +63,18 @@ export async function POST(req: NextRequest) {
 
       // OpenAI를 사용하여 이미지를 생성
       const imageGeneration = await openai.images.generate({
-        model: "dall-e-3",
+        model: "gpt-image-1",
         // prompt: `${continent}의 경관, ${country}의 랜드마크, 하늘 최소화, 실제 사진, 맑은 날씨, 도시 경관 위주`,
         prompt: `고공에서 바라본 ${country} 도시의 경관, 높은 앵글에서의 촬영`,
         n: 1,
         // size: '512x512',
-        response_format: "url", // URL로 이미지 반환
       });
 
       // console.log(
       //     'revised prompt ====>',
       //     imageGeneration.data[0].revised_prompt,
       // );
-      const imageUrl = imageGeneration.data[0].url;
+      const imageUrl = imageGeneration.data?.[0].b64_json;
 
       if (!imageUrl) {
         return NextResponse.json(
@@ -83,8 +82,10 @@ export async function POST(req: NextRequest) {
           { status: 500 },
         );
       }
+
+      const dataUrl = `data:image/png;base64,${imageUrl}`;
       // 이미지 다운로드
-      const response = await fetch(imageUrl);
+      const response = await fetch(dataUrl);
       const blob = await response.blob();
 
       // WebP 변환 및 파일 업로드를 병렬로 처리
