@@ -33,6 +33,16 @@ export async function GET() {
 }
 
 export async function POST(req: NextRequest) {
+  const supabase = await createClient();
+
+  // 업로드 파일을 sharp로 넘기기 전에 로그인부터 확인
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
   const formData = await req.formData();
   const file = formData.get("imageFile") as Blob;
   const texts = JSON.parse(formData.get("texts") as string);
@@ -43,7 +53,6 @@ export async function POST(req: NextRequest) {
 
   const imageBuffer = await convertToWebP(file, 1080);
 
-  const supabase = await createClient();
   const filePath = `stories_${Date.now()}.webp`;
 
   if (!imageBuffer) {
