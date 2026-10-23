@@ -1,5 +1,18 @@
 import sharp from "sharp";
 
+// 업로드 이미지는 신뢰할 수 없는 입력이라 래스터 형식 로더만 허용 (SVG 등 차단)
+// 이름은 sharp 0.35.5(libvips 8.18) 기준, sharp를 올리면 형식별로 다시 확인
+sharp.block({ operation: ["VipsForeignLoad"] });
+sharp.unblock({
+  operation: [
+    "VipsForeignLoadJpegBuffer",
+    "VipsForeignLoadPngBuffer",
+    "VipsForeignLoadWebpBuffer",
+    "VipsForeignLoadNsgifBuffer",
+    "VipsForeignLoadHeifBuffer",
+  ],
+});
+
 type ConvertToWebpProps = {
   inputBuffer: Buffer;
   maxWidth: number;
